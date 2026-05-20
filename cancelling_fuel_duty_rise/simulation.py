@@ -111,7 +111,7 @@ def compute_all(
     if hf_token:
         os.environ["HUGGING_FACE_TOKEN"] = hf_token
 
-    from policyengine.tax_benefit_models.uk import managed_microsimulation, uk_latest
+    from policyengine.tax_benefit_models.uk import managed_microsimulation
 
     dataset_reference = dataset_path or DEFAULT_DATASET_NAME
     data_years = (
@@ -352,22 +352,10 @@ def compute_all(
     }
 
     pe_version = _policyengine_version()
-    model_id = bundle.get("bundle_id") or getattr(uk_latest, "id", "uk_latest")
-    dataset_label = (
-        os.path.basename(dataset_reference)
-        if dataset_path is not None
-        else DEFAULT_DATASET_NAME
-    )
     bundle_policyengine_version = bundle.get("policyengine_version") or pe_version
-    bundle_details = []
-    if bundle.get("model_version"):
-        bundle_details.append(f"UK model {bundle['model_version']}")
-    if bundle.get("data_version"):
-        bundle_details.append(f"{dataset_label} data {bundle['data_version']}")
-    detail_text = f" ({'; '.join(bundle_details)})" if bundle_details else ""
     citation = (
-        f"PolicyEngine.py {bundle_policyengine_version}; managed UK bundle "
-        f"{model_id}{detail_text}; OBR RPI series from {OBR_FORECAST_VINTAGE}"
+        f"PolicyEngine.py {bundle_policyengine_version}; "
+        f"OBR RPI series from {OBR_FORECAST_VINTAGE}"
     )
 
     return Results(
