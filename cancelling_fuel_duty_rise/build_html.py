@@ -221,7 +221,7 @@ _HTML_TEMPLATE = """<!DOCTYPE html>
     <tr><td>Cumulative cost of freezes 2010-11 → 2026-27</td><td><strong>£{fleet_cumulative:.0f}bn</strong></td></tr>
     <tr><td>Rate today if uprated by RPI since 2011</td><td><strong>{counterfactual_rate:.1f}p / L</strong> vs actual {actual_rate:.1f}p · {rate_multiplier:.2f}× current</td></tr>
     <tr><td>Annual revenue gap by {last_year_fy} vs counterfactual</td><td><strong>£{revenue_gap:.0f}bn</strong></td></tr>
-    <tr><td>Person-weighted average household saving if cut is kept</td><td>~£{avg_saving:.0f}/yr (2027)</td></tr>
+    <tr><td>Person-weighted average household saving from cancelling the planned rise</td><td>~£{avg_saving:.0f}/yr (2027)</td></tr>
   </tbody>
 </table>
 
