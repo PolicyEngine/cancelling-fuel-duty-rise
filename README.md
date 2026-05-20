@@ -69,8 +69,9 @@ See the "Does this match the Guardian and Fleet News?" section of the report for
 
 ## Method
 
-- **Microsimulation**: PolicyEngine UK on the enhanced FRS 2023-29 multi-year dataset.
-- **Rate parameters and RPI series**: pulled from PolicyEngine UK (`gov.hmrc.fuel_duty.petrol_and_diesel`, `gov.economic_assumptions.yoy_growth.obr.rpi` — OBR EFO March 2026).
+- **Microsimulation**: the unified [PolicyEngine Python package](https://github.com/PolicyEngine/policyengine.py) (`policyengine`), which pins a `policyengine-uk` release and dataset bundle for reproducibility. The package version is read at runtime via `policyengine.__version__` and printed in the report sources line.
+- **Dataset**: enhanced Family Resources Survey 2023-29 multi-year build, downloaded from the PolicyEngine UK Hugging Face repo.
+- **Rate parameters and RPI series**: pulled from `policyengine-uk` (`gov.hmrc.fuel_duty.petrol_and_diesel`, `gov.economic_assumptions.yoy_growth.obr.rpi` — OBR EFO March 2026).
 - **Pre-2022 revenue**: HMRC UK Tax & NICs receipts publication on gov.uk.
 - **No behavioural responses modelled**: fuel volumes held fixed across scenarios.
 - **Distributional cuts**: equivalised HBAI household net income, person-weighted; bottom 5% excluded (Resolution Foundation approach) before splitting the remaining 95% into quartiles / quintiles / deciles.

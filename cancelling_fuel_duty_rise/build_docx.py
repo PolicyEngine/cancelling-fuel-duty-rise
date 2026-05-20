@@ -268,10 +268,7 @@ def build(output: Path | str = DEFAULT_OUTPUT) -> Path:
         _add_table(doc, r.deciles)
 
         _add_heading(doc, "Sources", 2)
-        _add_bullet(
-            doc,
-            "Household-level figures: PolicyEngine UK on the latest enhanced Family Resources Survey 2023-29.",
-        )
+        _add_bullet(doc, f"Household-level figures: {r.citation}.")
         _add_bullet(
             doc,
             "Historical fuel-duty receipts (2010-11 → 2024-25): HMRC UK Tax & NICs receipts publication "

@@ -77,6 +77,7 @@ def build(output: Path | str = DEFAULT_OUTPUT) -> Path:
 
     html = _HTML_TEMPLATE.format(
         css=css,
+        citation=r.citation,
         chart1=_fig_to_div(chart1, include_js=True),
         chart2=_fig_to_div(chart2),
         chart3=_fig_to_div(chart3),
@@ -225,7 +226,7 @@ _HTML_TEMPLATE = """<!DOCTYPE html>
 
 <h2>Sources</h2>
 <ul>
-  <li>Household-level figures: PolicyEngine UK on the latest enhanced Family Resources Survey 2023-29.</li>
+  <li>Household-level figures: <code>{citation}</code>.</li>
   <li>Historical fuel-duty receipts (2010-11 → 2024-25): HMRC UK Tax & NICs receipts publication (gov.uk).</li>
   <li>RPI series: OBR Economic and Fiscal Outlook, March 2026.</li>
   <li>No behavioural responses modelled: fuel volumes held fixed across scenarios.</li>

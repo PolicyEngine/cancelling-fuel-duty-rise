@@ -1,8 +1,13 @@
-"""Load PolicyEngine UK data and run all three reform simulations.
+"""Load PolicyEngine data and run all three reform simulations.
 
 Everything downstream (charts, tables, build scripts) consumes the artefacts
-produced by :func:`compute_all`. Running PolicyEngine UK is expensive, so the
-result is memoised per process.
+produced by :func:`compute_all`. Running the PolicyEngine model is expensive,
+so the result is memoised per process.
+
+The package is the unified PolicyEngine Python package (``policyengine``),
+which pins a specific ``policyengine-uk`` release and dataset bundle for
+reproducibility. The pinned version is recorded in the ``Results``
+dataclass and surfaced in every output (HTML / DOCX / XLSX).
 """
 
 from __future__ import annotations
@@ -17,6 +22,20 @@ import pandas as pd
 from .volumes import hmrc_receipts_bn
 
 DEFAULT_STORAGE = "/Users/janansadeqian/policyengine-uk-data/policyengine_uk_data/storage/"
+
+
+def _policyengine_version() -> str:
+    """Return the installed ``policyengine`` Python package version."""
+    try:
+        import policyengine  # noqa: F401
+        return getattr(policyengine, "__version__", "unknown")
+    except Exception:  # pragma: no cover - environment issue
+        from importlib.metadata import PackageNotFoundError, version
+
+        try:
+            return version("policyengine")
+        except PackageNotFoundError:
+            return "unknown"
 
 
 @dataclass
@@ -44,6 +63,11 @@ class Results:
         Distributional impact in 2027, bottom 5% excluded.
     headline
         Scalar headline numbers for KPI cards.
+    policyengine_version
+        Version string of the ``policyengine`` package used to build the run
+        (e.g. ``"4.3.1"``).
+    citation
+        One-line citation describing the model and dataset bundle.
     """
 
     data_years: list[int]
@@ -56,6 +80,8 @@ class Results:
     quintiles: pd.DataFrame
     deciles: pd.DataFrame
     headline: dict
+    policyengine_version: str
+    citation: str
 
 
 @functools.lru_cache(maxsize=1)
@@ -69,7 +95,11 @@ def compute_all(
         os.environ["HUGGING_FACE_TOKEN"] = hf_token
 
     from microdf import MicroSeries
-    from policyengine_uk import Microsimulation
+
+    # Use the unified PolicyEngine Python package as the entry point. It
+    # bundles policyengine-uk at a pinned version and surfaces the model
+    # version so we can cite it in the report.
+    from policyengine.tax_benefit_models.uk import managed_microsimulation, uk_latest
     from policyengine_uk.data import UKMultiYearDataset
     from policyengine_uk_data.utils.huggingface import download
 
@@ -85,7 +115,20 @@ def compute_all(
     data_years = list(dataset.years)
     first_year, last_year = min(data_years), max(data_years)
 
-    baseline_sim = Microsimulation(dataset=dataset)
+    # `managed_microsimulation` returns a policyengine_uk.Microsimulation
+    # bound to the policyengine.py release bundle (pe-uk version + dataset
+    # checksum stamped onto the returned object's `policyengine_bundle`).
+    def _Microsimulation(*, reform: dict | None = None):
+        return managed_microsimulation(
+            dataset=dataset_path,
+            allow_unmanaged=True,
+            reform=reform,
+        ) if reform else managed_microsimulation(
+            dataset=dataset_path,
+            allow_unmanaged=True,
+        )
+
+    baseline_sim = _Microsimulation()
     params = baseline_sim.tax_benefit_system.parameters
     fuel_duty_param = params.gov.hmrc.fuel_duty.petrol_and_diesel
     rpi_param = params.gov.economic_assumptions.yoy_growth.obr.rpi
@@ -93,16 +136,14 @@ def compute_all(
     POST_CUT_RATE = fuel_duty_param("2022-04-01")
     PRE_CUT_RATE = fuel_duty_param("2011-04-01")
 
-    keep_cut_sim = Microsimulation(
-        dataset=dataset,
+    keep_cut_sim = _Microsimulation(
         reform={
             "gov.hmrc.fuel_duty.petrol_and_diesel": {
                 f"{first_year}-01-01.{last_year}-12-31": POST_CUT_RATE,
             }
         },
     )
-    just_reversal_sim = Microsimulation(
-        dataset=dataset,
+    just_reversal_sim = _Microsimulation(
         reform={
             "gov.hmrc.fuel_duty.petrol_and_diesel": {
                 f"{first_year}-01-01.{last_year}-12-31": PRE_CUT_RATE,
@@ -121,8 +162,7 @@ def compute_all(
         for y in range(FIRST_FREEZE_YEAR, last_year + 1)
     }
 
-    rpi_sim = Microsimulation(
-        dataset=dataset,
+    rpi_sim = _Microsimulation(
         reform={
             "gov.hmrc.fuel_duty.petrol_and_diesel": {
                 f"{y}-01-01.{y}-12-31": counterfactual_rate[y] for y in data_years
@@ -306,6 +346,13 @@ def compute_all(
         "year_dist": year_dist,
     }
 
+    pe_version = _policyengine_version()
+    citation = (
+        f"PolicyEngine ({pe_version}); model {uk_latest.id} pinned to "
+        f"policyengine-uk {uk_latest.country_version}; enhanced FRS 2023-29 "
+        f"({os.path.basename(dataset_path)})"
+    )
+
     return Results(
         data_years=data_years,
         scrap_5p=scrap_5p,
@@ -317,6 +364,8 @@ def compute_all(
         quintiles=quintiles,
         deciles=deciles,
         headline=headline,
+        policyengine_version=pe_version,
+        citation=citation,
     )
 
 

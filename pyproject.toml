@@ -11,7 +11,7 @@ requires-python = ">=3.10"
 license = { text = "AGPL-3.0" }
 authors = [{ name = "PolicyEngine" }]
 dependencies = [
-  "policyengine-uk",
+  "policyengine[uk]>=4.2.0",
   "policyengine-uk-data",
   "microdf_python",
   "pandas",

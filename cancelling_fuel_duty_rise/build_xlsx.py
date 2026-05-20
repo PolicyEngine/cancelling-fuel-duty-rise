@@ -70,7 +70,7 @@ def build(output: Path | str = DEFAULT_OUTPUT) -> Path:
             ["Source", "Detail", ""],
             [
                 "Household microsim",
-                "PolicyEngine UK on enhanced FRS 2023-29 dataset",
+                r.citation,
                 "",
             ],
             [

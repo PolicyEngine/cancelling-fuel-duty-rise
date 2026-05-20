@@ -32,3 +32,12 @@ def test_hmrc_volumes_present():
     assert 2024 in HMRC_RECEIPTS_MILLION
     bn = hmrc_receipts_bn()
     assert abs(bn[2024] - 24.165) < 1e-3
+
+
+def test_policyengine_version_resolvable():
+    """``policyengine`` is the unified entry-point we cite in the report."""
+    from cancelling_fuel_duty_rise.data import _policyengine_version
+
+    version = _policyengine_version()
+    assert isinstance(version, str)
+    assert version != ""
