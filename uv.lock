@@ -123,9 +123,7 @@ dependencies = [
     { name = "pandas", version = "2.3.3", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.11'" },
     { name = "pandas", version = "3.0.3", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.11'" },
     { name = "plotly" },
-    { name = "policyengine" },
-    { name = "policyengine-core" },
-    { name = "policyengine-uk" },
+    { name = "policyengine", extra = ["uk"] },
     { name = "python-docx" },
 ]
 
@@ -144,9 +142,7 @@ requires-dist = [
     { name = "openpyxl" },
     { name = "pandas" },
     { name = "plotly" },
-    { name = "policyengine", specifier = "==4.9.0" },
-    { name = "policyengine-core", specifier = "==3.26.0" },
-    { name = "policyengine-uk", specifier = "==2.88.14" },
+    { name = "policyengine", extras = ["uk"] },
     { name = "pytest", marker = "extra == 'dev'" },
     { name = "python-docx" },
     { name = "ruff", marker = "extra == 'dev'" },
@@ -1456,9 +1452,15 @@ wheels = [
     { url = "https://files.pythonhosted.org/packages/92/77/a59c26c9e8275448219fd637e41c78e4a767c516c633c35d2d059df20dde/policyengine-4.9.0-py3-none-any.whl", hash = "sha256:3e9fb086bc877c96bfc8057325f37f0112a05c22f8a654bb9793f5a62242ef3f", size = 184345, upload-time = "2026-05-19T19:50:23.197Z" },
 ]
 
+[package.optional-dependencies]
+uk = [
+    { name = "policyengine-core" },
+    { name = "policyengine-uk" },
+]
+
 [[package]]
 name = "policyengine-core"
-version = "3.26.0"
+version = "3.26.1"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "dpath" },
@@ -1480,9 +1482,9 @@ dependencies = [
     { name = "standard-imghdr" },
     { name = "wheel" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/4e/69/adb6407c97de5260a938344f9eafa9979bf8f97aec8c628538d906ecdec2/policyengine_core-3.26.0.tar.gz", hash = "sha256:a571026ef418653ec18f087463cf37e9be730e90ad4376cb10997f0ddf9f8eda", size = 468190, upload-time = "2026-05-04T19:26:27.707Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/e7/56/666e1e708cbd61078989edc943d5389d45123beb7124a5e3180171656ff6/policyengine_core-3.26.1.tar.gz", hash = "sha256:dc4e3007bcd137cbe608042d067cedb889a9b8671db3d08c8e237f1ac3e324b4", size = 472159, upload-time = "2026-05-07T23:46:43.228Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/bc/f3/0e98b30d4eb7b309c3f1f1d8c2354595f78319ce2442eda069f02a47f4d1/policyengine_core-3.26.0-py3-none-any.whl", hash = "sha256:d63a4622233b61c4c5fc64d4f65030d65b2564ac63ac87b17d545d63cdf17194", size = 232135, upload-time = "2026-05-04T19:26:25.693Z" },
+    { url = "https://files.pythonhosted.org/packages/15/2f/9be635fe4dfb2fe65d200c33695f5a96ef98a2921f06ff6d465384b0e551/policyengine_core-3.26.1-py3-none-any.whl", hash = "sha256:185374b3c1fe13dc951637c49a9853211ca61a8a9971eb9cc4c4b07b1477240a", size = 232190, upload-time = "2026-05-07T23:46:41.797Z" },
 ]
 
 [[package]]

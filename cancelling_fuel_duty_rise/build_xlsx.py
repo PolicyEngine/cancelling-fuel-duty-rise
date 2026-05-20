@@ -74,6 +74,11 @@ def build(output: Path | str = DEFAULT_OUTPUT) -> Path:
                 "",
             ],
             [
+                "Method note",
+                r.method_note,
+                "",
+            ],
+            [
                 "Headline fiscal totals",
                 "HMRC road-fuel clearances and UK Tax & NICs receipts; OBR March 2026 fuel-duty receipts forecast",
                 "",

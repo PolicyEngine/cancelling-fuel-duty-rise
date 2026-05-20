@@ -7,9 +7,9 @@ memoised per process.
 Design notes
 ------------
 - The simulation entry point is the unified ``policyengine`` package via
-  :func:`policyengine.tax_benefit_models.uk.managed_microsimulation`. The
-  installed ``policyengine-uk`` package is pinned to the certified
-  ``policyengine.py`` UK bundle while the fuel uprating branch awaits release.
+  :func:`policyengine.tax_benefit_models.uk.managed_microsimulation`; the
+  active UK model and dataset are resolved by the installed ``policyengine.py``
+  managed bundle.
 - Fiscal totals are benchmarked to HMRC/OBR road-fuel litre controls. The
   PolicyEngine microsimulation provides distributional allocation, which is
   scaled to those fiscal controls.
@@ -38,18 +38,14 @@ from .historical import (
 )
 
 DEFAULT_DATASET_NAME = "enhanced_frs_2023_24"
-DEFAULT_DATASET_FILENAME = "enhanced_frs_2023_24.h5"
-DEFAULT_DATASET_REPO = "policyengine/policyengine-uk-data-private"
-DEFAULT_DATASET_REPO_TYPE = "model"
-DEFAULT_DATASET_REVISION = os.environ.get("POLICYENGINE_UK_DATA_REVISION", "1.55.5")
-DEFAULT_DATASET_METHOD_NOTE = (
-    "released UK-data build; fuel-spending training will use the litre-proxy "
-    "method after policyengine-uk-data#404 is released and rebuilt"
-)
-DEFAULT_DATASET_URI = (
-    f"hf://{DEFAULT_DATASET_REPO}/{DEFAULT_DATASET_FILENAME}@{DEFAULT_DATASET_REVISION}"
-)
 DEFAULT_ANALYSIS_YEARS = list(range(2023, 2030))
+ITV_METHOD_NOTE = (
+    "PolicyEngine.py provides the household microsimulation and distributional "
+    "allocation. Headline fiscal totals are benchmarked to HMRC/OBR road-fuel "
+    "clearances and receipts, so future PolicyEngine.py bundle updates may "
+    "change household allocation but will not exactly reproduce the headline "
+    "totals unless the same HMRC/OBR controls are retained."
+)
 
 
 def _default_storage_dir() -> str:
@@ -102,6 +98,7 @@ class Results:
     headline: dict
     policyengine_version: str
     citation: str
+    method_note: str
 
 
 @functools.lru_cache(maxsize=1)
@@ -113,8 +110,6 @@ def compute_all(
     """Run all simulations once and return the bundled :class:`Results`."""
     if hf_token:
         os.environ["HUGGING_FACE_TOKEN"] = hf_token
-
-    from importlib.metadata import PackageNotFoundError, version as _pkg_version
 
     from policyengine.tax_benefit_models.uk import managed_microsimulation, uk_latest
 
@@ -136,6 +131,7 @@ def compute_all(
         )
 
     baseline_sim = _sim()
+    bundle = getattr(baseline_sim, "policyengine_bundle", {}) or {}
     params = baseline_sim.tax_benefit_system.parameters
     fuel_duty = params.gov.hmrc.fuel_duty.petrol_and_diesel
     rpi = params.gov.economic_assumptions.yoy_growth.obr.rpi
@@ -346,23 +342,22 @@ def compute_all(
     }
 
     pe_version = _policyengine_version()
-    model_id = getattr(uk_latest, "id", "uk_latest")
-    try:
-        pe_uk_version = _pkg_version("policyengine-uk")
-    except PackageNotFoundError:
-        pe_uk_version = "unknown"
+    model_id = bundle.get("bundle_id") or getattr(uk_latest, "id", "uk_latest")
     dataset_label = (
         os.path.basename(dataset_reference)
         if dataset_path is not None
         else DEFAULT_DATASET_NAME
     )
+    bundle_policyengine_version = bundle.get("policyengine_version") or pe_version
+    bundle_details = []
+    if bundle.get("model_version"):
+        bundle_details.append(f"UK model {bundle['model_version']}")
+    if bundle.get("data_version"):
+        bundle_details.append(f"{dataset_label} data {bundle['data_version']}")
+    detail_text = f" ({'; '.join(bundle_details)})" if bundle_details else ""
     citation = (
-        f"PolicyEngine ({pe_version}); model {model_id} pinned to "
-        f"policyengine-uk {pe_uk_version}; enhanced FRS "
-        f"({dataset_label}, "
-        f"{DEFAULT_DATASET_REPO}@{DEFAULT_DATASET_REVISION}, "
-        f"{DEFAULT_DATASET_METHOD_NOTE}); "
-        f"OBR RPI series from {OBR_FORECAST_VINTAGE}"
+        f"PolicyEngine.py {bundle_policyengine_version}; managed UK bundle "
+        f"{model_id}{detail_text}; OBR RPI series from {OBR_FORECAST_VINTAGE}"
     )
 
     return Results(
@@ -378,6 +373,7 @@ def compute_all(
         headline=headline,
         policyengine_version=pe_version,
         citation=citation,
+        method_note=ITV_METHOD_NOTE,
     )
 
 

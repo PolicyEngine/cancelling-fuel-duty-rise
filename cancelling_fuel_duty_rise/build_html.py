@@ -78,6 +78,7 @@ def build(output: Path | str = DEFAULT_OUTPUT) -> Path:
     html = _HTML_TEMPLATE.format(
         css=css,
         citation=r.citation,
+        method_note=r.method_note,
         chart1=_fig_to_div(chart1, include_js=True),
         chart2=_fig_to_div(chart2),
         chart3=_fig_to_div(chart3),
@@ -227,6 +228,7 @@ _HTML_TEMPLATE = """<!DOCTYPE html>
 <h2>Sources</h2>
 <ul>
   <li>Distributional household figures: <code>{citation}</code>.</li>
+  <li>Method note: {method_note}</li>
   <li>Headline fiscal totals: HMRC road-fuel clearances and UK Tax & NICs receipts; OBR March 2026 fuel-duty receipts forecast.</li>
   <li>RPI series: OBR Economic and Fiscal Outlook, March 2026.</li>
   <li>No behavioural responses modelled: fuel volumes held fixed across scenarios.</li>

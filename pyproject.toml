@@ -11,11 +11,8 @@ requires-python = ">=3.10"
 license = { text = "AGPL-3.0" }
 authors = [{ name = "PolicyEngine" }]
 dependencies = [
-  # Use policyengine.py as the microsimulation entry point with its certified
-  # UK bundle. The upstream fuel-volume uprating lands via PE-UK release.
-  "policyengine==4.9.0",
-  "policyengine-core==3.26.0",
-  "policyengine-uk==2.88.14",
+  # Keep model/data versioning under policyengine.py's managed UK bundle.
+  "policyengine[uk]",
   "huggingface_hub",
   "microdf_python",
   "pandas",

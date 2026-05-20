@@ -3,7 +3,7 @@
 UV ?= uv
 
 install:
-	$(UV) sync --extra dev --locked
+	$(UV) sync --extra dev --upgrade-package policyengine
 
 run:
 	$(UV) run python run.py
