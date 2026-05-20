@@ -1,0 +1,39 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "cancelling-fuel-duty-rise"
+version = "0.1.0"
+description = "PolicyEngine UK analysis of cancelling the Autumn Budget 2025 5p fuel-duty reversal"
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "AGPL-3.0" }
+authors = [{ name = "PolicyEngine" }]
+dependencies = [
+  "policyengine-uk",
+  "policyengine-uk-data",
+  "microdf_python",
+  "pandas",
+  "numpy",
+  "plotly",
+  "kaleido==0.2.1",
+  "openpyxl",
+  "python-docx",
+]
+
+[project.optional-dependencies]
+dev = ["pytest", "ruff"]
+
+[project.scripts]
+fuel-duty-build-html = "cancelling_fuel_duty_rise.build_html:main"
+fuel-duty-build-docx = "cancelling_fuel_duty_rise.build_docx:main"
+fuel-duty-build-xlsx = "cancelling_fuel_duty_rise.build_xlsx:main"
+
+[tool.setuptools.packages.find]
+include = ["cancelling_fuel_duty_rise*"]
+exclude = ["tests*", "notebooks*", "outputs*"]
+
+[tool.ruff]
+line-length = 88
+target-version = "py310"
