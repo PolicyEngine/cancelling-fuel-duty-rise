@@ -43,22 +43,22 @@ def build(output: Path | str = DEFAULT_OUTPUT) -> Path:
             ],
             [
                 "revenue_2010_2029",
-                "OBR-style chart data: HMRC out-turn 2010-11 to 2024-25, PolicyEngine UK projection from 2025-26, plus RPI counterfactual revenue",
+                "OBR-style chart data: HMRC out-turn 2010-11 to 2024-25, OBR receipts forecast from 2025-26, plus RPI counterfactual revenue",
                 "Chart 'How much money have the freezes lost so far?'",
             ],
             [
                 "quartiles_2027",
-                "Distributional impact 2027 by income quartile, bottom 5% excluded",
+                "Person-weighted distributional impact 2027 by income quartile, bottom 5% excluded",
                 "Chart 'Who gains from keeping the cut?' (quartile cut)",
             ],
             [
                 "quintiles_2027",
-                "Distributional impact 2027 by income quintile, bottom 5% excluded",
+                "Person-weighted distributional impact 2027 by income quintile, bottom 5% excluded",
                 "Chart 'Who gains from keeping the cut?' (quintile cut)",
             ],
             [
                 "deciles_2027",
-                "Distributional impact 2027 by income decile, bottom 5% excluded",
+                "Person-weighted distributional impact 2027 by income decile, bottom 5% excluded",
                 "Chart 'Who gains from keeping the cut?' (decile cut)",
             ],
             [
@@ -69,8 +69,13 @@ def build(output: Path | str = DEFAULT_OUTPUT) -> Path:
             ["", "", ""],
             ["Source", "Detail", ""],
             [
-                "Household microsim",
+                "Distributional household microsim",
                 r.citation,
+                "",
+            ],
+            [
+                "Headline fiscal totals",
+                "HMRC road-fuel clearances and UK Tax & NICs receipts; OBR March 2026 fuel-duty receipts forecast",
                 "",
             ],
             [
@@ -93,7 +98,7 @@ def build(output: Path | str = DEFAULT_OUTPUT) -> Path:
             {
                 "source": "Guardian (Kiran Stacey, 18 May 2026)",
                 "quoted_figure": "£2.4 bn / year",
-                "pe_uk_metric": "Cost of keeping 52.95p vs return to 57.95p (no RPI uprating)",
+                "pe_uk_metric": "OBR/HMRC litre benchmark: 52.95p vs return to 57.95p (no RPI uprating)",
                 "pe_uk_value_2026_27_gbp_bn": round(h["guardian_2026"], 4),
                 "pe_uk_value_2027_28_gbp_bn": round(h["guardian_2027"], 4),
                 "url": "https://www.theguardian.com/politics/2026/may/18/rachel-reeves-fuel-duty-cost-of-living",
@@ -101,7 +106,7 @@ def build(output: Path | str = DEFAULT_OUTPUT) -> Path:
             {
                 "source": "Fleet News (Gareth Roberts, 18 May 2026)",
                 "quoted_figure": "~£120 bn cumulative 2010/11 → 2026/27",
-                "pe_uk_metric": "Cumulative gap between actual/PE-UK revenue and RPI counterfactual",
+                "pe_uk_metric": "Cumulative gap between HMRC/OBR benchmark revenue and RPI counterfactual",
                 "pe_uk_value_2026_27_gbp_bn": round(h["fleet_cumulative"], 4),
                 "pe_uk_value_2027_28_gbp_bn": None,
                 "url": "https://www.fleetnews.co.uk/news/chancellor-expected-to-scrap-5p-fuel-duty-hike",
@@ -132,9 +137,9 @@ def build(output: Path | str = DEFAULT_OUTPUT) -> Path:
                 max_len = max(
                     (len(str(c.value)) if c.value is not None else 0) for c in col
                 )
-                sheet.column_dimensions[
-                    get_column_letter(col[0].column)
-                ].width = min(max_len + 2, 60)
+                sheet.column_dimensions[get_column_letter(col[0].column)].width = min(
+                    max_len + 2, 60
+                )
 
     return output
 

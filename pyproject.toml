@@ -11,18 +11,12 @@ requires-python = ">=3.10"
 license = { text = "AGPL-3.0" }
 authors = [{ name = "PolicyEngine" }]
 dependencies = [
-  # We depend on `policyengine` only for the citation string; the
-  # simulation runs through policyengine-uk directly to avoid the
-  # transitive US/UK model-loading checks in the `policyengine[uk]`
-  # extra (which currently fails on PyPI release pins).
-  "policyengine",
-  "policyengine-uk",
-  "huggingface_hub",
-  # policyengine-core 3.26.0 is the latest release that does not enforce
-  # the strict formula/adds/uprating mutually-exclusive check on
-  # variables; pe-uk still ships variables (gov_tax, state_pension)
-  # that mix modes. Pin until upstream resolves.
+  # Use policyengine.py as the microsimulation entry point with its certified
+  # UK bundle. The upstream fuel-volume uprating lands via PE-UK release.
+  "policyengine==4.9.0",
   "policyengine-core==3.26.0",
+  "policyengine-uk==2.88.14",
+  "huggingface_hub",
   "microdf_python",
   "pandas",
   "numpy",
@@ -47,3 +41,4 @@ exclude = ["tests*", "results*"]
 [tool.ruff]
 line-length = 88
 target-version = "py310"
+extend-exclude = ["notebooks"]

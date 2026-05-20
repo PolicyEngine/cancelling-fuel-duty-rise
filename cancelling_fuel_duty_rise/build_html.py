@@ -98,9 +98,9 @@ def build(output: Path | str = DEFAULT_OUTPUT) -> Path:
         scrap_2029=h["scrap_2029"],
         cumulative=h["scrap_cumulative"],
         actual_rate=h["actual_rate_2026_p"],
+        baseline_rate_2027=h["baseline_rate_2027_p"],
         counterfactual_rate=h["counterfactual_rate_2026_p"],
-        rate_multiplier=h["counterfactual_rate_2026_p"]
-        / h["actual_rate_2026_p"],
+        rate_multiplier=h["counterfactual_rate_2026_p"] / h["actual_rate_2026_p"],
         revenue_actual=h["revenue_last_year_actual_bn"],
         revenue_counterfactual=h["revenue_last_year_counterfactual_bn"],
         revenue_gap=h["revenue_last_year_counterfactual_bn"]
@@ -187,17 +187,17 @@ _HTML_TEMPLATE = """<!DOCTYPE html>
 <p>The chart combines three series:</p>
 <ul>
   <li><strong>Yellow line — HMRC out-turn (2010-11 to 2024-25)</strong>: fuel-duty receipts as published in HMRC's UK Tax & NICs receipts statistics on gov.uk.</li>
-  <li><strong>Blue line — PolicyEngine UK projection (2025-26 to {last_year_fy})</strong>: revenue from running the PolicyEngine UK microsimulation on the enhanced FRS 2023-29 dataset at the current-law rate schedule.</li>
-  <li><strong>Dashed teal line — RPI counterfactual</strong>: each year's revenue scaled by counterfactual_rate / actual_rate.</li>
+  <li><strong>Blue line — OBR forecast (2025-26 to {last_year_fy})</strong>: March 2026 OBR fuel-duty receipts at the current-law rate schedule.</li>
+  <li><strong>Dashed teal line — RPI counterfactual</strong>: each year's current-law revenue plus the OBR/HMRC litre benchmark for the counterfactual duty-rate gap.</li>
 </ul>
 
 {chart3}
 
 <h2>Does this match the <a href="https://www.theguardian.com/politics/2026/may/18/rachel-reeves-fuel-duty-cost-of-living">Guardian</a> and Fleet News?</h2>
-<p>The two press reports on 18 May 2026 quoted £2.4 bn / year (<a href="https://www.theguardian.com/politics/2026/may/18/rachel-reeves-fuel-duty-cost-of-living">Guardian</a>) and ~£120 bn cumulative since 2010/11 (Fleet News). Both use the "extend the 5p cut" framing: 52.95p kept versus a return to 57.95p, with no further RPI uprating. In 2027-28, PolicyEngine UK puts that figure at £{guardian_2027:.2f} bn (and £{guardian_2026:.2f} bn in 2026-27), while the cumulative cost of freezes from 2010/11 to 2026/27 comes to £{fleet_cumulative:.1f} bn — both consistent with the press numbers. The earlier "How much does scrapping the 5p increase cost?" section reports a higher 2027-28 figure (£{scrap_2027:.2f} bn) because it compares against 59.25p — i.e. 57.95p plus the April-2027 RPI uprating that the Autumn Budget 2025 plan would also have brought in. The £{scrap_minus_guardian:.2f} bn difference is the cost of cancelling that RPI uprating on top of the 5p reversal.</p>
+<p>The two press reports on 18 May 2026 quoted £2.4 bn / year (<a href="https://www.theguardian.com/politics/2026/may/18/rachel-reeves-fuel-duty-cost-of-living">Guardian</a>) and ~£120 bn cumulative since 2010/11 (Fleet News). Both use the "extend the 5p cut" framing: 52.95p kept versus a return to 57.95p, with no further RPI uprating. In 2027-28, the OBR/HMRC road-fuel benchmark puts that figure at £{guardian_2027:.2f} bn (and £{guardian_2026:.2f} bn in 2026-27), while the cumulative cost of freezes from 2010/11 to 2026/27 comes to £{fleet_cumulative:.1f} bn — both consistent with the press numbers. The earlier "How much does scrapping the 5p increase cost?" section reports a higher 2027-28 figure (£{scrap_2027:.2f} bn) because it compares against {baseline_rate_2027:.2f}p — i.e. 57.95p plus the April-2027 RPI uprating that the Autumn Budget 2025 plan would also have brought in. The £{scrap_minus_guardian:.2f} bn difference is the cost of cancelling that RPI uprating on top of the 5p reversal.</p>
 
 <h2>Who gains from keeping the cut?</h2>
-<p>Average saving per household if the 5p cut is kept, as a share of household net income. The bottom 5% by equivalised income is excluded from all three cuts (the Resolution Foundation approach, used in <a href="https://resolutionfoundation.substack.com/p/higher-energy-prices-could-leave">their energy-price analysis</a> to remove data-reliability concerns about the very lowest reported incomes). The remaining 95% is then split into quartiles, quintiles and deciles.</p>
+<p>Person-weighted average household saving if the 5p cut is kept, as a share of household net income. The bottom 5% by equivalised income is excluded from all three cuts (the Resolution Foundation approach, used in <a href="https://resolutionfoundation.substack.com/p/higher-energy-prices-could-leave">their energy-price analysis</a> to remove data-reliability concerns about the very lowest reported incomes). The remaining 95% is then split into quartiles, quintiles and deciles.</p>
 
 <h3>By income quartile</h3>
 {chart_quart}
@@ -220,14 +220,14 @@ _HTML_TEMPLATE = """<!DOCTYPE html>
     <tr><td>Cumulative cost of freezes 2010-11 → 2026-27</td><td><strong>£{fleet_cumulative:.0f}bn</strong></td></tr>
     <tr><td>Rate today if uprated by RPI since 2011</td><td><strong>{counterfactual_rate:.1f}p / L</strong> vs actual {actual_rate:.1f}p · {rate_multiplier:.2f}× current</td></tr>
     <tr><td>Annual revenue gap by {last_year_fy} vs counterfactual</td><td><strong>£{revenue_gap:.0f}bn</strong></td></tr>
-    <tr><td>Average saving per household if cut is kept</td><td>~£{avg_saving:.0f}/yr (2027)</td></tr>
+    <tr><td>Person-weighted average household saving if cut is kept</td><td>~£{avg_saving:.0f}/yr (2027)</td></tr>
   </tbody>
 </table>
 
 <h2>Sources</h2>
 <ul>
-  <li>Household-level figures: <code>{citation}</code>.</li>
-  <li>Historical fuel-duty receipts (2010-11 → 2024-25): HMRC UK Tax & NICs receipts publication (gov.uk).</li>
+  <li>Distributional household figures: <code>{citation}</code>.</li>
+  <li>Headline fiscal totals: HMRC road-fuel clearances and UK Tax & NICs receipts; OBR March 2026 fuel-duty receipts forecast.</li>
   <li>RPI series: OBR Economic and Fiscal Outlook, March 2026.</li>
   <li>No behavioural responses modelled: fuel volumes held fixed across scenarios.</li>
 </ul>

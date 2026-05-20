@@ -82,7 +82,7 @@ def rate_path_chart(rate_path: pd.DataFrame) -> go.Figure:
 
 
 def obr_style_chart(revenue: pd.DataFrame) -> go.Figure:
-    """OBR-style chart with HMRC out-turn, PE-UK projection and RPI
+    """OBR-style chart with HMRC out-turn, OBR forecast and RPI
     counterfactual line + gap arrow.
 
     The split between out-turn and projection is taken from the ``source``
@@ -90,22 +90,19 @@ def obr_style_chart(revenue: pd.DataFrame) -> go.Figure:
     starts from the first year with a non-zero rate gap.
     """
     years_all = revenue["year"].tolist()
-    last_outturn_year = revenue.loc[
-        revenue["source"] == "HMRC out-turn", "year"
-    ].max()
+    last_outturn_year = revenue.loc[revenue["source"] == "HMRC out-turn", "year"].max()
     cf_start_year = revenue.loc[
         revenue["counterfactual_revenue_gbp_bn"]
         > revenue["actual_revenue_gbp_bn"] + 1e-6,
         "year",
     ].min()
     hist = revenue[revenue["year"] <= last_outturn_year]
-    fcst = revenue[revenue["year"] >= last_outturn_year]
+    fcst = revenue[revenue["year"] > last_outturn_year]
     cf = revenue[revenue["year"] >= cf_start_year]
     last_y = max(years_all)
     last_row = revenue[revenue["year"] == last_y].iloc[0]
     gap_value = (
-        last_row["counterfactual_revenue_gbp_bn"]
-        - last_row["actual_revenue_gbp_bn"]
+        last_row["counterfactual_revenue_gbp_bn"] - last_row["actual_revenue_gbp_bn"]
     )
 
     fig = go.Figure()
@@ -122,7 +119,7 @@ def obr_style_chart(revenue: pd.DataFrame) -> go.Figure:
         go.Scatter(
             x=fcst["year"],
             y=fcst["actual_revenue_gbp_bn"],
-            name="Fuel-duty revenue — PolicyEngine UK projection",
+            name="Fuel-duty revenue — OBR forecast",
             mode="lines",
             line=dict(color=PE_BLUE, width=3.2),
         )
@@ -223,7 +220,5 @@ def distributional_chart(
         textposition="outside",
         textfont=dict(family=PE_FONT, color=PE_BLUE, size=11),
     )
-    fig.update_layout(
-        height=440, yaxis=dict(ticksuffix="%"), showlegend=False
-    )
+    fig.update_layout(height=440, yaxis=dict(ticksuffix="%"), showlegend=False)
     return fig

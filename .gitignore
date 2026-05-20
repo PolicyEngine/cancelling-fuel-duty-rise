@@ -6,6 +6,9 @@ results/*.png
 results/*.csv
 !results/.gitkeep
 
+# Downloaded Hugging Face datasets
+data/
+
 # Python
 __pycache__/
 *.py[cod]

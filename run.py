@@ -11,7 +11,7 @@ briefing into ``./results/``:
 
 Usage::
 
-    HUGGING_FACE_TOKEN=hf_… python run.py
+    HUGGING_FACE_TOKEN=hf_… uv run python run.py
 """
 
 from __future__ import annotations
@@ -93,9 +93,7 @@ def main() -> None:
     r.guardian_check.to_csv(RESULTS_DIR / "table_guardian_check.csv", index=False)
     r.rate_history.to_csv(RESULTS_DIR / "table_rate_history.csv", index=False)
     r.rate_path.to_csv(RESULTS_DIR / "table_rate_path.csv", index=False)
-    r.revenue_2010_2029.to_csv(
-        RESULTS_DIR / "table_revenue_2010_2029.csv", index=False
-    )
+    r.revenue_2010_2029.to_csv(RESULTS_DIR / "table_revenue_2010_2029.csv", index=False)
     r.quartiles.to_csv(RESULTS_DIR / "table_quartiles.csv", index=False)
     r.quintiles.to_csv(RESULTS_DIR / "table_quintiles.csv", index=False)
     r.deciles.to_csv(RESULTS_DIR / "table_deciles.csv", index=False)
