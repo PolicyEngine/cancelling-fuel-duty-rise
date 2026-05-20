@@ -1,10 +1,30 @@
-"""UK fuel-duty out-turn / projection by fiscal year.
+"""Historical anchors used by the briefing.
 
-Used to build the 2010-11 -> 2029-30 revenue chart. PolicyEngine UK only
-ships microdata from 2022 onwards, so for pre-2022 years we use HMRC's
-published Tax & NICs receipts; from 2025 onwards we use the PolicyEngine UK
-microsim baseline at the Autumn Budget 2025 schedule.
+- :data:`FIRST_FREEZE_YEAR` and :data:`FIVE_PENCE_CUT_YEAR` are documented
+  policy events held here as named constants so callers don't repeat magic
+  numbers. The actual fuel-duty rate values for those events are read from
+  the PolicyEngine UK parameter tree, never from this file.
+- :data:`HMRC_RECEIPTS_MILLION` is HMRC's published out-turn for fuel-duty
+  receipts. PolicyEngine UK microdata only starts in 2022, so the chart
+  spanning 2010-11 onwards needs this series to anchor the historical
+  segment. See :data:`HMRC_RECEIPTS_SOURCE_URL`.
 """
+
+# Documented policy anchors. Values are deliberately constants — the
+# corresponding rates / RPI growth come from the PolicyEngine UK parameter
+# tree at runtime.
+FIRST_FREEZE_YEAR = 2011
+"""Year the fuel-duty escalator was first frozen (Budget 2011)."""
+
+FIVE_PENCE_CUT_YEAR = 2022
+"""Year Sunak's temporary 5p cut was introduced."""
+
+OBR_FORECAST_VINTAGE = "OBR EFO March 2026"
+"""OBR forecast vintage used by the PolicyEngine UK RPI series at runtime."""
+
+HMRC_RECEIPTS_SOURCE_URL = (
+    "https://www.gov.uk/government/statistics/hmrc-tax-and-nics-receipts-for-the-uk"
+)
 
 # HMRC fuel-duty receipts, fiscal year, £ million. Source: HMRC UK Tax & NIC
 # receipts publication (gov.uk).

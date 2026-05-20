@@ -1,13 +1,23 @@
-"""Load PolicyEngine data and run all three reform simulations.
+"""Run the PolicyEngine UK simulations behind the briefing.
 
 Everything downstream (charts, tables, build scripts) consumes the artefacts
-produced by :func:`compute_all`. Running the PolicyEngine model is expensive,
-so the result is memoised per process.
+produced by :func:`compute_all`. The simulation is expensive so results are
+memoised per process.
 
-The package is the unified PolicyEngine Python package (``policyengine``),
-which pins a specific ``policyengine-uk`` release and dataset bundle for
-reproducibility. The pinned version is recorded in the ``Results``
-dataclass and surfaced in every output (HTML / DOCX / XLSX).
+Design notes
+------------
+- The simulation entry point is the unified ``policyengine`` package via
+  :func:`policyengine.tax_benefit_models.uk.managed_microsimulation`. The
+  version stamped onto each output comes from ``policyengine.__version__``.
+- All rate and macro parameters (fuel-duty rate history, OBR RPI series,
+  pump prices) come from the PolicyEngine UK parameter tree. The only
+  numerically-fixed values in the code are dates of policy events
+  (e.g. 2011 first freeze, 2022 5p cut) which are documented historical
+  anchors, plus HMRC's published fuel-duty receipts series in
+  :mod:`cancelling_fuel_duty_rise.volumes`.
+- All weighted aggregates use the native ``microdf`` :class:`MicroSeries`
+  API (``.sum()``, ``.mean()``, ``.groupby(...).mean()``). The package
+  never multiplies values by weights by hand.
 """
 
 from __future__ import annotations
@@ -19,15 +29,18 @@ from dataclasses import dataclass
 import numpy as np
 import pandas as pd
 
-from .volumes import hmrc_receipts_bn
+from .volumes import FIRST_FREEZE_YEAR, OBR_FORECAST_VINTAGE, hmrc_receipts_bn
 
 DEFAULT_STORAGE = "/Users/janansadeqian/policyengine-uk-data/policyengine_uk_data/storage/"
+DEFAULT_DATASET_FILENAME = "enhanced_frs_2023_29.h5"
+DEFAULT_DATASET_REPO = "policyengine/policyengine-uk-data"
 
 
 def _policyengine_version() -> str:
     """Return the installed ``policyengine`` Python package version."""
     try:
-        import policyengine  # noqa: F401
+        import policyengine
+
         return getattr(policyengine, "__version__", "unknown")
     except Exception:  # pragma: no cover - environment issue
         from importlib.metadata import PackageNotFoundError, version
@@ -53,19 +66,20 @@ class Results:
         Per-year cost of keeping 52.95p instead of returning to 57.95p (no
         further RPI uprating) — the Guardian / Fleet News framing.
     rate_history
-        Every dated rate value from the PE-UK ``gov.hmrc.fuel_duty`` parameter.
+        Every dated rate value from the ``gov.hmrc.fuel_duty`` parameter.
     rate_path
-        Actual vs RPI-counterfactual rate from 2011 to the last data year.
+        Actual vs RPI-counterfactual rate from the first freeze year to the
+        last data year.
     revenue_2010_2029
-        OBR-style chart data: HMRC out-turn (2010-2024) + PE-UK projection
-        (2025+) + RPI counterfactual revenue + gap.
+        OBR-style chart data: HMRC out-turn (pre-2025) + PolicyEngine UK
+        projection (2025+) + RPI counterfactual revenue + gap.
     quartiles / quintiles / deciles
-        Distributional impact in 2027, bottom 5% excluded.
+        Distributional impact in ``year_dist``, bottom 5% by equivalised
+        income excluded (Resolution Foundation convention).
     headline
         Scalar headline numbers for KPI cards.
     policyengine_version
-        Version string of the ``policyengine`` package used to build the run
-        (e.g. ``"4.3.1"``).
+        Version string of the ``policyengine`` package used to build the run.
     citation
         One-line citation describing the model and dataset bundle.
     """
@@ -90,79 +104,74 @@ def compute_all(
     year_dist: int = 2027,
     hf_token: str | None = None,
 ) -> Results:
-    """Run all three simulations once and return the bundled results."""
+    """Run all simulations once and return the bundled :class:`Results`."""
     if hf_token:
         os.environ["HUGGING_FACE_TOKEN"] = hf_token
 
     from microdf import MicroSeries
-
-    # Use the unified PolicyEngine Python package as the entry point. It
-    # bundles policyengine-uk at a pinned version and surfaces the model
-    # version so we can cite it in the report.
-    from policyengine.tax_benefit_models.uk import managed_microsimulation, uk_latest
-    from policyengine_uk.data import UKMultiYearDataset
+    from policyengine.tax_benefit_models.uk import (
+        managed_microsimulation,
+        uk_latest,
+    )
     from policyengine_uk_data.utils.huggingface import download
 
     storage = os.path.dirname(dataset_path) if dataset_path else DEFAULT_STORAGE
     if dataset_path is None:
         dataset_path = download(
-            "policyengine/policyengine-uk-data",
-            "enhanced_frs_2023_29.h5",
+            DEFAULT_DATASET_REPO,
+            DEFAULT_DATASET_FILENAME,
             storage,
         )
 
-    dataset = UKMultiYearDataset(file_path=dataset_path)
-    data_years = list(dataset.years)
-    first_year, last_year = min(data_years), max(data_years)
-
-    # `managed_microsimulation` returns a policyengine_uk.Microsimulation
-    # bound to the policyengine.py release bundle (pe-uk version + dataset
-    # checksum stamped onto the returned object's `policyengine_bundle`).
-    def _Microsimulation(*, reform: dict | None = None):
+    def _sim(*, reform: dict | None = None):
+        """policyengine.py-managed Microsimulation for this dataset."""
+        kwargs = {"reform": reform} if reform is not None else {}
         return managed_microsimulation(
             dataset=dataset_path,
             allow_unmanaged=True,
-            reform=reform,
-        ) if reform else managed_microsimulation(
-            dataset=dataset_path,
-            allow_unmanaged=True,
+            **kwargs,
         )
 
-    baseline_sim = _Microsimulation()
+    baseline_sim = _sim()
+    data_years = sorted(int(y) for y in baseline_sim.dataset.years)
+    first_year, last_year = min(data_years), max(data_years)
+
     params = baseline_sim.tax_benefit_system.parameters
-    fuel_duty_param = params.gov.hmrc.fuel_duty.petrol_and_diesel
-    rpi_param = params.gov.economic_assumptions.yoy_growth.obr.rpi
+    fuel_duty = params.gov.hmrc.fuel_duty.petrol_and_diesel
+    rpi = params.gov.economic_assumptions.yoy_growth.obr.rpi
 
-    POST_CUT_RATE = fuel_duty_param("2022-04-01")
-    PRE_CUT_RATE = fuel_duty_param("2011-04-01")
+    # All rates and dates here are read from the PolicyEngine UK parameter
+    # tree: nothing about the 5p cut or the pre-cut headline rate is
+    # baked into this code.
+    pre_cut_rate = fuel_duty(f"{FIRST_FREEZE_YEAR}-04-01")  # 57.95p
+    post_cut_rate = fuel_duty(_find_cut_date(fuel_duty))  # 52.95p
 
-    keep_cut_sim = _Microsimulation(
+    reform_window = f"{first_year}-01-01.{last_year}-12-31"
+
+    keep_cut_sim = _sim(
         reform={
-            "gov.hmrc.fuel_duty.petrol_and_diesel": {
-                f"{first_year}-01-01.{last_year}-12-31": POST_CUT_RATE,
-            }
+            "gov.hmrc.fuel_duty.petrol_and_diesel": {reform_window: post_cut_rate}
         },
     )
-    just_reversal_sim = _Microsimulation(
+    just_reversal_sim = _sim(
         reform={
-            "gov.hmrc.fuel_duty.petrol_and_diesel": {
-                f"{first_year}-01-01.{last_year}-12-31": PRE_CUT_RATE,
-            }
+            "gov.hmrc.fuel_duty.petrol_and_diesel": {reform_window: pre_cut_rate}
         },
     )
 
-    FIRST_FREEZE_YEAR = 2011
-    counterfactual_rate = {FIRST_FREEZE_YEAR: PRE_CUT_RATE}
+    # RPI counterfactual rate path, compounded from the first freeze
+    # using the OBR RPI series held in PE-UK.
+    counterfactual_rate = {FIRST_FREEZE_YEAR: pre_cut_rate}
     for y in range(FIRST_FREEZE_YEAR + 1, last_year + 1):
         counterfactual_rate[y] = counterfactual_rate[y - 1] * (
-            1 + rpi_param(f"{y}-01-01")
+            1 + rpi(f"{y}-01-01")
         )
     actual_rate = {
-        y: fuel_duty_param(f"{y}-06-01")
+        y: fuel_duty(f"{y}-06-01")
         for y in range(FIRST_FREEZE_YEAR, last_year + 1)
     }
 
-    rpi_sim = _Microsimulation(
+    rpi_sim = _sim(
         reform={
             "gov.hmrc.fuel_duty.petrol_and_diesel": {
                 f"{y}-01-01.{y}-12-31": counterfactual_rate[y] for y in data_years
@@ -170,56 +179,50 @@ def compute_all(
         },
     )
 
-    # ---- table: cost of cancelling the planned 5p reversal ----
+    # ---- weighted revenue series via native MicroSeries.sum() ----
+    fd_base_year = {
+        y: baseline_sim.calculate("fuel_duty", y) for y in data_years
+    }
+    fd_keep_year = {
+        y: keep_cut_sim.calculate("fuel_duty", y) for y in data_years
+    }
+    fd_reversal_year = {
+        y: just_reversal_sim.calculate("fuel_duty", y) for y in data_years
+    }
+
     scrap_5p = pd.DataFrame(
         [
             {
                 "Year": y,
-                "Baseline rate (p/L)": round(fuel_duty_param(f"{y}-06-01") * 100, 2),
-                "Baseline revenue (£bn)": round(
-                    baseline_sim.calculate("fuel_duty", y).sum() / 1e9, 2
-                ),
-                "Reform revenue (£bn)": round(
-                    keep_cut_sim.calculate("fuel_duty", y).sum() / 1e9, 2
-                ),
+                "Baseline rate (p/L)": round(fuel_duty(f"{y}-06-01") * 100, 2),
+                "Baseline revenue (£bn)": round(fd_base_year[y].sum() / 1e9, 2),
+                "Reform revenue (£bn)": round(fd_keep_year[y].sum() / 1e9, 2),
                 "Cost to Treasury (£bn)": round(
-                    (
-                        baseline_sim.calculate("fuel_duty", y).sum()
-                        - keep_cut_sim.calculate("fuel_duty", y).sum()
-                    )
-                    / 1e9,
-                    2,
+                    (fd_base_year[y].sum() - fd_keep_year[y].sum()) / 1e9, 2
                 ),
             }
             for y in data_years
         ]
     )
 
-    # ---- table: Guardian-framing 5p-only cost ----
     guardian_check = pd.DataFrame(
         [
             {
                 "Year": y,
                 "Revenue at 52.95p (£bn)": round(
-                    keep_cut_sim.calculate("fuel_duty", y).sum() / 1e9, 2
+                    fd_keep_year[y].sum() / 1e9, 2
                 ),
                 "Revenue at 57.95p (£bn)": round(
-                    just_reversal_sim.calculate("fuel_duty", y).sum() / 1e9, 2
+                    fd_reversal_year[y].sum() / 1e9, 2
                 ),
                 "Cost of keeping 5p cut (£bn)": round(
-                    (
-                        just_reversal_sim.calculate("fuel_duty", y).sum()
-                        - keep_cut_sim.calculate("fuel_duty", y).sum()
-                    )
-                    / 1e9,
-                    2,
+                    (fd_reversal_year[y].sum() - fd_keep_year[y].sum()) / 1e9, 2
                 ),
             }
             for y in data_years
         ]
     )
 
-    # ---- table: rate history ----
     rate_history = (
         pd.DataFrame(
             [
@@ -228,19 +231,18 @@ def compute_all(
                     "rate_per_litre_gbp": v.value,
                     "rate_pence_per_litre": round(v.value * 100, 4),
                 }
-                for v in fuel_duty_param.values_list
+                for v in fuel_duty.values_list
             ]
         )
         .sort_values("date")
         .reset_index(drop=True)
     )
 
-    # ---- table: rate path 2011-2029 ----
     rate_path = pd.DataFrame(
         [
             {
                 "year": y,
-                "rpi_yoy_growth_pct": round(rpi_param(f"{y}-01-01") * 100, 4),
+                "rpi_yoy_growth_pct": round(rpi(f"{y}-01-01") * 100, 4),
                 "actual_rate_p_per_litre": round(actual_rate[y] * 100, 4),
                 "rpi_counterfactual_rate_p_per_litre": round(
                     counterfactual_rate[y] * 100, 4
@@ -249,26 +251,25 @@ def compute_all(
                     (counterfactual_rate[y] - actual_rate[y]) * 100, 4
                 ),
             }
-            for y in sorted(counterfactual_rate.keys())
+            for y in sorted(counterfactual_rate)
         ]
     )
 
-    # ---- table: 2010-2029 revenue series ----
+    # ---- 2010-2029 revenue series: HMRC out-turn + PE-UK forecast ----
     hmrc_bn = hmrc_receipts_bn()
-    pe_uk_projection = {
-        y: baseline_sim.calculate("fuel_duty", y).sum() / 1e9 for y in data_years
-    }
+    earliest_year = min(hmrc_bn)  # 2010 from HMRC table
+    pe_uk_projection = {y: fd_base_year[y].sum() / 1e9 for y in data_years}
     revenue_by_year = {
         y: (hmrc_bn[y] if y in hmrc_bn else pe_uk_projection[y])
-        for y in range(2010, last_year + 1)
+        for y in range(earliest_year, last_year + 1)
     }
-    counterfactual_rate_full = {2010: fuel_duty_param("2010-04-01")}
-    for y in range(2011, last_year + 1):
+    counterfactual_rate_full = {earliest_year: fuel_duty(f"{earliest_year}-04-01")}
+    for y in range(earliest_year + 1, last_year + 1):
         counterfactual_rate_full[y] = counterfactual_rate_full[y - 1] * (
-            1 + rpi_param(f"{y}-01-01")
+            1 + rpi(f"{y}-01-01")
         )
     actual_rate_full = {
-        y: fuel_duty_param(f"{y}-06-01") for y in range(2010, last_year + 1)
+        y: fuel_duty(f"{y}-06-01") for y in range(earliest_year, last_year + 1)
     }
     revenue_2010_2029 = pd.DataFrame(
         [
@@ -290,7 +291,7 @@ def compute_all(
                     4,
                 ),
             }
-            for y in range(2010, last_year + 1)
+            for y in range(earliest_year, last_year + 1)
         ]
     )
     revenue_2010_2029["gap_gbp_bn"] = (
@@ -306,6 +307,7 @@ def compute_all(
     )
 
     # ---- headline scalars ----
+    last_outturn_year = max(hmrc_bn)
     headline = {
         "guardian_2026": float(
             guardian_check.loc[
@@ -329,7 +331,7 @@ def compute_all(
         "scrap_cumulative": float(scrap_5p["Cost to Treasury (£bn)"].sum()),
         "fleet_cumulative": float(
             revenue_2010_2029.loc[
-                (revenue_2010_2029.year >= 2010)
+                (revenue_2010_2029.year >= earliest_year)
                 & (revenue_2010_2029.year <= 2026),
                 "gap_gbp_bn",
             ].sum()
@@ -343,14 +345,17 @@ def compute_all(
             / actual_rate_full[last_year]
         ),
         "last_year": last_year,
+        "last_outturn_year": last_outturn_year,
         "year_dist": year_dist,
+        "first_freeze_year": FIRST_FREEZE_YEAR,
     }
 
     pe_version = _policyengine_version()
     citation = (
         f"PolicyEngine ({pe_version}); model {uk_latest.id} pinned to "
-        f"policyengine-uk {uk_latest.country_version}; enhanced FRS 2023-29 "
-        f"({os.path.basename(dataset_path)})"
+        f"policyengine-uk {uk_latest.country_version}; dataset "
+        f"{os.path.basename(dataset_path)}; OBR RPI series from "
+        f"{OBR_FORECAST_VINTAGE}"
     )
 
     return Results(
@@ -369,13 +374,39 @@ def compute_all(
     )
 
 
+def _find_cut_date(fuel_duty_param) -> str:
+    """Locate the 5p-cut date from the parameter history.
+
+    The 5p cut is the largest single year-on-year *decrease* in the rate.
+    Discovering it from the parameter file avoids hard-coding the 2022-03-23
+    date and keeps the code robust to future parameter edits.
+    """
+    pairs = sorted(
+        ((v.instant_str, v.value) for v in fuel_duty_param.values_list),
+        key=lambda p: p[0],
+    )
+    cut_date, cut_drop = None, 0.0
+    for (d_prev, v_prev), (d_curr, v_curr) in zip(pairs, pairs[1:]):
+        drop = v_prev - v_curr
+        if drop > cut_drop:
+            cut_date, cut_drop = d_curr, drop
+    return cut_date
+
+
 def _distributional_cuts(
     *,
     baseline_sim,
     keep_cut_sim,
     year_dist: int,
 ) -> tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame]:
-    """Quartile / quintile / decile cuts excluding bottom 5%."""
+    """Per-decile / quintile / quartile saving from keeping the 5p cut.
+
+    Uses the Resolution Foundation convention of excluding the bottom 5% by
+    equivalised income before splitting the remaining 95% into groups.
+
+    All weighted aggregates use ``microdf.MicroSeries`` natively: the
+    function never multiplies values by weights by hand.
+    """
     from microdf import MicroSeries
 
     fd_base = baseline_sim.calculate("fuel_duty", year_dist)
@@ -383,37 +414,53 @@ def _distributional_cuts(
     net_income = baseline_sim.calculate("household_net_income", year_dist)
     equiv = baseline_sim.calculate(
         "equiv_hbai_household_net_income", year_dist
-    ).values
-    hh_size = baseline_sim.calculate("household_count_people", year_dist).values
-    wgt = baseline_sim.calculate("household_weight", year_dist).values
+    )
+    hh_size = baseline_sim.calculate("household_count_people", year_dist)
 
-    person_w = wgt * hh_size
-    saving_arr = (fd_base - fd_keep).values
-    net_inc_arr = net_income.values
+    # Person-weighted equivalised income (HBAI convention) — used to rank.
+    person_weights = equiv.weights * hh_size.values
+    equiv_ps = MicroSeries(equiv.values, weights=person_weights)
+    saving_ps = MicroSeries(fd_base.values - fd_keep.values, weights=person_weights)
+    net_inc_ps = MicroSeries(net_income.values, weights=person_weights)
 
-    ranks = MicroSeries(equiv, weights=person_w).percentile_rank().values
-    keep_mask = (ranks > 5) & (equiv > 0)
-    remaining = (ranks[keep_mask] - 5) / 95 * 100
+    # Person-weighted percentile rank; drop the bottom 5% and any
+    # non-positive equivalised income.
+    ranks = equiv_ps.percentile_rank().values
+    keep = (ranks > 5) & (equiv.values > 0)
 
-    def build(div_pct: float, n: int, prefix: str) -> pd.DataFrame:
-        idx = np.minimum(np.ceil(remaining / div_pct).astype(int), n)
-        rows = []
-        for g in range(1, n + 1):
-            m = idx == g
-            s = (saving_arr[keep_mask][m] * person_w[keep_mask][m]).sum() / person_w[
-                keep_mask
-            ][m].sum()
-            inc = (net_inc_arr[keep_mask][m] * person_w[keep_mask][m]).sum() / person_w[
-                keep_mask
-            ][m].sum()
-            rows.append(
+    # Re-rank within the retained 95% and subset to MicroSeries on that mask.
+    equiv_kept = MicroSeries(equiv.values[keep], weights=person_weights[keep])
+    rank_within = equiv_kept.percentile_rank().values
+    saving_kept = MicroSeries(saving_ps.values[keep], weights=person_weights[keep])
+    inc_kept = MicroSeries(net_inc_ps.values[keep], weights=person_weights[keep])
+
+    def build(n_groups: int, prefix: str) -> pd.DataFrame:
+        bin_width = 100.0 / n_groups
+        group_idx = np.minimum(
+            np.ceil(rank_within / bin_width).astype(int), n_groups
+        )
+        labels = np.array([f"{prefix}{g}" for g in group_idx])
+        avg_save = saving_kept.groupby(labels).mean()
+        avg_inc = inc_kept.groupby(labels).mean()
+        return pd.DataFrame(
+            [
                 {
                     "group": f"{prefix}{g}",
-                    "avg_saving_gbp_per_year": round(s, 2),
-                    "avg_net_income_gbp": round(inc, 2),
-                    "saving_pct_of_net_income": round(100 * s / inc, 3),
+                    "avg_saving_gbp_per_year": round(
+                        float(avg_save.loc[f"{prefix}{g}"]), 2
+                    ),
+                    "avg_net_income_gbp": round(
+                        float(avg_inc.loc[f"{prefix}{g}"]), 2
+                    ),
+                    "saving_pct_of_net_income": round(
+                        100
+                        * float(avg_save.loc[f"{prefix}{g}"])
+                        / float(avg_inc.loc[f"{prefix}{g}"]),
+                        3,
+                    ),
                 }
-            )
-        return pd.DataFrame(rows)
+                for g in range(1, n_groups + 1)
+            ]
+        )
 
-    return build(25, 4, "Q"), build(20, 5, "Q"), build(10, 10, "D")
+    return build(4, "Q"), build(5, "Q"), build(10, "D")

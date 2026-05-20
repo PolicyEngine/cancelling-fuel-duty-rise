@@ -51,21 +51,23 @@ def rate_path_chart(rate_path: pd.DataFrame) -> go.Figure:
             line=dict(color=PE_TEAL, width=3, dash="dash"),
         )
     )
+    from .volumes import FIRST_FREEZE_YEAR, FIVE_PENCE_CUT_YEAR
+
     fig.add_vline(
-        x=2011,
+        x=FIRST_FREEZE_YEAR,
         line_width=1,
         line_dash="dot",
         line_color=PE_GRAY,
-        annotation_text="1st freeze (Budget 2011)",
+        annotation_text=f"1st freeze (Budget {FIRST_FREEZE_YEAR})",
         annotation_position="top",
         annotation_font=dict(family=PE_FONT, color=PE_GRAY, size=10),
     )
     fig.add_vline(
-        x=2022,
+        x=FIVE_PENCE_CUT_YEAR,
         line_width=1,
         line_dash="dot",
         line_color=PE_GRAY,
-        annotation_text="5p cut (Mar 2022)",
+        annotation_text=f"5p cut (Mar {FIVE_PENCE_CUT_YEAR})",
         annotation_position="top",
         annotation_font=dict(family=PE_FONT, color=PE_GRAY, size=10),
     )
@@ -79,15 +81,26 @@ def rate_path_chart(rate_path: pd.DataFrame) -> go.Figure:
     return fig
 
 
-def obr_style_chart(
-    revenue: pd.DataFrame, *, last_outturn_year: int = 2024
-) -> go.Figure:
-    """OBR-style 2010-2030 chart with HMRC out-turn, PE-UK projection and RPI
-    counterfactual line + gap arrow."""
+def obr_style_chart(revenue: pd.DataFrame) -> go.Figure:
+    """OBR-style chart with HMRC out-turn, PE-UK projection and RPI
+    counterfactual line + gap arrow.
+
+    The split between out-turn and projection is taken from the ``source``
+    column of *revenue* (no hard-coded year), and the counterfactual line
+    starts from the first year with a non-zero rate gap.
+    """
     years_all = revenue["year"].tolist()
+    last_outturn_year = revenue.loc[
+        revenue["source"] == "HMRC out-turn", "year"
+    ].max()
+    cf_start_year = revenue.loc[
+        revenue["counterfactual_revenue_gbp_bn"]
+        > revenue["actual_revenue_gbp_bn"] + 1e-6,
+        "year",
+    ].min()
     hist = revenue[revenue["year"] <= last_outturn_year]
     fcst = revenue[revenue["year"] >= last_outturn_year]
-    cf = revenue[revenue["year"] >= 2011]
+    cf = revenue[revenue["year"] >= cf_start_year]
     last_y = max(years_all)
     last_row = revenue[revenue["year"] == last_y].iloc[0]
     gap_value = (
@@ -150,21 +163,23 @@ def obr_style_chart(
         font=dict(family=PE_FONT, color=PE_RED, size=14),
         xanchor="left",
     )
+    from .volumes import FIRST_FREEZE_YEAR, FIVE_PENCE_CUT_YEAR
+
     fig.add_vline(
-        x=2011,
+        x=FIRST_FREEZE_YEAR,
         line_width=1,
         line_dash="dot",
         line_color=PE_GRAY,
-        annotation_text="1st freeze (Budget 2011)",
+        annotation_text=f"1st freeze (Budget {FIRST_FREEZE_YEAR})",
         annotation_position="bottom",
         annotation_font=dict(family=PE_FONT, color=PE_GRAY, size=10),
     )
     fig.add_vline(
-        x=2022,
+        x=FIVE_PENCE_CUT_YEAR,
         line_width=1,
         line_dash="dot",
         line_color=PE_GRAY,
-        annotation_text="5p cut (Mar 2022)",
+        annotation_text=f"5p cut (Mar {FIVE_PENCE_CUT_YEAR})",
         annotation_position="bottom",
         annotation_font=dict(family=PE_FONT, color=PE_GRAY, size=10),
     )
