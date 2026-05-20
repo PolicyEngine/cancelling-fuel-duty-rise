@@ -14,7 +14,7 @@ Design notes
   numerically-fixed values in the code are dates of policy events
   (e.g. 2011 first freeze, 2022 5p cut) which are documented historical
   anchors, plus HMRC's published fuel-duty receipts series in
-  :mod:`cancelling_fuel_duty_rise.volumes`.
+  :mod:`cancelling_fuel_duty_rise.historical`.
 - All weighted aggregates use the native ``microdf`` :class:`MicroSeries`
   API (``.sum()``, ``.mean()``, ``.groupby(...).mean()``). The package
   never multiplies values by weights by hand.
@@ -29,7 +29,11 @@ from dataclasses import dataclass
 import numpy as np
 import pandas as pd
 
-from .volumes import FIRST_FREEZE_YEAR, OBR_FORECAST_VINTAGE, hmrc_receipts_bn
+from .historical import (
+    FIRST_FREEZE_YEAR,
+    OBR_FORECAST_VINTAGE,
+    hmrc_receipts_bn,
+)
 
 DEFAULT_STORAGE = "/Users/janansadeqian/policyengine-uk-data/policyengine_uk_data/storage/"
 DEFAULT_DATASET_FILENAME = "enhanced_frs_2023_29.h5"
@@ -37,18 +41,15 @@ DEFAULT_DATASET_REPO = "policyengine/policyengine-uk-data"
 
 
 def _policyengine_version() -> str:
-    """Return the installed ``policyengine`` Python package version."""
-    try:
-        import policyengine
+    """Return the installed ``policyengine`` Python package version.
 
-        return getattr(policyengine, "__version__", "unknown")
-    except Exception:  # pragma: no cover - environment issue
-        from importlib.metadata import PackageNotFoundError, version
+    Reads the installed distribution metadata directly so that obtaining the
+    version does not require importing ``policyengine`` (which transitively
+    loads the US and UK tax-benefit models).
+    """
+    from importlib.metadata import version
 
-        try:
-            return version("policyengine")
-        except PackageNotFoundError:
-            return "unknown"
+    return version("policyengine")
 
 
 @dataclass

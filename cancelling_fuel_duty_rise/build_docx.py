@@ -18,7 +18,7 @@ from .charts import (
     obr_style_chart,
     rate_path_chart,
 )
-from .data import compute_all
+from .simulation import compute_all
 from .theme import register_template
 
 DEFAULT_OUTPUT = Path(__file__).resolve().parents[1] / "results" / "analysis.docx"

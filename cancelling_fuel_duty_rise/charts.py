@@ -51,7 +51,7 @@ def rate_path_chart(rate_path: pd.DataFrame) -> go.Figure:
             line=dict(color=PE_TEAL, width=3, dash="dash"),
         )
     )
-    from .volumes import FIRST_FREEZE_YEAR, FIVE_PENCE_CUT_YEAR
+    from .historical import FIRST_FREEZE_YEAR, FIVE_PENCE_CUT_YEAR
 
     fig.add_vline(
         x=FIRST_FREEZE_YEAR,
@@ -163,7 +163,7 @@ def obr_style_chart(revenue: pd.DataFrame) -> go.Figure:
         font=dict(family=PE_FONT, color=PE_RED, size=14),
         xanchor="left",
     )
-    from .volumes import FIRST_FREEZE_YEAR, FIVE_PENCE_CUT_YEAR
+    from .historical import FIRST_FREEZE_YEAR, FIVE_PENCE_CUT_YEAR
 
     fig.add_vline(
         x=FIRST_FREEZE_YEAR,

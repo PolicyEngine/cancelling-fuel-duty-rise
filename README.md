@@ -80,16 +80,13 @@ run.py                          one-shot driver — writes everything to ./resul
 cancelling_fuel_duty_rise/      installable package
   __init__.py
   theme.py                      PolicyEngine brand palette + Plotly template
-  volumes.py                    HMRC out-turn receipts series + named policy anchors
-  data.py                       compute_all() — runs PE-UK via policyengine.py
+  historical.py                 HMRC out-turn receipts series + named policy anchors
+  simulation.py                 compute_all() — runs PE-UK via policyengine.py
                                 and returns the Results dataclass
   charts.py                     Plotly figure builders
   build_html.py                 HTML report assembler (CLI: python -m ...build_html)
   build_docx.py                 DOCX report assembler (CLI: python -m ...build_docx)
   build_xlsx.py                 XLSX workbook assembler (CLI: python -m ...build_xlsx)
-
-notebooks/
-  analysis.ipynb                interactive walkthrough that mirrors the briefing
 
 results/                        generated artefacts (gitignored except .gitkeep)
   analysis.html / .docx / .xlsx
@@ -97,7 +94,7 @@ results/                        generated artefacts (gitignored except .gitkeep)
   table_*.csv
 
 tests/
-  test_smoke.py                 import + theme + volumes + policyengine-version checks
+  test_smoke.py                 import + theme + historical + policyengine-version checks
 ```
 
 ## Method

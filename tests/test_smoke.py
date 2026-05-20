@@ -7,9 +7,9 @@ def test_imports():
     for module in [
         "cancelling_fuel_duty_rise",
         "cancelling_fuel_duty_rise.theme",
-        "cancelling_fuel_duty_rise.volumes",
+        "cancelling_fuel_duty_rise.historical",
         "cancelling_fuel_duty_rise.charts",
-        "cancelling_fuel_duty_rise.data",
+        "cancelling_fuel_duty_rise.simulation",
         "cancelling_fuel_duty_rise.build_html",
         "cancelling_fuel_duty_rise.build_docx",
         "cancelling_fuel_duty_rise.build_xlsx",
@@ -25,8 +25,11 @@ def test_theme_registers():
     assert pio.templates.default == "policyengine"
 
 
-def test_hmrc_volumes_present():
-    from cancelling_fuel_duty_rise.volumes import HMRC_RECEIPTS_MILLION, hmrc_receipts_bn
+def test_hmrc_receipts_present():
+    from cancelling_fuel_duty_rise.historical import (
+        HMRC_RECEIPTS_MILLION,
+        hmrc_receipts_bn,
+    )
 
     assert 2010 in HMRC_RECEIPTS_MILLION
     assert 2024 in HMRC_RECEIPTS_MILLION
@@ -36,7 +39,7 @@ def test_hmrc_volumes_present():
 
 def test_policyengine_version_resolvable():
     """``policyengine`` is the unified entry-point we cite in the report."""
-    from cancelling_fuel_duty_rise.data import _policyengine_version
+    from cancelling_fuel_duty_rise.simulation import _policyengine_version
 
     version = _policyengine_version()
     assert isinstance(version, str)

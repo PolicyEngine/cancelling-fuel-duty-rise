@@ -8,7 +8,7 @@ from pathlib import Path
 import pandas as pd
 from openpyxl.utils import get_column_letter
 
-from .data import compute_all
+from .simulation import compute_all
 
 DEFAULT_OUTPUT = Path(__file__).resolve().parents[1] / "results" / "analysis.xlsx"
 

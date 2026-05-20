@@ -14,7 +14,7 @@ from .charts import (
     obr_style_chart,
     rate_path_chart,
 )
-from .data import compute_all
+from .simulation import compute_all
 from .theme import (
     PE_BLUE,
     PE_FONT,

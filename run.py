@@ -25,7 +25,7 @@ from cancelling_fuel_duty_rise.charts import (
     obr_style_chart,
     rate_path_chart,
 )
-from cancelling_fuel_duty_rise.data import compute_all
+from cancelling_fuel_duty_rise.simulation import compute_all
 from cancelling_fuel_duty_rise.theme import register_template
 
 RESULTS_DIR = Path(__file__).parent / "results"

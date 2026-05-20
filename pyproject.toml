@@ -32,7 +32,7 @@ fuel-duty-build-xlsx = "cancelling_fuel_duty_rise.build_xlsx:main"
 
 [tool.setuptools.packages.find]
 include = ["cancelling_fuel_duty_rise*"]
-exclude = ["tests*", "notebooks*", "outputs*"]
+exclude = ["tests*", "results*"]
 
 [tool.ruff]
 line-length = 88
