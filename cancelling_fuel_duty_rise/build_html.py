@@ -52,17 +52,17 @@ def build(output: Path | str = DEFAULT_OUTPUT) -> Path:
     chart_quart = distributional_chart(
         r.quartiles,
         group_label="Income quartile (Q1 = lowest, Q4 = highest)",
-        title=f"Saving from keeping the 5p cut, by quartile (bottom 5% excluded, {h['year_dist']})",
+        title=f"Saving from cancelling the planned fuel-duty rise, by quartile (bottom 5% excluded, {h['year_dist']})",
     )
     chart_quint = distributional_chart(
         r.quintiles,
         group_label="Income quintile (Q1 = lowest, Q5 = highest)",
-        title=f"Saving from keeping the 5p cut, by quintile (bottom 5% excluded, {h['year_dist']})",
+        title=f"Saving from cancelling the planned fuel-duty rise, by quintile (bottom 5% excluded, {h['year_dist']})",
     )
     chart_dec = distributional_chart(
         r.deciles,
         group_label="Income decile (D1 = next lowest, D10 = highest)",
-        title=f"Saving from keeping the 5p cut, by decile (bottom 5% excluded, {h['year_dist']})",
+        title=f"Saving from cancelling the planned fuel-duty rise, by decile (bottom 5% excluded, {h['year_dist']})",
     )
 
     css = _CSS_TEMPLATE.format(
@@ -197,8 +197,8 @@ _HTML_TEMPLATE = """<!DOCTYPE html>
 <h2>Does this match the <a href="https://www.theguardian.com/politics/2026/may/18/rachel-reeves-fuel-duty-cost-of-living">Guardian</a> and Fleet News?</h2>
 <p>The two press reports on 18 May 2026 quoted £2.4 bn / year (<a href="https://www.theguardian.com/politics/2026/may/18/rachel-reeves-fuel-duty-cost-of-living">Guardian</a>) and ~£120 bn cumulative since 2010/11 (Fleet News). Both use the "extend the 5p cut" framing: 52.95p kept versus a return to 57.95p, with no further RPI uprating. In 2027-28, the OBR/HMRC road-fuel benchmark puts that figure at £{guardian_2027:.2f} bn (and £{guardian_2026:.2f} bn in 2026-27), while the cumulative cost of freezes from 2010/11 to 2026/27 comes to £{fleet_cumulative:.1f} bn — both consistent with the press numbers. The earlier "How much does scrapping the 5p increase cost?" section reports a higher 2027-28 figure (£{scrap_2027:.2f} bn) because it compares against {baseline_rate_2027:.2f}p — i.e. 57.95p plus the April-2027 RPI uprating that the Autumn Budget 2025 plan would also have brought in. The £{scrap_minus_guardian:.2f} bn difference is the cost of cancelling that RPI uprating on top of the 5p reversal.</p>
 
-<h2>Who gains from keeping the cut?</h2>
-<p>Person-weighted average household saving if the 5p cut is kept, as a share of household net income. The bottom 5% by equivalised income is excluded from all three cuts (the Resolution Foundation approach, used in <a href="https://resolutionfoundation.substack.com/p/higher-energy-prices-could-leave">their energy-price analysis</a> to remove data-reliability concerns about the very lowest reported incomes). The remaining 95% is then split into quartiles, quintiles and deciles.</p>
+<h2>Who gains from cancelling the planned rise?</h2>
+<p>Person-weighted average household saving from keeping duty at 52.95p/L rather than following the full Autumn Budget 2025 plan for 2027-28 ({baseline_rate_2027:.2f}p/L), as a share of household net income. The bottom 5% by equivalised income is excluded from all three cuts (the Resolution Foundation approach, used in <a href="https://resolutionfoundation.substack.com/p/higher-energy-prices-could-leave">their energy-price analysis</a> to remove data-reliability concerns about the very lowest reported incomes). The remaining 95% is then split into quartiles, quintiles and deciles.</p>
 
 <h3>By income quartile</h3>
 {chart_quart}

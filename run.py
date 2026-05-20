@@ -61,7 +61,7 @@ def main() -> None:
         distributional_chart(
             r.quartiles,
             group_label="Income quartile (Q1 = lowest, Q4 = highest)",
-            title=f"Saving from keeping the 5p cut, by quartile (bottom 5% excluded, {h['year_dist']})",
+            title=f"Saving from cancelling the planned fuel-duty rise, by quartile (bottom 5% excluded, {h['year_dist']})",
         ),
         "chart_quartiles.png",
         900,
@@ -71,7 +71,7 @@ def main() -> None:
         distributional_chart(
             r.quintiles,
             group_label="Income quintile (Q1 = lowest, Q5 = highest)",
-            title=f"Saving from keeping the 5p cut, by quintile (bottom 5% excluded, {h['year_dist']})",
+            title=f"Saving from cancelling the planned fuel-duty rise, by quintile (bottom 5% excluded, {h['year_dist']})",
         ),
         "chart_quintiles.png",
         900,
@@ -81,7 +81,7 @@ def main() -> None:
         distributional_chart(
             r.deciles,
             group_label="Income decile (D1 = next lowest, D10 = highest)",
-            title=f"Saving from keeping the 5p cut, by decile (bottom 5% excluded, {h['year_dist']})",
+            title=f"Saving from cancelling the planned fuel-duty rise, by decile (bottom 5% excluded, {h['year_dist']})",
         ),
         "chart_deciles.png",
         900,

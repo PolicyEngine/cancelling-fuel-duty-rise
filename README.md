@@ -18,7 +18,7 @@ The full-plan estimate is larger than the Guardian-style 5p figure because it al
 make install
 ```
 
-This uses `uv sync --extra dev --upgrade-package policyengine`, so the analysis tracks the latest `policyengine.py` managed UK bundle. Set a Hugging Face token to download the enhanced FRS dataset on first run:
+This uses `uv sync --locked --extra dev`, so the analysis runs against the reviewed `policyengine.py` release in `uv.lock`. Set a Hugging Face token to download the enhanced FRS dataset on first run:
 
 ```bash
 export HUGGING_FACE_TOKEN=hf_...
@@ -60,7 +60,7 @@ tests/
 ## Method
 
 - **Simulation entry point**: the unified [`policyengine`](https://github.com/PolicyEngine/policyengine.py) Python package via `policyengine.tax_benefit_models.uk.managed_microsimulation`.
-- **Runtime UK model and dataset**: resolved by the installed `policyengine.py` managed UK bundle. The project depends on `policyengine[uk]` rather than pinning `policyengine-uk` or `policyengine-core` separately.
+- **Runtime UK model and dataset**: resolved by the installed `policyengine.py` managed UK bundle. The project pins `policyengine[uk]==4.9.2` rather than pinning `policyengine-uk` or `policyengine-core` separately.
 - **Fiscal totals**: HMRC road-fuel clearances and UK Tax & NICs receipts out-turns, plus OBR March 2026 fuel-duty receipts forecasts. Rate-difference costs use OBR/HMRC all-road petrol + diesel litres as the control total.
 - **Distributional allocation**: PolicyEngine provides calibrated household petrol and diesel litres; household savings are those litres times the relevant duty-rate gap. Weighted operations use native `microdf` methods.
 - **Dataset**: the `enhanced_frs_2023_24` dataset selected by the active `policyengine.py` UK bundle, projected through the 2023-2029 analysis years by PolicyEngine.

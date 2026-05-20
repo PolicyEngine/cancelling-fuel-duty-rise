@@ -91,7 +91,7 @@ def build(output: Path | str = DEFAULT_OUTPUT) -> Path:
             distributional_chart(
                 r.quartiles,
                 group_label="Income quartile (Q1 = lowest, Q4 = highest)",
-                title=f"Saving from keeping the 5p cut, by quartile (bottom 5% excluded, {h['year_dist']})",
+                title=f"Saving from cancelling the planned fuel-duty rise, by quartile (bottom 5% excluded, {h['year_dist']})",
             ),
             td / "cquart.png",
             900,
@@ -101,7 +101,7 @@ def build(output: Path | str = DEFAULT_OUTPUT) -> Path:
             distributional_chart(
                 r.quintiles,
                 group_label="Income quintile (Q1 = lowest, Q5 = highest)",
-                title=f"Saving from keeping the 5p cut, by quintile (bottom 5% excluded, {h['year_dist']})",
+                title=f"Saving from cancelling the planned fuel-duty rise, by quintile (bottom 5% excluded, {h['year_dist']})",
             ),
             td / "cquint.png",
             900,
@@ -111,7 +111,7 @@ def build(output: Path | str = DEFAULT_OUTPUT) -> Path:
             distributional_chart(
                 r.deciles,
                 group_label="Income decile (D1 = next lowest, D10 = highest)",
-                title=f"Saving from keeping the 5p cut, by decile (bottom 5% excluded, {h['year_dist']})",
+                title=f"Saving from cancelling the planned fuel-duty rise, by decile (bottom 5% excluded, {h['year_dist']})",
             ),
             td / "cdec.png",
             900,
@@ -250,10 +250,11 @@ def build(output: Path | str = DEFAULT_OUTPUT) -> Path:
             "Guardian article: https://www.theguardian.com/politics/2026/may/18/rachel-reeves-fuel-duty-cost-of-living",
         )
 
-        _add_heading(doc, "Who gains from keeping the cut?", 2)
+        _add_heading(doc, "Who gains from cancelling the planned rise?", 2)
         _add_para(
             doc,
-            "Person-weighted average household saving if the 5p cut is kept, as a share of household net income. "
+            "Person-weighted average household saving from keeping duty at 52.95p/L rather than following the full "
+            f"Autumn Budget 2025 plan for 2027-28 ({h['baseline_rate_2027_p']:.2f}p/L), as a share of household net income. "
             "The bottom 5% by equivalised income is excluded from all three cuts (Resolution Foundation "
             "approach). The remaining 95% is then split into quartiles, quintiles and deciles.",
         )

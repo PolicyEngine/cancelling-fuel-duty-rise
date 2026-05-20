@@ -61,10 +61,10 @@ def test_policyengine_version_resolvable():
 
 
 def test_policyengine_py_owns_uk_runtime_dependency():
-    """The analysis should follow policyengine.py's managed UK bundle."""
+    """The analysis should follow one reviewed policyengine.py UK bundle."""
     pyproject = tomllib.loads(Path("pyproject.toml").read_text())
     deps = pyproject["project"]["dependencies"]
-    assert any(dep.startswith("policyengine[uk]") for dep in deps)
+    assert "policyengine[uk]==4.9.2" in deps
     assert not any(dep.startswith("policyengine-uk") for dep in deps)
     assert not any(dep.startswith("policyengine-core") for dep in deps)
 

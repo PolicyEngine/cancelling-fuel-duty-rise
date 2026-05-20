@@ -53,18 +53,18 @@ def build(output: Path | str = DEFAULT_OUTPUT) -> Path:
             ],
             [
                 "quartiles_2027",
-                "Person-weighted distributional impact 2027 by income quartile, bottom 5% excluded",
-                "Chart 'Who gains from keeping the cut?' (quartile cut)",
+                "Person-weighted distributional impact of cancelling the planned 2027 fuel-duty rise, by income quartile, bottom 5% excluded",
+                "Chart 'Who gains from cancelling the planned rise?' (quartile cut)",
             ],
             [
                 "quintiles_2027",
-                "Person-weighted distributional impact 2027 by income quintile, bottom 5% excluded",
-                "Chart 'Who gains from keeping the cut?' (quintile cut)",
+                "Person-weighted distributional impact of cancelling the planned 2027 fuel-duty rise, by income quintile, bottom 5% excluded",
+                "Chart 'Who gains from cancelling the planned rise?' (quintile cut)",
             ],
             [
                 "deciles_2027",
-                "Person-weighted distributional impact 2027 by income decile, bottom 5% excluded",
-                "Chart 'Who gains from keeping the cut?' (decile cut)",
+                "Person-weighted distributional impact of cancelling the planned 2027 fuel-duty rise, by income decile, bottom 5% excluded",
+                "Chart 'Who gains from cancelling the planned rise?' (decile cut)",
             ],
             [
                 "crosscheck",
