@@ -200,7 +200,9 @@ def build(output: Path | str = DEFAULT_OUTPUT) -> Path:
             ),
         )
 
-        _add_heading(doc, "What would the rate be if it had risen with RPI since 2011?", 2)
+        _add_heading(
+            doc, "What would the rate be if it had risen with RPI since 2011?", 2
+        )
         _add_para(
             doc,
             "Compounding RPI annually onto the 57.95p rate frozen in Budget 2011 gives the counterfactual "
@@ -217,14 +219,14 @@ def build(output: Path | str = DEFAULT_OUTPUT) -> Path:
         )
         _add_bullet(
             doc,
-            "Blue line — PolicyEngine UK projection (2025-26 onwards): revenue from running the "
-            "PolicyEngine UK microsimulation on the enhanced FRS 2023-29 dataset at the current-law rate "
-            "schedule.",
+            "Blue line — OBR forecast (2025-26 onwards): March 2026 OBR fuel-duty receipts "
+            "at the current-law rate schedule.",
         )
         _add_bullet(
             doc,
-            "Dashed teal line — RPI counterfactual: each year's revenue scaled by counterfactual_rate / "
-            "actual_rate. Fuel volumes are held fixed (no behavioural response).",
+            "Dashed teal line — RPI counterfactual: each year's current-law revenue plus the OBR/HMRC "
+            "litre benchmark for the counterfactual duty-rate gap. Fuel volumes are held fixed "
+            "(no behavioural response).",
         )
         _add_image(doc, c3, 6.6)
 
@@ -233,12 +235,13 @@ def build(output: Path | str = DEFAULT_OUTPUT) -> Path:
             doc,
             f"The two press reports on 18 May 2026 quoted £2.4 bn / year (Guardian) and ~£120 bn "
             f"cumulative since 2010/11 (Fleet News). Both use the 'extend the 5p cut' framing: 52.95p kept "
-            f"versus a return to 57.95p, with no further RPI uprating. In 2027-28, PolicyEngine UK puts "
+            f"versus a return to 57.95p, with no further RPI uprating. In 2027-28, the "
+            f"OBR/HMRC road-fuel benchmark puts "
             f"that figure at £{h['guardian_2027']:.2f} bn (and £{h['guardian_2026']:.2f} bn in 2026-27), "
             f"while the cumulative cost of freezes from 2010/11 to 2026/27 comes to "
             f"£{h['fleet_cumulative']:.1f} bn — both consistent with the press numbers. The earlier "
             f"section reports a higher 2027-28 figure (£{h['scrap_2027']:.2f} bn) because it compares "
-            f"against 59.25p — i.e. 57.95p plus the April-2027 RPI uprating. The £"
+            f"against {h['baseline_rate_2027_p']:.2f}p — i.e. 57.95p plus the April-2027 RPI uprating. The £"
             f"{h['scrap_2027'] - h['guardian_2027']:.2f} bn difference is the cost of cancelling that RPI "
             f"uprating on top of the 5p reversal.",
         )
@@ -250,7 +253,7 @@ def build(output: Path | str = DEFAULT_OUTPUT) -> Path:
         _add_heading(doc, "Who gains from keeping the cut?", 2)
         _add_para(
             doc,
-            "Average saving per household if the 5p cut is kept, as a share of household net income. "
+            "Person-weighted average household saving if the 5p cut is kept, as a share of household net income. "
             "The bottom 5% by equivalised income is excluded from all three cuts (Resolution Foundation "
             "approach). The remaining 95% is then split into quartiles, quintiles and deciles.",
         )

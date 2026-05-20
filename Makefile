@@ -1,29 +1,29 @@
 .PHONY: install run html docx xlsx all clean test format
 
-PYTHON ?= python
+UV ?= uv
 
 install:
-	$(PYTHON) -m pip install -e ".[dev]"
+	$(UV) sync --extra dev --locked
 
 run:
-	$(PYTHON) run.py
+	$(UV) run python run.py
 
 html:
-	$(PYTHON) -m cancelling_fuel_duty_rise.build_html
+	$(UV) run python -m cancelling_fuel_duty_rise.build_html
 
 docx:
-	$(PYTHON) -m cancelling_fuel_duty_rise.build_docx
+	$(UV) run python -m cancelling_fuel_duty_rise.build_docx
 
 xlsx:
-	$(PYTHON) -m cancelling_fuel_duty_rise.build_xlsx
+	$(UV) run python -m cancelling_fuel_duty_rise.build_xlsx
 
 all: run
 
 test:
-	$(PYTHON) -m pytest tests/ -v
+	$(UV) run pytest tests/ -v
 
 format:
-	$(PYTHON) -m ruff format .
+	$(UV) run ruff format .
 
 clean:
 	rm -rf results/*.html results/*.docx results/*.xlsx results/*.png results/*.csv
