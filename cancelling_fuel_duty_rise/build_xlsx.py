@@ -10,7 +10,7 @@ from openpyxl.utils import get_column_letter
 
 from .data import compute_all
 
-DEFAULT_OUTPUT = Path(__file__).resolve().parents[1] / "outputs" / "analysis.xlsx"
+DEFAULT_OUTPUT = Path(__file__).resolve().parents[1] / "results" / "analysis.xlsx"
 
 
 def build(output: Path | str = DEFAULT_OUTPUT) -> Path:

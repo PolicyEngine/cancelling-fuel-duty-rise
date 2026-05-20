@@ -1,9 +1,12 @@
-.PHONY: install html docx xlsx all clean test format
+.PHONY: install run html docx xlsx all clean test format
 
 PYTHON ?= python
 
 install:
 	$(PYTHON) -m pip install -e ".[dev]"
+
+run:
+	$(PYTHON) run.py
 
 html:
 	$(PYTHON) -m cancelling_fuel_duty_rise.build_html
@@ -14,7 +17,7 @@ docx:
 xlsx:
 	$(PYTHON) -m cancelling_fuel_duty_rise.build_xlsx
 
-all: html docx xlsx
+all: run
 
 test:
 	$(PYTHON) -m pytest tests/ -v
@@ -23,5 +26,5 @@ format:
 	$(PYTHON) -m ruff format .
 
 clean:
-	rm -rf outputs/*.html outputs/*.docx outputs/*.xlsx
+	rm -rf results/*.html results/*.docx results/*.xlsx results/*.png results/*.csv
 	find . -type d -name __pycache__ -exec rm -rf {} +

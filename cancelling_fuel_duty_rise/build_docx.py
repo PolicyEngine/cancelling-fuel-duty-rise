@@ -21,7 +21,7 @@ from .charts import (
 from .data import compute_all
 from .theme import register_template
 
-DEFAULT_OUTPUT = Path(__file__).resolve().parents[1] / "outputs" / "analysis.docx"
+DEFAULT_OUTPUT = Path(__file__).resolve().parents[1] / "results" / "analysis.docx"
 
 PE_BLUE_RGB = RGBColor(0x2C, 0x64, 0x96)
 

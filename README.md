@@ -25,34 +25,49 @@ export HUGGING_FACE_TOKEN=hf_…
 ## Build
 
 ```bash
-make all          # html + docx + xlsx → outputs/
-make html
-make docx
-make xlsx
+python run.py     # runs everything → results/
 ```
 
-Each format runs PolicyEngine UK once via `cancelling_fuel_duty_rise.data.compute_all` (cached per process) and renders from the same `Results` bundle.
+That single command runs the PolicyEngine UK simulation once and writes:
+
+- `results/analysis.html` — interactive Plotly report
+- `results/analysis.docx` — Word document with PNG-rendered charts
+- `results/analysis.xlsx` — multi-sheet workbook with every underlying dataset
+- `results/chart_*.png` — every chart saved as a standalone image
+- `results/table_*.csv` — every table saved as a standalone CSV
+
+Or use one of the individual entry-points:
+
+```bash
+make html     # python -m cancelling_fuel_duty_rise.build_html
+make docx     # python -m cancelling_fuel_duty_rise.build_docx
+make xlsx     # python -m cancelling_fuel_duty_rise.build_xlsx
+```
+
+Each entry point runs PolicyEngine UK once via `cancelling_fuel_duty_rise.data.compute_all` (cached per process) and renders from the same `Results` bundle.
 
 ## Layout
 
 ```
+run.py                # one-shot driver: writes everything to ./results/
+
 cancelling_fuel_duty_rise/
   __init__.py
-  theme.py          # PolicyEngine palette + Plotly template
-  volumes.py        # HMRC out-turn fuel-duty receipts (2010-2024)
-  data.py           # compute_all() — runs PE-UK, returns Results dataclass
-  charts.py         # Plotly figure builders (annual cost, rate path, OBR-style, distributional)
-  build_html.py     # HTML report assembler
-  build_docx.py     # DOCX report assembler
-  build_xlsx.py     # XLSX workbook assembler
+  theme.py            # PolicyEngine palette + Plotly template
+  volumes.py          # HMRC out-turn fuel-duty receipts (2010-2024)
+  data.py             # compute_all() — runs PE-UK, returns Results dataclass
+  charts.py           # Plotly figure builders
+  build_html.py       # HTML report assembler
+  build_docx.py       # DOCX report assembler
+  build_xlsx.py       # XLSX workbook assembler
 
 notebooks/
-  analysis.ipynb    # interactive walkthrough (mirrors the briefing)
+  analysis.ipynb      # interactive walkthrough (mirrors the briefing)
 
-outputs/
-  analysis.html
-  analysis.docx
-  analysis.xlsx
+results/              # generated artefacts (gitignored)
+  analysis.html / docx / xlsx
+  chart_*.png
+  table_*.csv
 
 tests/
   test_smoke.py

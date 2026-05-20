@@ -26,7 +26,7 @@ from .theme import (
     register_template,
 )
 
-DEFAULT_OUTPUT = Path(__file__).resolve().parents[1] / "outputs" / "analysis.html"
+DEFAULT_OUTPUT = Path(__file__).resolve().parents[1] / "results" / "analysis.html"
 
 
 def _df_to_html(df: pd.DataFrame) -> str:
