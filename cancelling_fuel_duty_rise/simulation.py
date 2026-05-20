@@ -126,18 +126,20 @@ def compute_all(
 
     from importlib.metadata import version as _pkg_version
 
+    from huggingface_hub import hf_hub_download
     from microdf import MicroSeries
     from policyengine_uk import Microsimulation
     from policyengine_uk.data import UKMultiYearDataset
-    from policyengine_uk_data.utils.huggingface import download
 
     if dataset_path is None:
         storage = _default_storage_dir()
         os.makedirs(storage, exist_ok=True)
-        dataset_path = download(
-            DEFAULT_DATASET_REPO,
-            DEFAULT_DATASET_FILENAME,
-            storage,
+        dataset_path = hf_hub_download(
+            repo_id=DEFAULT_DATASET_REPO,
+            repo_type="model",
+            filename=DEFAULT_DATASET_FILENAME,
+            local_dir=storage,
+            token=os.environ.get("HUGGING_FACE_TOKEN"),
         )
 
     dataset = UKMultiYearDataset(file_path=dataset_path)

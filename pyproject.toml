@@ -17,7 +17,7 @@ dependencies = [
   # extra (which currently fails on PyPI release pins).
   "policyengine",
   "policyengine-uk",
-  "policyengine-uk-data",
+  "huggingface_hub",
   # policyengine-core 3.26.0 is the latest release that does not enforce
   # the strict formula/adds/uprating mutually-exclusive check on
   # variables; pe-uk still ships variables (gov_tax, state_pension)
