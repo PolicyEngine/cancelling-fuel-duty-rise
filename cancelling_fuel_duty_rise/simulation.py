@@ -124,11 +124,11 @@ def compute_all(
     if hf_token:
         os.environ["HUGGING_FACE_TOKEN"] = hf_token
 
+    from importlib.metadata import version as _pkg_version
+
     from microdf import MicroSeries
-    from policyengine.tax_benefit_models.uk import (
-        managed_microsimulation,
-        uk_latest,
-    )
+    from policyengine_uk import Microsimulation
+    from policyengine_uk.data import UKMultiYearDataset
     from policyengine_uk_data.utils.huggingface import download
 
     if dataset_path is None:
@@ -140,17 +140,17 @@ def compute_all(
             storage,
         )
 
+    dataset = UKMultiYearDataset(file_path=dataset_path)
+
     def _sim(*, reform: dict | None = None):
-        """policyengine.py-managed Microsimulation for this dataset."""
+        """PolicyEngine UK Microsimulation for this dataset."""
         kwargs = {"reform": reform} if reform is not None else {}
-        return managed_microsimulation(
-            dataset=dataset_path,
-            allow_unmanaged=True,
-            **kwargs,
-        )
+        return Microsimulation(dataset=dataset, **kwargs)
+
+    pe_uk_version = _pkg_version("policyengine-uk")
 
     baseline_sim = _sim()
-    data_years = sorted(int(y) for y in baseline_sim.dataset.years)
+    data_years = sorted(int(y) for y in dataset.years)
     first_year, last_year = min(data_years), max(data_years)
 
     params = baseline_sim.tax_benefit_system.parameters
@@ -369,9 +369,8 @@ def compute_all(
 
     pe_version = _policyengine_version()
     citation = (
-        f"PolicyEngine ({pe_version}); model {uk_latest.id} pinned to "
-        f"policyengine-uk {uk_latest.country_version}; dataset "
-        f"{os.path.basename(dataset_path)}; OBR RPI series from "
+        f"PolicyEngine ({pe_version}); policyengine-uk {pe_uk_version}; "
+        f"dataset {os.path.basename(dataset_path)}; OBR RPI series from "
         f"{OBR_FORECAST_VINTAGE}"
     )
 

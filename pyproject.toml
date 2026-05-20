@@ -11,15 +11,18 @@ requires-python = ">=3.10"
 license = { text = "AGPL-3.0" }
 authors = [{ name = "PolicyEngine" }]
 dependencies = [
-  # policyengine 4.9.0 pins policyengine-uk==2.88.14, which is the first
-  # release where gov_tax no longer mixes formula + adds/subtracts (older
-  # releases trip policyengine-core's check_computation_modes guard).
-  "policyengine[uk]>=4.9.0",
-  # policyengine-core 3.26.10 made the variable computation-mode check
-  # fatal for a state_pension variable still in pe-uk; cap below it until
-  # upstream resolves.
-  "policyengine-core>=3.26.1,<3.26.10",
+  # We depend on `policyengine` only for the citation string; the
+  # simulation runs through policyengine-uk directly to avoid the
+  # transitive US/UK model-loading checks in the `policyengine[uk]`
+  # extra (which currently fails on PyPI release pins).
+  "policyengine",
+  "policyengine-uk",
   "policyengine-uk-data",
+  # policyengine-core 3.26.0 is the latest release that does not enforce
+  # the strict formula/adds/uprating mutually-exclusive check on
+  # variables; pe-uk still ships variables (gov_tax, state_pension)
+  # that mix modes. Pin until upstream resolves.
+  "policyengine-core==3.26.0",
   "microdf_python",
   "pandas",
   "numpy",
