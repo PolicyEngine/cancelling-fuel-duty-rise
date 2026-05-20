@@ -35,9 +35,24 @@ from .historical import (
     hmrc_receipts_bn,
 )
 
-DEFAULT_STORAGE = "/Users/janansadeqian/policyengine-uk-data/policyengine_uk_data/storage/"
 DEFAULT_DATASET_FILENAME = "enhanced_frs_2023_29.h5"
 DEFAULT_DATASET_REPO = "policyengine/policyengine-uk-data"
+
+
+def _default_storage_dir() -> str:
+    """Pick a writable cache directory for downloaded datasets.
+
+    Order of preference:
+      1. ``$CANCELLING_FUEL_DUTY_RISE_DATA_DIR`` if set
+      2. ``$XDG_CACHE_HOME/cancelling-fuel-duty-rise`` (Linux default)
+      3. ``~/.cache/cancelling-fuel-duty-rise``
+    """
+    custom = os.environ.get("CANCELLING_FUEL_DUTY_RISE_DATA_DIR")
+    if custom:
+        return os.path.expanduser(custom)
+    xdg = os.environ.get("XDG_CACHE_HOME")
+    base = xdg if xdg else os.path.join(os.path.expanduser("~"), ".cache")
+    return os.path.join(base, "cancelling-fuel-duty-rise")
 
 
 def _policyengine_version() -> str:
@@ -116,8 +131,9 @@ def compute_all(
     )
     from policyengine_uk_data.utils.huggingface import download
 
-    storage = os.path.dirname(dataset_path) if dataset_path else DEFAULT_STORAGE
     if dataset_path is None:
+        storage = _default_storage_dir()
+        os.makedirs(storage, exist_ok=True)
         dataset_path = download(
             DEFAULT_DATASET_REPO,
             DEFAULT_DATASET_FILENAME,

@@ -158,3 +158,16 @@ python run.py
 ```
 
 is deterministic for a fixed combination of `policyengine`, `policyengine-uk` and dataset versions. Every artefact carries the citation string showing exactly which versions were used.
+
+## Continuous integration
+
+A GitHub Actions workflow (`.github/workflows/build.yml`) runs on every push and pull request:
+
+1. Installs the package and dev dependencies.
+2. Runs the smoke tests.
+3. Runs `python run.py` end to end.
+4. Uploads the contents of `results/` (HTML report, DOCX, XLSX, every chart PNG, every table CSV) as a downloadable workflow artefact named `results`.
+
+The workflow needs a `HUGGING_FACE_TOKEN` repository secret with read access to `policyengine/policyengine-uk-data` so the enhanced FRS dataset can be downloaded. To set it: **Settings → Secrets and variables → Actions → New repository secret → `HUGGING_FACE_TOKEN`**.
+
+To download the artefacts: go to the **Actions** tab, click the latest "Build briefing" run, scroll to the **Artifacts** section, and click `results`.

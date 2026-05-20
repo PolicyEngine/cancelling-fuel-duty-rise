@@ -12,6 +12,10 @@ license = { text = "AGPL-3.0" }
 authors = [{ name = "PolicyEngine" }]
 dependencies = [
   "policyengine[uk]>=4.2.0",
+  # policyengine-core 3.26.0 is the latest version where state_pension's
+  # formula+uprating mix is still accepted; 3.26.10 made that check fatal.
+  # Pin until policyengine-uk drops the duplicate computation mode.
+  "policyengine-core>=3.25.0,<3.26.10",
   "policyengine-uk-data",
   "microdf_python",
   "pandas",
