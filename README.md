@@ -18,7 +18,7 @@ The full-plan estimate is larger than the Guardian-style 5p figure because it al
 make install
 ```
 
-This uses `uv sync --extra dev --locked`, so the environment follows the committed lockfile. Set a Hugging Face token to download the enhanced FRS dataset on first run:
+This uses `uv sync --locked --extra dev`, so the analysis runs against the reviewed `policyengine.py` release in `uv.lock`. Set a Hugging Face token to download the enhanced FRS dataset on first run:
 
 ```bash
 export HUGGING_FACE_TOKEN=hf_...
@@ -60,11 +60,15 @@ tests/
 ## Method
 
 - **Simulation entry point**: the unified [`policyengine`](https://github.com/PolicyEngine/policyengine.py) Python package via `policyengine.tax_benefit_models.uk.managed_microsimulation`.
-- **Runtime UK model**: `policyengine-uk` is pinned in `pyproject.toml` / `uv.lock` to the certified `policyengine.py` bundle. The PE-UK fuel-volume-uprating PR should replace this pin after release.
+- **Runtime UK model and dataset**: resolved by the installed `policyengine.py` managed UK bundle. The project pins `policyengine[uk]==4.9.2` rather than pinning `policyengine-uk` or `policyengine-core` separately.
 - **Fiscal totals**: HMRC road-fuel clearances and UK Tax & NICs receipts out-turns, plus OBR March 2026 fuel-duty receipts forecasts. Rate-difference costs use OBR/HMRC all-road petrol + diesel litres as the control total.
-- **Distributional allocation**: PolicyEngine calculates household impacts; the aggregate is scaled to the fiscal control total. Weighted operations use native `microdf` methods.
-- **Dataset**: certified `policyengine.py` UK bundle dataset `enhanced_frs_2023_24` from `policyengine/policyengine-uk-data-private` at revision `1.55.5` by default, projected through the 2023-2029 analysis years by PolicyEngine. This released build predates the UK-data litre-proxy training PR, so the fiscal headline totals use the HMRC/OBR road-fuel controls directly; the distributional allocation will pick up the new LCFS fuel-spending training method after PolicyEngine/policyengine-uk-data#404 is released and rebuilt. Set `POLICYENGINE_UK_DATA_REVISION` to override it.
+- **Distributional allocation**: PolicyEngine provides calibrated household petrol and diesel litres; household savings are those litres times the relevant duty-rate gap. Weighted operations use native `microdf` methods.
+- **Dataset**: the `enhanced_frs_2023_24` dataset selected by the active `policyengine.py` UK bundle, projected through the 2023-2029 analysis years by PolicyEngine.
 - **Behaviour**: no behavioural response is modelled; fuel volumes are held fixed across scenarios.
+
+### ITV methodology note
+
+PolicyEngine.py provides the household microsimulation and calibrated fuel-litre distribution. Headline fiscal totals use HMRC/OBR fiscal-year road-fuel clearances and receipts, while distributional savings apply the same duty-rate gap to PolicyEngine's calibrated household litres.
 
 ## Tests
 

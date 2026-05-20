@@ -2,6 +2,8 @@
 
 import importlib
 import json
+import tomllib
+from pathlib import Path
 from unittest.mock import patch
 
 
@@ -58,6 +60,15 @@ def test_policyengine_version_resolvable():
     assert version != "unknown"
 
 
+def test_policyengine_py_owns_uk_runtime_dependency():
+    """The analysis should follow one reviewed policyengine.py UK bundle."""
+    pyproject = tomllib.loads(Path("pyproject.toml").read_text())
+    deps = pyproject["project"]["dependencies"]
+    assert "policyengine[uk]==4.9.2" in deps
+    assert not any(dep.startswith("policyengine-uk") for dep in deps)
+    assert not any(dep.startswith("policyengine-core") for dep in deps)
+
+
 def test_policyengine_py_uk_stack_imports_without_private_manifest():
     from huggingface_hub import hf_hub_download
 
@@ -99,27 +110,26 @@ def test_policyengine_py_uk_stack_imports_without_private_manifest():
     assert callable(hf_hub_download)
 
 
-def test_dataset_download_is_release_pinned():
+def test_dataset_selection_uses_policyengine_bundle():
     from cancelling_fuel_duty_rise.simulation import (
         DEFAULT_ANALYSIS_YEARS,
-        DEFAULT_DATASET_METHOD_NOTE,
         DEFAULT_DATASET_NAME,
-        DEFAULT_DATASET_REPO_TYPE,
-        DEFAULT_DATASET_REVISION,
+        ITV_METHOD_NOTE,
     )
 
     assert DEFAULT_DATASET_NAME == "enhanced_frs_2023_24"
     assert DEFAULT_ANALYSIS_YEARS == list(range(2023, 2030))
-    assert DEFAULT_DATASET_REPO_TYPE == "model"
-    assert DEFAULT_DATASET_REVISION == "1.55.5"
-    assert DEFAULT_DATASET_REVISION not in {"main", "latest"}
-    assert "policyengine-uk-data#404" in DEFAULT_DATASET_METHOD_NOTE
+    assert "calibrated petrol and diesel litre distribution" in ITV_METHOD_NOTE
+    assert "without post-hoc scaling" in ITV_METHOD_NOTE
 
 
-def test_policyengine_uk_bundle_is_certified_release():
+def test_policyengine_uk_bundle_is_certified_by_policyengine_py():
     from importlib.metadata import version
 
     from policyengine.tax_benefit_models.uk import uk_latest
 
-    assert version("policyengine-uk") == "2.88.14"
-    assert uk_latest.data_certification.certified_for_model_version == "2.88.14"
+    pe_version = version("policyengine")
+    pe_uk_version = version("policyengine-uk")
+    assert uk_latest.release_bundle["policyengine_version"] == pe_version
+    assert uk_latest.release_bundle["model_version"] == pe_uk_version
+    assert uk_latest.data_certification.certified_for_model_version == pe_uk_version

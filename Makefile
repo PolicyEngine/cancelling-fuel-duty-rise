@@ -3,7 +3,7 @@
 UV ?= uv
 
 install:
-	$(UV) sync --extra dev --locked
+	$(UV) sync --locked --extra dev
 
 run:
 	$(UV) run python run.py

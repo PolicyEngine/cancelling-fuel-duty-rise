@@ -47,19 +47,24 @@ def build(output: Path | str = DEFAULT_OUTPUT) -> Path:
                 "Chart 'How much money have the freezes lost so far?'",
             ],
             [
+                "litre_check",
+                "Year-by-year check of calibrated PolicyEngine road-fuel litres against HMRC/OBR road-fuel controls",
+                "Method cross-check",
+            ],
+            [
                 "quartiles_2027",
-                "Person-weighted distributional impact 2027 by income quartile, bottom 5% excluded",
-                "Chart 'Who gains from keeping the cut?' (quartile cut)",
+                "Person-weighted distributional impact of cancelling the planned 2027 fuel-duty rise, by income quartile, bottom 5% excluded",
+                "Chart 'Who gains from cancelling the planned rise?' (quartile cut)",
             ],
             [
                 "quintiles_2027",
-                "Person-weighted distributional impact 2027 by income quintile, bottom 5% excluded",
-                "Chart 'Who gains from keeping the cut?' (quintile cut)",
+                "Person-weighted distributional impact of cancelling the planned 2027 fuel-duty rise, by income quintile, bottom 5% excluded",
+                "Chart 'Who gains from cancelling the planned rise?' (quintile cut)",
             ],
             [
                 "deciles_2027",
-                "Person-weighted distributional impact 2027 by income decile, bottom 5% excluded",
-                "Chart 'Who gains from keeping the cut?' (decile cut)",
+                "Person-weighted distributional impact of cancelling the planned 2027 fuel-duty rise, by income decile, bottom 5% excluded",
+                "Chart 'Who gains from cancelling the planned rise?' (decile cut)",
             ],
             [
                 "crosscheck",
@@ -71,6 +76,11 @@ def build(output: Path | str = DEFAULT_OUTPUT) -> Path:
             [
                 "Distributional household microsim",
                 r.citation,
+                "",
+            ],
+            [
+                "Method note",
+                r.method_note,
                 "",
             ],
             [
@@ -127,6 +137,7 @@ def build(output: Path | str = DEFAULT_OUTPUT) -> Path:
         r.revenue_2010_2029.to_excel(
             writer, sheet_name="revenue_2010_2029", index=False
         )
+        r.litre_check.to_excel(writer, sheet_name="litre_check", index=False)
         r.quartiles.to_excel(writer, sheet_name="quartiles_2027", index=False)
         r.quintiles.to_excel(writer, sheet_name="quintiles_2027", index=False)
         r.deciles.to_excel(writer, sheet_name="deciles_2027", index=False)

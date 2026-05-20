@@ -5,17 +5,14 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "cancelling-fuel-duty-rise"
 version = "0.1.0"
-description = "PolicyEngine UK analysis of cancelling the Autumn Budget 2025 5p fuel-duty reversal"
+description = "PolicyEngine UK analysis of cancelling the Autumn Budget 2025 fuel-duty plan"
 readme = "README.md"
-requires-python = ">=3.10"
+requires-python = ">=3.11"
 license = { text = "AGPL-3.0" }
 authors = [{ name = "PolicyEngine" }]
 dependencies = [
-  # Use policyengine.py as the microsimulation entry point with its certified
-  # UK bundle. The upstream fuel-volume uprating lands via PE-UK release.
-  "policyengine==4.9.0",
-  "policyengine-core==3.26.0",
-  "policyengine-uk==2.88.14",
+  # Keep model/data versioning under this reviewed policyengine.py release.
+  "policyengine[uk]==4.9.2",
   "huggingface_hub",
   "microdf_python",
   "pandas",
@@ -40,5 +37,5 @@ exclude = ["tests*", "results*"]
 
 [tool.ruff]
 line-length = 88
-target-version = "py310"
+target-version = "py311"
 extend-exclude = ["notebooks"]

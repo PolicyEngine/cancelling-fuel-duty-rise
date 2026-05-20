@@ -7,12 +7,12 @@ memoised per process.
 Design notes
 ------------
 - The simulation entry point is the unified ``policyengine`` package via
-  :func:`policyengine.tax_benefit_models.uk.managed_microsimulation`. The
-  installed ``policyengine-uk`` package is pinned to the certified
-  ``policyengine.py`` UK bundle while the fuel uprating branch awaits release.
+  :func:`policyengine.tax_benefit_models.uk.managed_microsimulation`; the
+  active UK model and dataset are resolved by the installed ``policyengine.py``
+  managed bundle.
 - Fiscal totals are benchmarked to HMRC/OBR road-fuel litre controls. The
-  PolicyEngine microsimulation provides distributional allocation, which is
-  scaled to those fiscal controls.
+  PolicyEngine microsimulation provides calibrated household fuel litres for
+  distributional allocation.
 - All weighted aggregates use the native ``microdf`` API. The package never
   multiplies values by weights by hand.
 """
@@ -38,18 +38,13 @@ from .historical import (
 )
 
 DEFAULT_DATASET_NAME = "enhanced_frs_2023_24"
-DEFAULT_DATASET_FILENAME = "enhanced_frs_2023_24.h5"
-DEFAULT_DATASET_REPO = "policyengine/policyengine-uk-data-private"
-DEFAULT_DATASET_REPO_TYPE = "model"
-DEFAULT_DATASET_REVISION = os.environ.get("POLICYENGINE_UK_DATA_REVISION", "1.55.5")
-DEFAULT_DATASET_METHOD_NOTE = (
-    "released UK-data build; fuel-spending training will use the litre-proxy "
-    "method after policyengine-uk-data#404 is released and rebuilt"
-)
-DEFAULT_DATASET_URI = (
-    f"hf://{DEFAULT_DATASET_REPO}/{DEFAULT_DATASET_FILENAME}@{DEFAULT_DATASET_REVISION}"
-)
 DEFAULT_ANALYSIS_YEARS = list(range(2023, 2030))
+ITV_METHOD_NOTE = (
+    "PolicyEngine.py provides the household microsimulation and calibrated "
+    "petrol and diesel litre distribution. Headline fiscal totals use HMRC/OBR "
+    "road-fuel clearances and receipts; distributional savings are household "
+    "litres times the relevant duty-rate gap, without post-hoc scaling."
+)
 
 
 def _default_storage_dir() -> str:
@@ -96,12 +91,14 @@ class Results:
     rate_history: pd.DataFrame
     rate_path: pd.DataFrame
     revenue_2010_2029: pd.DataFrame
+    litre_check: pd.DataFrame
     quartiles: pd.DataFrame
     quintiles: pd.DataFrame
     deciles: pd.DataFrame
     headline: dict
     policyengine_version: str
     citation: str
+    method_note: str
 
 
 @functools.lru_cache(maxsize=1)
@@ -114,9 +111,7 @@ def compute_all(
     if hf_token:
         os.environ["HUGGING_FACE_TOKEN"] = hf_token
 
-    from importlib.metadata import PackageNotFoundError, version as _pkg_version
-
-    from policyengine.tax_benefit_models.uk import managed_microsimulation, uk_latest
+    from policyengine.tax_benefit_models.uk import managed_microsimulation
 
     dataset_reference = dataset_path or DEFAULT_DATASET_NAME
     data_years = (
@@ -124,28 +119,22 @@ def compute_all(
         if dataset_path is not None
         else DEFAULT_ANALYSIS_YEARS
     )
-    first_year, last_year = min(data_years), max(data_years)
-    reform_window = f"{first_year}-01-01.{last_year}-12-31"
+    last_year = max(data_years)
 
-    def _sim(*, reform: dict | None = None):
-        kwargs = {"reform": reform} if reform is not None else {}
+    def _sim():
         return managed_microsimulation(
             dataset=dataset_reference,
             allow_unmanaged="://" in dataset_reference,
-            **kwargs,
         )
 
     baseline_sim = _sim()
+    bundle = getattr(baseline_sim, "policyengine_bundle", {}) or {}
     params = baseline_sim.tax_benefit_system.parameters
     fuel_duty = params.gov.hmrc.fuel_duty.petrol_and_diesel
     rpi = params.gov.economic_assumptions.yoy_growth.obr.rpi
 
     pre_cut_rate = fuel_duty(f"{FIRST_FREEZE_YEAR}-04-01")
     post_cut_rate = fuel_duty(_find_cut_date(fuel_duty))
-
-    keep_cut_sim = _sim(
-        reform={"gov.hmrc.fuel_duty.petrol_and_diesel": {reform_window: post_cut_rate}},
-    )
 
     counterfactual_rate = {FIRST_FREEZE_YEAR: pre_cut_rate}
     for year in range(FIRST_FREEZE_YEAR + 1, last_year + 1):
@@ -210,6 +199,14 @@ def compute_all(
             }
             for year in data_years
         ]
+    )
+
+    litre_check = _fuel_litre_check(
+        baseline_sim=baseline_sim,
+        data_years=data_years,
+        actual_rate=actual_rate,
+        post_cut_rate=post_cut_rate,
+        road_fuel_years=road_fuel_years,
     )
 
     rate_history = (
@@ -292,12 +289,8 @@ def compute_all(
 
     quartiles, quintiles, deciles = _distributional_cuts(
         baseline_sim=baseline_sim,
-        keep_cut_sim=keep_cut_sim,
         year_dist=year_dist,
-        aggregate_cost_bn=benchmark_cost_bn(
-            year_dist,
-            actual_rate[year_dist] - post_cut_rate,
-        ),
+        duty_rate_gap=actual_rate[year_dist] - post_cut_rate,
     )
 
     headline = {
@@ -331,6 +324,19 @@ def compute_all(
         "actual_rate_2026_p": float(actual_rate[2026] * 100),
         "counterfactual_rate_2026_p": float(counterfactual_rate[2026] * 100),
         "baseline_rate_2027_p": float(actual_rate[2027] * 100),
+        "model_road_fuel_litres_2027_bn": float(
+            litre_check.loc[
+                litre_check.Year == 2027, "PolicyEngine litres (bn)"
+            ].values[0]
+        ),
+        "benchmark_road_fuel_litres_2027_bn": float(
+            litre_check.loc[litre_check.Year == 2027, "HMRC/OBR litres (bn)"].values[0]
+        ),
+        "model_full_plan_cost_2027_bn": float(
+            litre_check.loc[litre_check.Year == 2027, "PolicyEngine cost (£bn)"].values[
+                0
+            ]
+        ),
         "revenue_last_year_actual_bn": float(revenue_by_year[last_year]),
         "revenue_last_year_counterfactual_bn": float(
             revenue_by_year[last_year]
@@ -346,22 +352,9 @@ def compute_all(
     }
 
     pe_version = _policyengine_version()
-    model_id = getattr(uk_latest, "id", "uk_latest")
-    try:
-        pe_uk_version = _pkg_version("policyengine-uk")
-    except PackageNotFoundError:
-        pe_uk_version = "unknown"
-    dataset_label = (
-        os.path.basename(dataset_reference)
-        if dataset_path is not None
-        else DEFAULT_DATASET_NAME
-    )
+    bundle_policyengine_version = bundle.get("policyengine_version") or pe_version
     citation = (
-        f"PolicyEngine ({pe_version}); model {model_id} pinned to "
-        f"policyengine-uk {pe_uk_version}; enhanced FRS "
-        f"({dataset_label}, "
-        f"{DEFAULT_DATASET_REPO}@{DEFAULT_DATASET_REVISION}, "
-        f"{DEFAULT_DATASET_METHOD_NOTE}); "
+        f"PolicyEngine.py {bundle_policyengine_version}; "
         f"OBR RPI series from {OBR_FORECAST_VINTAGE}"
     )
 
@@ -372,12 +365,14 @@ def compute_all(
         rate_history=rate_history,
         rate_path=rate_path,
         revenue_2010_2029=revenue_2010_2029,
+        litre_check=litre_check,
         quartiles=quartiles,
         quintiles=quintiles,
         deciles=deciles,
         headline=headline,
         policyengine_version=pe_version,
         citation=citation,
+        method_note=ITV_METHOD_NOTE,
     )
 
 
@@ -395,21 +390,46 @@ def _find_cut_date(fuel_duty_param) -> str:
     return cut_date
 
 
+def _fuel_litre_check(
+    *,
+    baseline_sim,
+    data_years: list[int],
+    actual_rate: dict[int, float],
+    post_cut_rate: float,
+    road_fuel_years: dict[int, float],
+) -> pd.DataFrame:
+    """Compare calibrated PolicyEngine litres with the HMRC/OBR control."""
+    rows = []
+    for year in data_years:
+        pe_litres = baseline_sim.calculate(
+            "petrol_litres", year
+        ) + baseline_sim.calculate("diesel_litres", year)
+        pe_litres_bn = pe_litres.sum() / 1e9
+        benchmark_litres_bn = road_fuel_years[year] / 1_000
+        rate_gap = actual_rate[year] - post_cut_rate
+        rows.append(
+            {
+                "Year": year,
+                "PolicyEngine litres (bn)": round(pe_litres_bn, 4),
+                "HMRC/OBR litres (bn)": round(benchmark_litres_bn, 4),
+                "PolicyEngine / HMRC-OBR": round(pe_litres_bn / benchmark_litres_bn, 4),
+                "Duty-rate gap (p/L)": round(rate_gap * 100, 4),
+                "PolicyEngine cost (£bn)": round(pe_litres_bn * rate_gap, 4),
+                "HMRC/OBR cost (£bn)": round(benchmark_litres_bn * rate_gap, 4),
+            }
+        )
+    return pd.DataFrame(rows)
+
+
 def _distributional_cuts(
     *,
     baseline_sim,
-    keep_cut_sim,
     year_dist: int,
-    aggregate_cost_bn: float,
+    duty_rate_gap: float,
 ) -> tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame]:
     """Quartile / quintile / decile cuts excluding bottom 5%."""
-    fd_base_hh = baseline_sim.calculate("fuel_duty", year_dist)
-    fd_keep_hh = keep_cut_sim.calculate("fuel_duty", year_dist)
-    raw_cost_bn = (fd_base_hh.sum() - fd_keep_hh.sum()) / 1e9
-    scale = aggregate_cost_bn / raw_cost_bn if raw_cost_bn else 1.0
-
-    fd_base = baseline_sim.calculate("fuel_duty", year_dist, map_to="person")
-    fd_keep = keep_cut_sim.calculate("fuel_duty", year_dist, map_to="person")
+    petrol_litres = baseline_sim.calculate("petrol_litres", year_dist, map_to="person")
+    diesel_litres = baseline_sim.calculate("diesel_litres", year_dist, map_to="person")
     net_income = baseline_sim.calculate(
         "household_net_income", year_dist, map_to="person"
     )
@@ -417,7 +437,7 @@ def _distributional_cuts(
         "equiv_hbai_household_net_income", year_dist, map_to="person"
     )
 
-    saving = (fd_base - fd_keep) * scale
+    saving = (petrol_litres + diesel_litres) * duty_rate_gap
     ranks = equiv.percentile_rank()
     keep_mask = (ranks > 5) & (equiv > 0)
     remaining = (ranks[keep_mask] - 5) / 95 * 100
