@@ -119,7 +119,8 @@ def test_dataset_selection_uses_policyengine_bundle():
 
     assert DEFAULT_DATASET_NAME == "enhanced_frs_2023_24"
     assert DEFAULT_ANALYSIS_YEARS == list(range(2023, 2030))
-    assert "HMRC/OBR controls" in ITV_METHOD_NOTE
+    assert "calibrated petrol and diesel litre distribution" in ITV_METHOD_NOTE
+    assert "without post-hoc scaling" in ITV_METHOD_NOTE
 
 
 def test_policyengine_uk_bundle_is_certified_by_policyengine_py():

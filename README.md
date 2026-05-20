@@ -62,13 +62,13 @@ tests/
 - **Simulation entry point**: the unified [`policyengine`](https://github.com/PolicyEngine/policyengine.py) Python package via `policyengine.tax_benefit_models.uk.managed_microsimulation`.
 - **Runtime UK model and dataset**: resolved by the installed `policyengine.py` managed UK bundle. The project depends on `policyengine[uk]` rather than pinning `policyengine-uk` or `policyengine-core` separately.
 - **Fiscal totals**: HMRC road-fuel clearances and UK Tax & NICs receipts out-turns, plus OBR March 2026 fuel-duty receipts forecasts. Rate-difference costs use OBR/HMRC all-road petrol + diesel litres as the control total.
-- **Distributional allocation**: PolicyEngine calculates household impacts; the aggregate is scaled to the fiscal control total. Weighted operations use native `microdf` methods.
+- **Distributional allocation**: PolicyEngine provides calibrated household petrol and diesel litres; household savings are those litres times the relevant duty-rate gap. Weighted operations use native `microdf` methods.
 - **Dataset**: the `enhanced_frs_2023_24` dataset selected by the active `policyengine.py` UK bundle, projected through the 2023-2029 analysis years by PolicyEngine.
 - **Behaviour**: no behavioural response is modelled; fuel volumes are held fixed across scenarios.
 
 ### ITV methodology note
 
-The published headline fiscal totals are not raw PolicyEngine aggregate fuel-duty revenue. PolicyEngine.py provides the household microsimulation and distributional allocation; headline fiscal totals are benchmarked to HMRC/OBR road-fuel clearances and receipts. Future `policyengine.py` bundle updates may change household allocation, but they will not exactly reproduce the headline totals unless the same HMRC/OBR controls are retained.
+PolicyEngine.py provides the household microsimulation and calibrated fuel-litre distribution. Headline fiscal totals use HMRC/OBR fiscal-year road-fuel clearances and receipts, while distributional savings apply the same duty-rate gap to PolicyEngine's calibrated household litres.
 
 ## Tests
 
