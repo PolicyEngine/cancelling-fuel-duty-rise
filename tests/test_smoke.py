@@ -6,6 +6,8 @@ import tomllib
 from pathlib import Path
 from unittest.mock import patch
 
+from microdf import MicroSeries
+
 
 def test_imports():
     for module in [
@@ -121,6 +123,34 @@ def test_dataset_selection_uses_policyengine_bundle():
     assert DEFAULT_ANALYSIS_YEARS == list(range(2023, 2030))
     assert "calibrated petrol and diesel litre distribution" in ITV_METHOD_NOTE
     assert "without post-hoc scaling" in ITV_METHOD_NOTE
+
+
+def test_distributional_cuts_include_bottom_five_percent():
+    from cancelling_fuel_duty_rise.simulation import _distributional_cuts
+
+    class FakeSimulation:
+        def calculate(self, variable, year, map_to=None):
+            values = list(range(1, 101))
+            if variable == "petrol_litres":
+                return MicroSeries(values, weights=[1] * 100)
+            if variable == "diesel_litres":
+                return MicroSeries([0] * 100, weights=[1] * 100)
+            if variable in (
+                "household_net_income",
+                "equiv_hbai_household_net_income",
+            ):
+                return MicroSeries(values, weights=[1] * 100)
+            raise ValueError(variable)
+
+    _, _, deciles = _distributional_cuts(
+        baseline_sim=FakeSimulation(),
+        year_dist=2027,
+        duty_rate_gap=1,
+    )
+
+    assert deciles.loc[0, "group"] == "D1"
+    assert deciles.loc[0, "avg_net_income_gbp"] == 5.5
+    assert deciles.loc[0, "avg_saving_gbp_per_year"] == 5.5
 
 
 def test_policyengine_uk_bundle_is_certified_by_policyengine_py():
