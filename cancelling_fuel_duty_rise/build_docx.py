@@ -91,7 +91,7 @@ def build(output: Path | str = DEFAULT_OUTPUT) -> Path:
             distributional_chart(
                 r.quartiles,
                 group_label="Income quartile (Q1 = lowest, Q4 = highest)",
-                title=f"Saving from cancelling the planned fuel-duty rise, by quartile (bottom 5% excluded, {h['year_dist']})",
+                title=f"Saving from cancelling the planned fuel-duty rise, by quartile ({h['year_dist']})",
             ),
             td / "cquart.png",
             900,
@@ -101,7 +101,7 @@ def build(output: Path | str = DEFAULT_OUTPUT) -> Path:
             distributional_chart(
                 r.quintiles,
                 group_label="Income quintile (Q1 = lowest, Q5 = highest)",
-                title=f"Saving from cancelling the planned fuel-duty rise, by quintile (bottom 5% excluded, {h['year_dist']})",
+                title=f"Saving from cancelling the planned fuel-duty rise, by quintile ({h['year_dist']})",
             ),
             td / "cquint.png",
             900,
@@ -111,7 +111,7 @@ def build(output: Path | str = DEFAULT_OUTPUT) -> Path:
             distributional_chart(
                 r.deciles,
                 group_label="Income decile (D1 = next lowest, D10 = highest)",
-                title=f"Saving from cancelling the planned fuel-duty rise, by decile (bottom 5% excluded, {h['year_dist']})",
+                title=f"Saving from cancelling the planned fuel-duty rise, by decile ({h['year_dist']})",
             ),
             td / "cdec.png",
             900,
@@ -255,8 +255,7 @@ def build(output: Path | str = DEFAULT_OUTPUT) -> Path:
             doc,
             "Person-weighted average household saving from keeping duty at 52.95p/L rather than following the full "
             f"Autumn Budget 2025 plan for 2027-28 ({h['baseline_rate_2027_p']:.2f}p/L), as a share of household net income. "
-            "The bottom 5% by equivalised income is excluded from all three cuts (Resolution Foundation "
-            "approach). The remaining 95% is then split into quartiles, quintiles and deciles.",
+            "The full equivalised-income distribution is split into quartiles, quintiles and deciles.",
         )
 
         _add_heading(doc, "By income quartile", 3)

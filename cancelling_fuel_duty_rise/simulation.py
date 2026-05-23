@@ -427,7 +427,7 @@ def _distributional_cuts(
     year_dist: int,
     duty_rate_gap: float,
 ) -> tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame]:
-    """Quartile / quintile / decile cuts excluding bottom 5%."""
+    """Quartile / quintile / decile cuts over the full income distribution."""
     petrol_litres = baseline_sim.calculate("petrol_litres", year_dist, map_to="person")
     diesel_litres = baseline_sim.calculate("diesel_litres", year_dist, map_to="person")
     net_income = baseline_sim.calculate(
@@ -439,16 +439,14 @@ def _distributional_cuts(
 
     saving = (petrol_litres + diesel_litres) * duty_rate_gap
     ranks = equiv.percentile_rank()
-    keep_mask = (ranks > 5) & (equiv > 0)
-    remaining = (ranks[keep_mask] - 5) / 95 * 100
 
     def build(div_pct: float, n: int, prefix: str) -> pd.DataFrame:
         idx = pd.Series(
-            np.minimum(np.ceil(remaining.values / div_pct).astype(int), n),
-            index=remaining.index,
+            np.minimum(np.ceil(ranks / div_pct).astype(int), n),
+            index=ranks.index,
         )
-        saving_by_group = saving[keep_mask].groupby(idx).mean()
-        income_by_group = net_income[keep_mask].groupby(idx).mean()
+        saving_by_group = saving.groupby(idx).mean()
+        income_by_group = net_income.groupby(idx).mean()
         rows = []
         for group in range(1, n + 1):
             saving_value = saving_by_group[group]
