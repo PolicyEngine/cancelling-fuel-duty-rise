@@ -82,15 +82,18 @@ function Dashboard() {
             >
               policyengine.py
             </a>{" "}
-            to cost the{" "}
+            to cost{" "}
+            <em>cancelling</em> the planned 2027 fuel-duty rise — the rise
+            scheduled in the{" "}
             <a
               href="https://www.gov.uk/government/publications/budget-2025-document/budget-2025-html"
               target="_blank"
               rel="noreferrer"
             >
               Autumn Budget 2025
-            </a>{" "}
-            fuel-duty plan and the household savings of cancelling it.
+            </a>
+            . It quantifies the revenue the Treasury would forgo by holding
+            duty at 52.95p/L, and what each household keeps as a result.
             Under the{" "}
             <a
               href="https://www.gov.uk/government/publications/fuel-duty-rates-for-2026-to-2027/fuel-duty-rates-2026-to-2027"

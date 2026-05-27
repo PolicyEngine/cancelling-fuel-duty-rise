@@ -419,8 +419,7 @@ export default function ReformTab({ data }) {
             >
               IFS
             </a>{" "}
-            puts the same number at ~£2.3bn/yr by {fyLabel(lastYear)} —
-            within ~10%.
+            puts the same number at ~£2.3bn/yr by {fyLabel(lastYear)}.
           </div>
         </div>
       </div>
