@@ -575,8 +575,9 @@ export default function ReformTab({ data }) {
         </div>
       </div>
 
-      {/* Rate path chart */}
-      <div className="section-card">
+      {/* Rate path + OBR-style revenue — side-by-side */}
+      <div className="grid gap-8 xl:grid-cols-2">
+        <div className="section-card">
         <SectionHeading
           title="Duty rate path — what was vs what it would have been"
           description={`Solid line: the actual duty rate charged each year, including the planned Budget 2025 increases through ${fyLabel(lastYear)}. Dashed line: a counterfactual where duty had simply risen by RPI every April since ${fyLabel(firstFreeze)}. The gap between the two is what's been lost to the de-facto freeze.`}
@@ -637,14 +638,14 @@ export default function ReformTab({ data }) {
         <ChartLogo />
       </div>
 
-      {/* OBR-style revenue chart */}
-      {revenueSeries.length > 0 && (
+        {/* OBR-style revenue chart — right column of the side-by-side grid */}
+        {revenueSeries.length > 0 && (
         <div className="section-card">
           <SectionHeading
             title="Fuel duty receipts — actual vs RPI counterfactual"
             description={`The same comparison in revenue terms. Solid line: actual UK fuel duty receipts each year (HMRC out-turns through ${fyLabel(2024)}, OBR March 2026 EFO forecast thereafter). Dashed line: what receipts would have been at the RPI-uprated counterfactual rate. The shaded area is the cumulative £${headline.fleet_cumulative.toFixed(0)}bn foregone since ${fyLabel(firstFreeze)}.`}
           />
-          <div className="h-[420px] w-full">
+          <div className="h-[380px] w-full">
             <ResponsiveContainer width="100%" height="100%">
               <AreaChart
                 data={revenueSeries}
@@ -711,7 +712,8 @@ export default function ReformTab({ data }) {
           </div>
           <ChartLogo />
         </div>
-      )}
+        )}
+      </div>
 
       {/* Distributional chart */}
       <div className="section-card">
