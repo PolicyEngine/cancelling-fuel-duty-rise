@@ -174,6 +174,16 @@ export default function ReformTab({ data }) {
   const guardian = useMemo(() => getGuardianCheck(data), [data]);
   const revenueSeries = useMemo(() => getRevenueSeries(data), [data]);
 
+  const annualCostCombined = useMemo(() => {
+    const guardianByYear = new Map(guardian.map((row) => [row.year, row]));
+    return scrap5p.map((row) => ({
+      fy: row.fy,
+      year: row.year,
+      fullPlanBn: row.costBn,
+      guardianBn: guardianByYear.get(row.year)?.cost5pBn ?? 0,
+    }));
+  }, [scrap5p, guardian]);
+
   const [grouping, setGrouping] = useState("deciles");
   const [impactMode, setImpactMode] = useState("abs");
   const distribution = useMemo(
@@ -506,73 +516,62 @@ export default function ReformTab({ data }) {
         </div>
       </div>
 
-      {/* Annual cost — full plan vs Guardian 5p framing */}
-      <div className="grid gap-8 xl:grid-cols-2">
-        <div className="section-card">
-          <SectionHeading
-            title="Cost of cancelling the full plan, by year"
-            description={`How much revenue the Treasury loses each year by keeping duty at 52.95p/L instead of letting it rise as the Budget plans. Earlier years are zero because duty is already at the reform rate today.`}
-          />
-          <div className="h-[380px] w-full">
-            <ResponsiveContainer width="100%" height="100%">
-              <BarChart data={scrap5p}>
-                <CartesianGrid strokeDasharray="3 3" stroke={PALETTE.grid} />
-                <XAxis dataKey="fy" tick={AXIS_STYLE} tickLine={false} />
-                <YAxis
-                  tick={AXIS_STYLE}
-                  tickLine={false}
-                  axisLine={false}
-                  tickFormatter={(v) => `£${v}bn`}
-                />
-                <ReferenceLine y={0} stroke={colors.gray[400]} strokeWidth={1} />
-                <Tooltip
-                  content={<CustomTooltip formatter={(v) => formatBn(v)} />}
-                />
-                <Bar dataKey="costBn" name="Cost to Treasury" radius={[6, 6, 0, 0]}>
-                  {scrap5p.map((row, i) => (
-                    <Cell
-                      key={`c-${i}`}
-                      fill={row.costBn > 0 ? PALETTE.loss : PALETTE.gain}
-                    />
-                  ))}
-                </Bar>
-              </BarChart>
-            </ResponsiveContainer>
-          </div>
-          <ChartLogo />
+      {/* Annual cost — full plan vs Guardian 5p framing, grouped */}
+      <div className="section-card">
+        <SectionHeading
+          title="Annual cost to the Treasury — full plan vs 5p-only framing"
+          description={
+            <>
+              Two costings side-by-side for each fiscal year.{" "}
+              <strong>Full plan</strong> is the cost of holding duty at
+              52.95p/L instead of letting it rise as the Budget schedules.{" "}
+              <strong>5p only</strong> is the narrower press framing — cost
+              vs the pre-2022 rate of 57.95p/L, ignoring the April 2027 RPI
+              uprating. The two diverge from {fyLabel(2027)} onwards because
+              the RPI step is what the 5p-only framing leaves out.
+            </>
+          }
+        />
+        <div className="h-[420px] w-full">
+          <ResponsiveContainer width="100%" height="100%">
+            <BarChart
+              data={annualCostCombined}
+              margin={{ top: 10, right: 16, left: 4, bottom: 8 }}
+              barGap={4}
+            >
+              <CartesianGrid strokeDasharray="3 3" stroke={PALETTE.grid} />
+              <XAxis dataKey="fy" tick={AXIS_STYLE} tickLine={false} />
+              <YAxis
+                tick={AXIS_STYLE}
+                tickLine={false}
+                axisLine={false}
+                tickFormatter={(v) => `£${v}bn`}
+              />
+              <ReferenceLine y={0} stroke={colors.gray[400]} strokeWidth={1} />
+              <Tooltip
+                content={<CustomTooltip formatter={(v) => formatBn(v)} />}
+              />
+              <Legend
+                wrapperStyle={{ fontSize: 12, paddingTop: 12 }}
+                iconSize={10}
+                verticalAlign="bottom"
+              />
+              <Bar
+                dataKey="fullPlanBn"
+                name="Full plan (5p cut + April 2027 RPI uprating)"
+                fill={PALETTE.gain}
+                radius={[6, 6, 0, 0]}
+              />
+              <Bar
+                dataKey="guardianBn"
+                name="5p only (52.95p vs 57.95p)"
+                fill={PALETTE.gainSoft}
+                radius={[6, 6, 0, 0]}
+              />
+            </BarChart>
+          </ResponsiveContainer>
         </div>
-
-        <div className="section-card">
-          <SectionHeading
-            title="Cost of just extending the 5p cut, by year"
-            description="The narrower press framing: cost of staying at 52.95p/L versus the pre-2022 rate of 57.95p/L only. Smaller than the full-plan chart because it ignores the additional April 2027 RPI uprating."
-          />
-          <div className="h-[380px] w-full">
-            <ResponsiveContainer width="100%" height="100%">
-              <BarChart data={guardian}>
-                <CartesianGrid strokeDasharray="3 3" stroke={PALETTE.grid} />
-                <XAxis dataKey="fy" tick={AXIS_STYLE} tickLine={false} />
-                <YAxis
-                  tick={AXIS_STYLE}
-                  tickLine={false}
-                  axisLine={false}
-                  tickFormatter={(v) => `£${v}bn`}
-                />
-                <ReferenceLine y={0} stroke={colors.gray[400]} strokeWidth={1} />
-                <Tooltip
-                  content={<CustomTooltip formatter={(v) => formatBn(v)} />}
-                />
-                <Bar
-                  dataKey="cost5pBn"
-                  name="Cost of keeping 5p cut"
-                  fill={PALETTE.gainSoft}
-                  radius={[6, 6, 0, 0]}
-                />
-              </BarChart>
-            </ResponsiveContainer>
-          </div>
-          <ChartLogo />
-        </div>
+        <ChartLogo />
       </div>
 
       {/* Rate path + OBR-style revenue — side-by-side */}
