@@ -1,6 +1,17 @@
 # Cancelling the planned fuel duty rise
 
-PolicyEngine UK analysis of the cost, counterfactual, and distributional impact of cancelling the Autumn Budget 2025 fuel-duty plan. The package runs one PolicyEngine microsimulation and writes a media-ready briefing as HTML, DOCX, XLSX, PNG charts, and CSV tables.
+PolicyEngine UK analysis of the cost, counterfactual, and distributional impact of cancelling the Autumn Budget 2025 fuel-duty plan. The package runs one PolicyEngine microsimulation and writes a media-ready briefing as HTML, DOCX, XLSX, PNG charts, and CSV tables. An interactive Next.js dashboard surfaces the same results.
+
+## Dashboard
+
+The interactive analysis dashboard is deployed at <https://cancelling-fuel-duty-rise.vercel.app/uk/cancelling-fuel-duty-rise>. Source lives in [`dashboard/`](./dashboard); pushes to `main` redeploy automatically via Vercel.
+
+To run it locally:
+
+```bash
+make sync-dashboard          # regenerate dashboard/public/data/fuel_duty_results.json
+cd dashboard && npm install && npm run dev
+```
 
 ## Key numbers
 
@@ -52,6 +63,13 @@ cancelling_fuel_duty_rise/
   build_html.py                 HTML report assembler
   build_docx.py                 DOCX report assembler
   build_xlsx.py                 XLSX workbook assembler
+  build_json.py                 JSON exporter that feeds the dashboard
+
+dashboard/                      Next.js (App Router) interactive analysis app
+  app/                          page.jsx, layout.jsx, globals.css
+  src/components/               Analysis / Methodology / Media tabs
+  src/lib/                      data helpers, formatters, chart utilities
+  public/data/                  fuel_duty_results.json synced from the pipeline
 
 tests/
   test_smoke.py                 import, benchmark, dependency, and method checks
@@ -68,7 +86,7 @@ tests/
 
 ### ITV methodology note
 
-PolicyEngine.py provides the household microsimulation and calibrated fuel-litre distribution. Headline fiscal totals use HMRC/OBR fiscal-year road-fuel clearances and receipts, while distributional savings apply the same duty-rate gap to PolicyEngine's calibrated household litres.
+policyengine.py provides the household microsimulation and calibrated fuel-litre distribution. Headline fiscal totals use HMRC/OBR fiscal-year road-fuel clearances and receipts, while distributional savings apply the same duty-rate gap to PolicyEngine's calibrated household litres.
 
 ## Tests
 
