@@ -400,7 +400,7 @@ export default function ReformTab({ data }) {
         </div>
         <div className="metric-card">
           <div className="text-xs font-medium uppercase tracking-[0.08em] text-slate-500">
-            5p-only cost, {fyLabel(lastYear)}
+            5p-only benchmark, {fyLabel(lastYear)}
           </div>
           <div className="mt-2 text-3xl font-bold tracking-tight text-slate-900 tabular-nums">
             {formatBn(
@@ -410,8 +410,8 @@ export default function ReformTab({ data }) {
             )}
           </div>
           <div className="mt-1 text-sm text-slate-500">
-            Our {fyLabel(lastYear)} estimate for the narrower &quot;extend the
-            5p cut&quot; framing. The{" "}
+            Same 5p-only framing as the {fyLabel(2027)} press card: 52.95p
+            instead of 57.95p, excluding RPI uprating. The{" "}
             <a
               href="https://ifs.org.uk/articles/response-todays-announcement-road-and-fuel-taxation"
               target="_blank"
@@ -419,7 +419,7 @@ export default function ReformTab({ data }) {
             >
               IFS
             </a>{" "}
-            puts a comparable estimate at ~£2.3bn/yr by {fyLabel(lastYear)}.
+            gives a comparable {fyLabel(lastYear)} estimate of ~£2.3bn/yr.
           </div>
         </div>
       </div>
@@ -427,7 +427,7 @@ export default function ReformTab({ data }) {
       {/* Rate changes — boxed year-by-year reference table */}
       <SectionHeading
         title="Rate changes"
-        description={`The Budget 2025 schedule through ${fyLabel(lastYear)}, compared with today's frozen rate and an RPI-uprated counterfactual. The change column compares each row with the previous listed duty rate.`}
+        description={`The Budget 2025 schedule through ${fyLabel(lastYear)}, compared with today's frozen rate and an RPI-uprated counterfactual. The change column compares each row with the previous listed duty rate. The cancellation scenario repeats today's 52.95p/L rate for every forecast year.`}
       />
       <div className="section-card">
         <div className="overflow-x-auto">
@@ -512,11 +512,6 @@ export default function ReformTab({ data }) {
             </tbody>
           </table>
         </div>
-        <p className="mt-3 text-xs text-slate-500">
-          The reform we cost holds duty flat at 52.95p/L through{" "}
-          {fyLabel(lastYear)} — i.e. the &quot;Today&quot; row repeated for every
-          forecast year.
-        </p>
       </div>
 
       {/* Annual cost — full plan vs Guardian 5p framing, side-by-side */}
@@ -737,8 +732,8 @@ export default function ReformTab({ data }) {
       <div className="grid gap-8 xl:grid-cols-2">
       <div className="section-card">
         <div className="mb-4 flex flex-wrap items-start justify-between gap-3">
-          <SectionHeading
-            title={`Average household saving by income group (${fyLabel(savingYear)})`}
+            <SectionHeading
+              title="Average household saving by income group"
             description={
               impactMode === "abs"
                 ? "How much the average household in each income group keeps per year if the planned rise is cancelled. Calculated as their petrol + diesel litres times the duty-rate gap, averaged across every household in the group (not just car-owning households)."
@@ -837,7 +832,7 @@ export default function ReformTab({ data }) {
         <div className="section-card">
           <div className="mb-4 flex flex-wrap items-start justify-between gap-3">
             <SectionHeading
-              title={`Winners and unchanged by income group (${fyLabel(winnersYear)})`}
+              title="Winners and unchanged by income group"
               description={
                 <>
                   Share of households in each income group that come out ahead

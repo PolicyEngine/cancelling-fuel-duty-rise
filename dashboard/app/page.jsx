@@ -2,12 +2,14 @@
 
 import { Suspense, useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
+import MediaCoverageTab from "../src/components/MediaCoverageTab";
 import MethodologyTab from "../src/components/MethodologyTab";
 import ReformTab from "../src/components/ReformTab";
 
 const TAB_OPTIONS = [
   { id: "impact", label: "Impact" },
   { id: "methodology", label: "Methodology" },
+  { id: "media", label: "Media coverage" },
 ];
 
 function getInitialTab(tabParam) {
@@ -111,7 +113,16 @@ function Dashboard() {
             amid pump-price pressure; the figures here cost the original
             schedule. The <strong>Impact</strong> tab shows the fiscal cost
             and household impact; the <strong>Methodology</strong> tab covers
-            the model, sources, and what the static analysis omits.
+            the model, sources, and what the static analysis omits; the{" "}
+            <strong>Media coverage</strong> tab shows{" "}
+            <a
+              href="https://www.itv.com/watch/peston/2a4458/2a4458a0390"
+              target="_blank"
+              rel="noreferrer"
+            >
+              ITV Peston coverage
+            </a>
+            .
           </p>
         </div>
 
@@ -143,6 +154,7 @@ function Dashboard() {
           <>
             {activeTab === "impact" && <ReformTab data={data} />}
             {activeTab === "methodology" && <MethodologyTab data={data} />}
+            {activeTab === "media" && <MediaCoverageTab />}
           </>
         )}
 
