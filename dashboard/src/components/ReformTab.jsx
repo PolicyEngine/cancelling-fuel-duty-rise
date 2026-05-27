@@ -332,7 +332,8 @@ export default function ReformTab({ data }) {
             and {ratePath[ratePath.length - 1].actualP.toFixed(2)}p/L by{" "}
             {fyLabel(lastYear)} through a staged 5p reversal plus April 2027
             RPI uprating. Fiscal totals use HMRC out-turns and OBR
-            projections (within ~1% of the{" "}
+            projections: our receipts series is £24.24bn in {fyLabel(2025)}
+            and £26.55bn in {fyLabel(2027)}, within ~1% of the{" "}
             <a
               href="https://obr.uk/forecasts-in-depth/tax-by-tax-spend-by-spend/fuel-duties/"
               target="_blank"
@@ -340,7 +341,7 @@ export default function ReformTab({ data }) {
             >
               OBR EFO
             </a>{" "}
-            receipts forecast); household savings apply the duty-rate gap to
+            forecast of £24.0bn and £26.2bn. Household savings apply the duty-rate gap to
             PolicyEngine&apos;s calibrated petrol &amp; diesel litres. In May 2026
             the PM{" "}
             <a
@@ -366,9 +367,9 @@ export default function ReformTab({ data }) {
             {formatBn(headline.scrap_2027)}
           </div>
           <div className="mt-1 text-sm text-slate-500">
-            The Treasury loses this much in {fyLabel(2027)} if duty stays at
-            52.95p/L instead of rising to{" "}
-            {headline.baseline_rate_2027_p.toFixed(2)}p/L as scheduled.
+            Holding duty at 52.95p/L instead of the scheduled{" "}
+            {headline.baseline_rate_2027_p.toFixed(2)}p/L costs the Treasury
+            this amount in {fyLabel(2027)}.
           </div>
         </div>
         <div className="metric-card">
@@ -379,9 +380,9 @@ export default function ReformTab({ data }) {
             {formatBn(guardian2027.cost5pBn)}
           </div>
           <div className="mt-1 text-sm text-slate-500">
-            Narrower framing used in press coverage: 52.95p vs the pre-cut
-            57.95p only. Excludes the April 2027 RPI uprating, which is why
-            it is below the full-plan figure.
+            This press framing compares 52.95p with the pre-cut 57.95p rate
+            only. It excludes the April 2027 RPI uprating, so it sits below
+            the full-plan estimate.
           </div>
         </div>
         <div className="metric-card">
@@ -392,9 +393,9 @@ export default function ReformTab({ data }) {
             {formatBn(headline.fleet_cumulative)}
           </div>
           <div className="mt-1 text-sm text-slate-500">
-            How much extra duty would have been collected if the rate had
-            risen by RPI every April since {fyLabel(firstFreeze)}, summed
-            year-by-year through {fyLabel(2026)}.
+            Extra duty that would have been collected if the rate had risen by
+            RPI every April since {fyLabel(firstFreeze)}, summed through{" "}
+            {fyLabel(2026)}.
           </div>
         </div>
         <div className="metric-card">
@@ -409,8 +410,8 @@ export default function ReformTab({ data }) {
             )}
           </div>
           <div className="mt-1 text-sm text-slate-500">
-            Our {fyLabel(lastYear)} figure for the narrower &quot;extend the 5p
-            cut&quot; framing. The{" "}
+            Our {fyLabel(lastYear)} estimate for the narrower &quot;extend the
+            5p cut&quot; framing. The{" "}
             <a
               href="https://ifs.org.uk/articles/response-todays-announcement-road-and-fuel-taxation"
               target="_blank"
@@ -418,7 +419,7 @@ export default function ReformTab({ data }) {
             >
               IFS
             </a>{" "}
-            puts the same number at ~£2.3bn/yr by {fyLabel(lastYear)}.
+            puts a comparable estimate at ~£2.3bn/yr by {fyLabel(lastYear)}.
           </div>
         </div>
       </div>
