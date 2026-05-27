@@ -424,11 +424,11 @@ export default function ReformTab({ data }) {
       </div>
 
       {/* Rate changes — boxed year-by-year reference table */}
+      <SectionHeading
+        title="Rate changes"
+        description={`The legislated Budget 2025 schedule, year by year through ${fyLabel(lastYear)}, against today's frozen rate and the RPI counterfactual. The "change" column makes the +1p / +5.74p / +1.88p / +1.78p path of the planned rises explicit.`}
+      />
       <div className="section-card">
-        <SectionHeading
-          title="Rate changes"
-          description={`The legislated Budget 2025 schedule, year by year through ${fyLabel(lastYear)}, against today's frozen rate and the RPI counterfactual. The "change" column makes the +1p / +5.74p / +1.88p / +1.78p path of the planned rises explicit.`}
-        />
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead>

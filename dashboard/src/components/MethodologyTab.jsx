@@ -28,7 +28,7 @@ export default function MethodologyTab({ data }) {
           >
             policyengine.py v{peVersion}
           </a>{" "}
-          on the Family Resources Survey 2023/24 to estimate the cost,
+          on the enhanced Family Resources Survey 2023/24 to estimate the cost,
           counterfactual, and distributional impact of cancelling the{" "}
           <a
             href="https://www.gov.uk/government/publications/budget-2025-document/budget-2025-html"
