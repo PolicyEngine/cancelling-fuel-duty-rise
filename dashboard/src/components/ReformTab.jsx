@@ -202,8 +202,9 @@ export default function ReformTab({ data }) {
         description={
           <>
             The Autumn Budget 2025 plan would let the 5p-per-litre cut introduced
-            in March 2022 expire, restoring petrol and diesel duty to 57.95p/L
-            in April 2027, then resuming RPI uprating from April 2027 onwards.
+            in March 2022 expire and apply RPI uprating in April 2027, taking
+            petrol and diesel duty from 52.95p/L to {headline.baseline_rate_2027_p.toFixed(2)}p/L
+            in one step and continuing to uprate by RPI through {fyLabel(lastYear)}.
             This page quantifies the cost of cancelling that plan and keeping
             duty at 52.95p/L, the household-level distribution of those savings
             in {fyLabel(yearDist)}, and how the policy compares to the

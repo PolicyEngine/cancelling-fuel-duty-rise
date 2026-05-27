@@ -84,8 +84,8 @@ function Dashboard() {
             </a>{" "}
             to quantify the cost, counterfactual, and distributional impact of
             cancelling the Autumn Budget 2025 fuel-duty plan — which would let
-            the 5p cut introduced in March 2022 expire and resume RPI uprating
-            from April 2027. The <strong>Impact</strong> tab shows the annual
+            the 5p cut introduced in March 2022 expire and apply RPI uprating
+            in April 2027, raising the headline rate to roughly 60p/L. The <strong>Impact</strong> tab shows the annual
             cost to the Treasury, the duty rate path against an RPI
             counterfactual, and the average household saving by income decile,
             quintile, or quartile. The <strong>Methodology</strong> tab covers

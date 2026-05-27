@@ -4,6 +4,7 @@ results/*.docx
 results/*.xlsx
 results/*.png
 results/*.csv
+results/*.json
 !results/.gitkeep
 
 # Downloaded Hugging Face datasets
