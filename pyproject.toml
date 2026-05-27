@@ -12,7 +12,7 @@ license = { text = "AGPL-3.0" }
 authors = [{ name = "PolicyEngine" }]
 dependencies = [
   # Keep model/data versioning under this reviewed policyengine.py release.
-  "policyengine[uk]==4.9.2",
+  "policyengine[uk]==4.11.0",
   "huggingface_hub",
   "microdf_python",
   "pandas",

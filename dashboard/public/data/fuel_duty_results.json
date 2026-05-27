@@ -1,0 +1,1514 @@
+{
+  "schema_version": 1,
+  "policy_id": "cancelling_fuel_duty_rise",
+  "title": "Cancelling the planned fuel duty rise",
+  "description": "PolicyEngine UK analysis of the cost, counterfactual, and distributional impact of cancelling the Autumn Budget 2025 fuel-duty plan.",
+  "data_years": [
+    2023,
+    2024,
+    2025,
+    2026,
+    2027,
+    2028,
+    2029
+  ],
+  "year_dist": 2027,
+  "first_freeze_year": 2011,
+  "last_year": 2029,
+  "model_versions": {
+    "policyengine": "4.11.0"
+  },
+  "citation": "PolicyEngine.py 4.11.0; OBR RPI series from OBR EFO March 2026",
+  "method_note": "PolicyEngine.py provides the household microsimulation and calibrated petrol and diesel litre distribution. Headline fiscal totals use HMRC/OBR road-fuel clearances and receipts; distributional savings are household litres times the relevant duty-rate gap, without post-hoc scaling.",
+  "headline": {
+    "guardian_2026": 2.24,
+    "guardian_2027": 2.18,
+    "scrap_2026": 0.63,
+    "scrap_2027": 3.12,
+    "scrap_2029": 4.42,
+    "scrap_cumulative": 12.01,
+    "fleet_cumulative": 124.74319999999999,
+    "actual_rate_2026_p": 54.363698630136994,
+    "counterfactual_rate_2026_p": 100.41143415751914,
+    "baseline_rate_2027_p": 60.099999999999994,
+    "model_road_fuel_litres_2027_bn": 43.6699,
+    "benchmark_road_fuel_litres_2027_bn": 43.6699,
+    "model_full_plan_cost_2027_bn": 3.1224,
+    "revenue_last_year_actual_bn": 26.382076806202907,
+    "revenue_last_year_counterfactual_bn": 45.17279377331724,
+    "last_year": 2029,
+    "year_dist": 2027,
+    "first_freeze_year": 2011
+  },
+  "tables": {
+    "scrap_5p_cost": [
+      {
+        "Year": 2023,
+        "Baseline rate (p/L)": 52.95,
+        "Baseline revenue (£bn)": 24.7,
+        "Reform revenue (£bn)": 24.7,
+        "Cost to Treasury (£bn)": 0.0
+      },
+      {
+        "Year": 2024,
+        "Baseline rate (p/L)": 52.95,
+        "Baseline revenue (£bn)": 24.16,
+        "Reform revenue (£bn)": 24.16,
+        "Cost to Treasury (£bn)": 0.0
+      },
+      {
+        "Year": 2025,
+        "Baseline rate (p/L)": 52.95,
+        "Baseline revenue (£bn)": 24.24,
+        "Reform revenue (£bn)": 24.24,
+        "Cost to Treasury (£bn)": 0.0
+      },
+      {
+        "Year": 2026,
+        "Baseline rate (p/L)": 54.36,
+        "Baseline revenue (£bn)": 24.63,
+        "Reform revenue (£bn)": 24.0,
+        "Cost to Treasury (£bn)": 0.63
+      },
+      {
+        "Year": 2027,
+        "Baseline rate (p/L)": 60.1,
+        "Baseline revenue (£bn)": 26.55,
+        "Reform revenue (£bn)": 23.42,
+        "Cost to Treasury (£bn)": 3.12
+      },
+      {
+        "Year": 2028,
+        "Baseline rate (p/L)": 61.98,
+        "Baseline revenue (£bn)": 26.64,
+        "Reform revenue (£bn)": 22.8,
+        "Cost to Treasury (£bn)": 3.84
+      },
+      {
+        "Year": 2029,
+        "Baseline rate (p/L)": 63.76,
+        "Baseline revenue (£bn)": 26.38,
+        "Reform revenue (£bn)": 21.96,
+        "Cost to Treasury (£bn)": 4.42
+      }
+    ],
+    "guardian_check": [
+      {
+        "Year": 2023,
+        "Revenue at 52.95p (£bn)": 24.7,
+        "Revenue at 57.95p (£bn)": 27.02,
+        "Cost of keeping 5p cut (£bn)": 2.32
+      },
+      {
+        "Year": 2024,
+        "Revenue at 52.95p (£bn)": 24.16,
+        "Revenue at 57.95p (£bn)": 26.48,
+        "Cost of keeping 5p cut (£bn)": 2.32
+      },
+      {
+        "Year": 2025,
+        "Revenue at 52.95p (£bn)": 24.24,
+        "Revenue at 57.95p (£bn)": 26.51,
+        "Cost of keeping 5p cut (£bn)": 2.27
+      },
+      {
+        "Year": 2026,
+        "Revenue at 52.95p (£bn)": 24.0,
+        "Revenue at 57.95p (£bn)": 26.23,
+        "Cost of keeping 5p cut (£bn)": 2.24
+      },
+      {
+        "Year": 2027,
+        "Revenue at 52.95p (£bn)": 23.42,
+        "Revenue at 57.95p (£bn)": 25.61,
+        "Cost of keeping 5p cut (£bn)": 2.18
+      },
+      {
+        "Year": 2028,
+        "Revenue at 52.95p (£bn)": 22.8,
+        "Revenue at 57.95p (£bn)": 24.92,
+        "Cost of keeping 5p cut (£bn)": 2.12
+      },
+      {
+        "Year": 2029,
+        "Revenue at 52.95p (£bn)": 21.96,
+        "Revenue at 57.95p (£bn)": 24.01,
+        "Cost of keeping 5p cut (£bn)": 2.05
+      }
+    ],
+    "litre_check": [
+      {
+        "Year": 2023,
+        "PolicyEngine litres (bn)": 46.3867,
+        "HMRC/OBR litres (bn)": 46.3867,
+        "PolicyEngine / HMRC-OBR": 1.0,
+        "Duty-rate gap (p/L)": 0.0,
+        "PolicyEngine cost (£bn)": 0.0,
+        "HMRC/OBR cost (£bn)": 0.0
+      },
+      {
+        "Year": 2024,
+        "PolicyEngine litres (bn)": 46.3271,
+        "HMRC/OBR litres (bn)": 46.3271,
+        "PolicyEngine / HMRC-OBR": 1.0,
+        "Duty-rate gap (p/L)": 0.0,
+        "PolicyEngine cost (£bn)": 0.0,
+        "HMRC/OBR cost (£bn)": 0.0
+      },
+      {
+        "Year": 2025,
+        "PolicyEngine litres (bn)": 45.4049,
+        "HMRC/OBR litres (bn)": 45.4049,
+        "PolicyEngine / HMRC-OBR": 1.0,
+        "Duty-rate gap (p/L)": 0.0,
+        "PolicyEngine cost (£bn)": 0.0,
+        "HMRC/OBR cost (£bn)": 0.0
+      },
+      {
+        "Year": 2026,
+        "PolicyEngine litres (bn)": 44.7515,
+        "HMRC/OBR litres (bn)": 44.7515,
+        "PolicyEngine / HMRC-OBR": 1.0,
+        "Duty-rate gap (p/L)": 1.4137,
+        "PolicyEngine cost (£bn)": 0.6327,
+        "HMRC/OBR cost (£bn)": 0.6327
+      },
+      {
+        "Year": 2027,
+        "PolicyEngine litres (bn)": 43.6699,
+        "HMRC/OBR litres (bn)": 43.6699,
+        "PolicyEngine / HMRC-OBR": 1.0,
+        "Duty-rate gap (p/L)": 7.15,
+        "PolicyEngine cost (£bn)": 3.1224,
+        "HMRC/OBR cost (£bn)": 3.1224
+      },
+      {
+        "Year": 2028,
+        "PolicyEngine litres (bn)": 42.4907,
+        "HMRC/OBR litres (bn)": 42.4907,
+        "PolicyEngine / HMRC-OBR": 1.0,
+        "Duty-rate gap (p/L)": 9.03,
+        "PolicyEngine cost (£bn)": 3.8369,
+        "HMRC/OBR cost (£bn)": 3.8369
+      },
+      {
+        "Year": 2029,
+        "PolicyEngine litres (bn)": 40.9066,
+        "HMRC/OBR litres (bn)": 40.9066,
+        "PolicyEngine / HMRC-OBR": 1.0,
+        "Duty-rate gap (p/L)": 10.81,
+        "PolicyEngine cost (£bn)": 4.422,
+        "HMRC/OBR cost (£bn)": 4.422
+      }
+    ],
+    "rate_history": [
+      {
+        "date": "2010-04-01",
+        "rate_per_litre_gbp": 0.5719,
+        "rate_pence_per_litre": 57.19
+      },
+      {
+        "date": "2010-10-01",
+        "rate_per_litre_gbp": 0.5819,
+        "rate_pence_per_litre": 58.19
+      },
+      {
+        "date": "2011-01-01",
+        "rate_per_litre_gbp": 0.5895,
+        "rate_pence_per_litre": 58.95
+      },
+      {
+        "date": "2011-03-23",
+        "rate_per_litre_gbp": 0.5795,
+        "rate_pence_per_litre": 57.95
+      },
+      {
+        "date": "2012-01-01",
+        "rate_per_litre_gbp": 0.6097,
+        "rate_pence_per_litre": 60.97
+      },
+      {
+        "date": "2013-04-01",
+        "rate_per_litre_gbp": 0.5795,
+        "rate_pence_per_litre": 57.95
+      },
+      {
+        "date": "2015-01-01",
+        "rate_per_litre_gbp": 0.5795,
+        "rate_pence_per_litre": 57.95
+      },
+      {
+        "date": "2016-01-01",
+        "rate_per_litre_gbp": 0.5795,
+        "rate_pence_per_litre": 57.95
+      },
+      {
+        "date": "2017-01-01",
+        "rate_per_litre_gbp": 0.5795,
+        "rate_pence_per_litre": 57.95
+      },
+      {
+        "date": "2018-01-01",
+        "rate_per_litre_gbp": 0.5795,
+        "rate_pence_per_litre": 57.95
+      },
+      {
+        "date": "2019-01-01",
+        "rate_per_litre_gbp": 0.5795,
+        "rate_pence_per_litre": 57.95
+      },
+      {
+        "date": "2020-01-01",
+        "rate_per_litre_gbp": 0.5795,
+        "rate_pence_per_litre": 57.95
+      },
+      {
+        "date": "2021-01-01",
+        "rate_per_litre_gbp": 0.5795,
+        "rate_pence_per_litre": 57.95
+      },
+      {
+        "date": "2022-01-01",
+        "rate_per_litre_gbp": 0.5295,
+        "rate_pence_per_litre": 52.95
+      },
+      {
+        "date": "2023-01-01",
+        "rate_per_litre_gbp": 0.5295,
+        "rate_pence_per_litre": 52.95
+      },
+      {
+        "date": "2024-01-01",
+        "rate_per_litre_gbp": 0.5295,
+        "rate_pence_per_litre": 52.95
+      },
+      {
+        "date": "2025-01-01",
+        "rate_per_litre_gbp": 0.5295,
+        "rate_pence_per_litre": 52.95
+      },
+      {
+        "date": "2026-01-01",
+        "rate_per_litre_gbp": 0.5345,
+        "rate_pence_per_litre": 53.45
+      },
+      {
+        "date": "2027-01-01",
+        "rate_per_litre_gbp": 0.5925,
+        "rate_pence_per_litre": 59.25
+      },
+      {
+        "date": "2028-01-01",
+        "rate_per_litre_gbp": 0.6151,
+        "rate_pence_per_litre": 61.51
+      },
+      {
+        "date": "2029-01-01",
+        "rate_per_litre_gbp": 0.6332,
+        "rate_pence_per_litre": 63.32
+      },
+      {
+        "date": "2030-01-01",
+        "rate_per_litre_gbp": 0.6516,
+        "rate_pence_per_litre": 65.16
+      },
+      {
+        "date": "2031-01-01",
+        "rate_per_litre_gbp": 0.6665861641834057,
+        "rate_pence_per_litre": 66.6586
+      },
+      {
+        "date": "2032-01-01",
+        "rate_per_litre_gbp": 0.6823827474455358,
+        "rate_pence_per_litre": 68.2383
+      },
+      {
+        "date": "2033-01-01",
+        "rate_per_litre_gbp": 0.6986240728850149,
+        "rate_pence_per_litre": 69.8624
+      },
+      {
+        "date": "2034-01-01",
+        "rate_per_litre_gbp": 0.715250841544863,
+        "rate_pence_per_litre": 71.5251
+      },
+      {
+        "date": "2035-01-01",
+        "rate_per_litre_gbp": 0.7323454130875519,
+        "rate_pence_per_litre": 73.2345
+      },
+      {
+        "date": "2036-01-01",
+        "rate_per_litre_gbp": 0.7498484885561021,
+        "rate_pence_per_litre": 74.9848
+      },
+      {
+        "date": "2037-01-01",
+        "rate_per_litre_gbp": 0.7677699511100099,
+        "rate_pence_per_litre": 76.777
+      },
+      {
+        "date": "2038-01-01",
+        "rate_per_litre_gbp": 0.7861196839087723,
+        "rate_pence_per_litre": 78.612
+      },
+      {
+        "date": "2039-01-01",
+        "rate_per_litre_gbp": 0.8049075701118857,
+        "rate_pence_per_litre": 80.4908
+      },
+      {
+        "date": "2040-01-01",
+        "rate_per_litre_gbp": 0.8049075701118857,
+        "rate_pence_per_litre": 80.4908
+      },
+      {
+        "date": "2041-01-01",
+        "rate_per_litre_gbp": 0.8049075701118857,
+        "rate_pence_per_litre": 80.4908
+      }
+    ],
+    "rate_path": [
+      {
+        "year": 2011,
+        "rpi_yoy_growth_pct": 1.6,
+        "actual_rate_p_per_litre": 57.95,
+        "rpi_counterfactual_rate_p_per_litre": 57.95,
+        "gap_p_per_litre": 0.0
+      },
+      {
+        "year": 2012,
+        "rpi_yoy_growth_pct": 0.7,
+        "actual_rate_p_per_litre": 60.97,
+        "rpi_counterfactual_rate_p_per_litre": 58.3556,
+        "gap_p_per_litre": -2.6144
+      },
+      {
+        "year": 2013,
+        "rpi_yoy_growth_pct": 4.7,
+        "actual_rate_p_per_litre": 57.95,
+        "rpi_counterfactual_rate_p_per_litre": 61.0984,
+        "gap_p_per_litre": 3.1484
+      },
+      {
+        "year": 2014,
+        "rpi_yoy_growth_pct": 0.6,
+        "actual_rate_p_per_litre": 57.95,
+        "rpi_counterfactual_rate_p_per_litre": 61.465,
+        "gap_p_per_litre": 3.515
+      },
+      {
+        "year": 2015,
+        "rpi_yoy_growth_pct": 2.0,
+        "actual_rate_p_per_litre": 57.95,
+        "rpi_counterfactual_rate_p_per_litre": 62.6943,
+        "gap_p_per_litre": 4.7443
+      },
+      {
+        "year": 2016,
+        "rpi_yoy_growth_pct": 2.4,
+        "actual_rate_p_per_litre": 57.95,
+        "rpi_counterfactual_rate_p_per_litre": 64.1989,
+        "gap_p_per_litre": 6.2489
+      },
+      {
+        "year": 2017,
+        "rpi_yoy_growth_pct": 3.2,
+        "actual_rate_p_per_litre": 57.95,
+        "rpi_counterfactual_rate_p_per_litre": 66.2533,
+        "gap_p_per_litre": 8.3033
+      },
+      {
+        "year": 2018,
+        "rpi_yoy_growth_pct": 2.6,
+        "actual_rate_p_per_litre": 57.95,
+        "rpi_counterfactual_rate_p_per_litre": 67.9759,
+        "gap_p_per_litre": 10.0259
+      },
+      {
+        "year": 2019,
+        "rpi_yoy_growth_pct": 2.2,
+        "actual_rate_p_per_litre": 57.95,
+        "rpi_counterfactual_rate_p_per_litre": 69.4713,
+        "gap_p_per_litre": 11.5213
+      },
+      {
+        "year": 2020,
+        "rpi_yoy_growth_pct": 0.3,
+        "actual_rate_p_per_litre": 57.95,
+        "rpi_counterfactual_rate_p_per_litre": 69.6798,
+        "gap_p_per_litre": 11.7298
+      },
+      {
+        "year": 2021,
+        "rpi_yoy_growth_pct": 5.9,
+        "actual_rate_p_per_litre": 57.95,
+        "rpi_counterfactual_rate_p_per_litre": 73.7909,
+        "gap_p_per_litre": 15.8409
+      },
+      {
+        "year": 2022,
+        "rpi_yoy_growth_pct": 11.58,
+        "actual_rate_p_per_litre": 52.95,
+        "rpi_counterfactual_rate_p_per_litre": 82.3358,
+        "gap_p_per_litre": 29.3858
+      },
+      {
+        "year": 2023,
+        "rpi_yoy_growth_pct": 9.69,
+        "actual_rate_p_per_litre": 52.95,
+        "rpi_counterfactual_rate_p_per_litre": 90.3142,
+        "gap_p_per_litre": 37.3642
+      },
+      {
+        "year": 2024,
+        "rpi_yoy_growth_pct": 3.59,
+        "actual_rate_p_per_litre": 52.95,
+        "rpi_counterfactual_rate_p_per_litre": 93.5565,
+        "gap_p_per_litre": 40.6065
+      },
+      {
+        "year": 2025,
+        "rpi_yoy_growth_pct": 4.1,
+        "actual_rate_p_per_litre": 52.95,
+        "rpi_counterfactual_rate_p_per_litre": 97.3923,
+        "gap_p_per_litre": 44.4423
+      },
+      {
+        "year": 2026,
+        "rpi_yoy_growth_pct": 3.1,
+        "actual_rate_p_per_litre": 54.3637,
+        "rpi_counterfactual_rate_p_per_litre": 100.4114,
+        "gap_p_per_litre": 46.0477
+      },
+      {
+        "year": 2027,
+        "rpi_yoy_growth_pct": 3.0,
+        "actual_rate_p_per_litre": 60.1,
+        "rpi_counterfactual_rate_p_per_litre": 103.4238,
+        "gap_p_per_litre": 43.3238
+      },
+      {
+        "year": 2028,
+        "rpi_yoy_growth_pct": 2.8,
+        "actual_rate_p_per_litre": 61.98,
+        "rpi_counterfactual_rate_p_per_litre": 106.3196,
+        "gap_p_per_litre": 44.3396
+      },
+      {
+        "year": 2029,
+        "rpi_yoy_growth_pct": 2.9,
+        "actual_rate_p_per_litre": 63.76,
+        "rpi_counterfactual_rate_p_per_litre": 109.4029,
+        "gap_p_per_litre": 45.6429
+      }
+    ],
+    "revenue_2010_2029": [
+      {
+        "year": 2010,
+        "fiscal_year": "2010-11",
+        "source": "HMRC out-turn",
+        "actual_rate_p_per_litre": 57.19,
+        "counterfactual_rate_p_per_litre": 57.19,
+        "actual_revenue_gbp_bn": 27.283,
+        "counterfactual_revenue_gbp_bn": 27.283,
+        "gap_gbp_bn": 0.0
+      },
+      {
+        "year": 2011,
+        "fiscal_year": "2011-12",
+        "source": "HMRC out-turn",
+        "actual_rate_p_per_litre": 57.95,
+        "counterfactual_rate_p_per_litre": 58.105,
+        "actual_revenue_gbp_bn": 26.798,
+        "counterfactual_revenue_gbp_bn": 26.8697,
+        "gap_gbp_bn": 0.0717
+      },
+      {
+        "year": 2012,
+        "fiscal_year": "2012-13",
+        "source": "HMRC out-turn",
+        "actual_rate_p_per_litre": 60.97,
+        "counterfactual_rate_p_per_litre": 58.5118,
+        "actual_revenue_gbp_bn": 26.571,
+        "counterfactual_revenue_gbp_bn": 25.4997,
+        "gap_gbp_bn": -1.0713
+      },
+      {
+        "year": 2013,
+        "fiscal_year": "2013-14",
+        "source": "HMRC out-turn",
+        "actual_rate_p_per_litre": 57.95,
+        "counterfactual_rate_p_per_litre": 61.2618,
+        "actual_revenue_gbp_bn": 26.881,
+        "counterfactual_revenue_gbp_bn": 28.4172,
+        "gap_gbp_bn": 1.5362
+      },
+      {
+        "year": 2014,
+        "fiscal_year": "2014-15",
+        "source": "HMRC out-turn",
+        "actual_rate_p_per_litre": 57.95,
+        "counterfactual_rate_p_per_litre": 61.6294,
+        "actual_revenue_gbp_bn": 27.153,
+        "counterfactual_revenue_gbp_bn": 28.877,
+        "gap_gbp_bn": 1.724
+      },
+      {
+        "year": 2015,
+        "fiscal_year": "2015-16",
+        "source": "HMRC out-turn",
+        "actual_rate_p_per_litre": 57.95,
+        "counterfactual_rate_p_per_litre": 62.862,
+        "actual_revenue_gbp_bn": 27.572,
+        "counterfactual_revenue_gbp_bn": 29.9091,
+        "gap_gbp_bn": 2.3371
+      },
+      {
+        "year": 2016,
+        "fiscal_year": "2016-17",
+        "source": "HMRC out-turn",
+        "actual_rate_p_per_litre": 57.95,
+        "counterfactual_rate_p_per_litre": 64.3707,
+        "actual_revenue_gbp_bn": 27.898,
+        "counterfactual_revenue_gbp_bn": 30.989,
+        "gap_gbp_bn": 3.091
+      },
+      {
+        "year": 2017,
+        "fiscal_year": "2017-18",
+        "source": "HMRC out-turn",
+        "actual_rate_p_per_litre": 57.95,
+        "counterfactual_rate_p_per_litre": 66.4305,
+        "actual_revenue_gbp_bn": 27.888,
+        "counterfactual_revenue_gbp_bn": 31.9692,
+        "gap_gbp_bn": 4.0812
+      },
+      {
+        "year": 2018,
+        "fiscal_year": "2018-19",
+        "source": "HMRC out-turn",
+        "actual_rate_p_per_litre": 57.95,
+        "counterfactual_rate_p_per_litre": 68.1577,
+        "actual_revenue_gbp_bn": 28.031,
+        "counterfactual_revenue_gbp_bn": 32.9686,
+        "gap_gbp_bn": 4.9376
+      },
+      {
+        "year": 2019,
+        "fiscal_year": "2019-20",
+        "source": "HMRC out-turn",
+        "actual_rate_p_per_litre": 57.95,
+        "counterfactual_rate_p_per_litre": 69.6572,
+        "actual_revenue_gbp_bn": 27.62,
+        "counterfactual_revenue_gbp_bn": 33.1999,
+        "gap_gbp_bn": 5.5799
+      },
+      {
+        "year": 2020,
+        "fiscal_year": "2020-21",
+        "source": "HMRC out-turn",
+        "actual_rate_p_per_litre": 57.95,
+        "counterfactual_rate_p_per_litre": 69.8662,
+        "actual_revenue_gbp_bn": 20.929,
+        "counterfactual_revenue_gbp_bn": 25.1342,
+        "gap_gbp_bn": 4.2052
+      },
+      {
+        "year": 2021,
+        "fiscal_year": "2021-22",
+        "source": "HMRC out-turn",
+        "actual_rate_p_per_litre": 57.95,
+        "counterfactual_rate_p_per_litre": 73.9883,
+        "actual_revenue_gbp_bn": 25.94,
+        "counterfactual_revenue_gbp_bn": 32.9819,
+        "gap_gbp_bn": 7.0419
+      },
+      {
+        "year": 2022,
+        "fiscal_year": "2022-23",
+        "source": "HMRC out-turn",
+        "actual_rate_p_per_litre": 52.95,
+        "counterfactual_rate_p_per_litre": 82.5561,
+        "actual_revenue_gbp_bn": 25.068,
+        "counterfactual_revenue_gbp_bn": 38.8804,
+        "gap_gbp_bn": 13.8124
+      },
+      {
+        "year": 2023,
+        "fiscal_year": "2023-24",
+        "source": "HMRC out-turn",
+        "actual_rate_p_per_litre": 52.95,
+        "counterfactual_rate_p_per_litre": 90.5558,
+        "actual_revenue_gbp_bn": 24.704,
+        "counterfactual_revenue_gbp_bn": 42.1481,
+        "gap_gbp_bn": 17.4441
+      },
+      {
+        "year": 2024,
+        "fiscal_year": "2024-25",
+        "source": "HMRC out-turn",
+        "actual_rate_p_per_litre": 52.95,
+        "counterfactual_rate_p_per_litre": 93.8068,
+        "actual_revenue_gbp_bn": 24.165,
+        "counterfactual_revenue_gbp_bn": 43.0928,
+        "gap_gbp_bn": 18.9278
+      },
+      {
+        "year": 2025,
+        "fiscal_year": "2025-26",
+        "source": "OBR March 2026 forecast",
+        "actual_rate_p_per_litre": 52.95,
+        "counterfactual_rate_p_per_litre": 97.6528,
+        "actual_revenue_gbp_bn": 24.2419,
+        "counterfactual_revenue_gbp_bn": 44.5391,
+        "gap_gbp_bn": 20.2972
+      },
+      {
+        "year": 2026,
+        "fiscal_year": "2026-27",
+        "source": "OBR March 2026 forecast",
+        "actual_rate_p_per_litre": 54.3637,
+        "counterfactual_rate_p_per_litre": 100.6801,
+        "actual_revenue_gbp_bn": 24.6286,
+        "counterfactual_revenue_gbp_bn": 45.3558,
+        "gap_gbp_bn": 20.7272
+      },
+      {
+        "year": 2027,
+        "fiscal_year": "2027-28",
+        "source": "OBR March 2026 forecast",
+        "actual_rate_p_per_litre": 60.1,
+        "counterfactual_rate_p_per_litre": 103.7005,
+        "actual_revenue_gbp_bn": 26.5456,
+        "counterfactual_revenue_gbp_bn": 45.5859,
+        "gap_gbp_bn": 19.0403
+      },
+      {
+        "year": 2028,
+        "fiscal_year": "2028-29",
+        "source": "OBR March 2026 forecast",
+        "actual_rate_p_per_litre": 61.98,
+        "counterfactual_rate_p_per_litre": 106.6041,
+        "actual_revenue_gbp_bn": 26.6358,
+        "counterfactual_revenue_gbp_bn": 45.5969,
+        "gap_gbp_bn": 18.9611
+      },
+      {
+        "year": 2029,
+        "fiscal_year": "2029-30",
+        "source": "OBR March 2026 forecast",
+        "actual_rate_p_per_litre": 63.76,
+        "counterfactual_rate_p_per_litre": 109.6956,
+        "actual_revenue_gbp_bn": 26.3821,
+        "counterfactual_revenue_gbp_bn": 45.1728,
+        "gap_gbp_bn": 18.7907
+      }
+    ]
+  },
+  "distribution": {
+    "default_year": 2027,
+    "years": [
+      2026,
+      2027,
+      2028,
+      2029
+    ],
+    "deciles": [
+      {
+        "group": "D1",
+        "avg_saving_gbp_per_year": 57.06,
+        "avg_net_income_gbp": 28374.28,
+        "saving_pct_of_net_income": 0.201,
+        "pct_winners": 45.79,
+        "pct_unchanged": 54.21
+      },
+      {
+        "group": "D2",
+        "avg_saving_gbp_per_year": 79.09,
+        "avg_net_income_gbp": 39194.77,
+        "saving_pct_of_net_income": 0.202,
+        "pct_winners": 52.83,
+        "pct_unchanged": 47.17
+      },
+      {
+        "group": "D3",
+        "avg_saving_gbp_per_year": 56.31,
+        "avg_net_income_gbp": 45478.95,
+        "saving_pct_of_net_income": 0.124,
+        "pct_winners": 50.58,
+        "pct_unchanged": 49.42
+      },
+      {
+        "group": "D4",
+        "avg_saving_gbp_per_year": 98.36,
+        "avg_net_income_gbp": 46334.87,
+        "saving_pct_of_net_income": 0.212,
+        "pct_winners": 55.54,
+        "pct_unchanged": 44.46
+      },
+      {
+        "group": "D5",
+        "avg_saving_gbp_per_year": 71.87,
+        "avg_net_income_gbp": 51372.36,
+        "saving_pct_of_net_income": 0.14,
+        "pct_winners": 52.32,
+        "pct_unchanged": 47.68
+      },
+      {
+        "group": "D6",
+        "avg_saving_gbp_per_year": 93.79,
+        "avg_net_income_gbp": 63295.7,
+        "saving_pct_of_net_income": 0.148,
+        "pct_winners": 66.51,
+        "pct_unchanged": 33.49
+      },
+      {
+        "group": "D7",
+        "avg_saving_gbp_per_year": 105.6,
+        "avg_net_income_gbp": 63815.86,
+        "saving_pct_of_net_income": 0.165,
+        "pct_winners": 67.76,
+        "pct_unchanged": 32.24
+      },
+      {
+        "group": "D8",
+        "avg_saving_gbp_per_year": 105.99,
+        "avg_net_income_gbp": 78748.82,
+        "saving_pct_of_net_income": 0.135,
+        "pct_winners": 65.64,
+        "pct_unchanged": 34.36
+      },
+      {
+        "group": "D9",
+        "avg_saving_gbp_per_year": 160.64,
+        "avg_net_income_gbp": 89687.38,
+        "saving_pct_of_net_income": 0.179,
+        "pct_winners": 73.94,
+        "pct_unchanged": 26.06
+      },
+      {
+        "group": "D10",
+        "avg_saving_gbp_per_year": 160.94,
+        "avg_net_income_gbp": 152464.31,
+        "saving_pct_of_net_income": 0.106,
+        "pct_winners": 71.42,
+        "pct_unchanged": 28.58
+      }
+    ],
+    "quintiles": [
+      {
+        "group": "Q1",
+        "avg_saving_gbp_per_year": 68.08,
+        "avg_net_income_gbp": 33784.46,
+        "saving_pct_of_net_income": 0.202,
+        "pct_winners": 49.31,
+        "pct_unchanged": 50.69
+      },
+      {
+        "group": "Q2",
+        "avg_saving_gbp_per_year": 77.37,
+        "avg_net_income_gbp": 45907.67,
+        "saving_pct_of_net_income": 0.169,
+        "pct_winners": 53.06,
+        "pct_unchanged": 46.94
+      },
+      {
+        "group": "Q3",
+        "avg_saving_gbp_per_year": 82.86,
+        "avg_net_income_gbp": 57345.68,
+        "saving_pct_of_net_income": 0.144,
+        "pct_winners": 59.43,
+        "pct_unchanged": 40.57
+      },
+      {
+        "group": "Q4",
+        "avg_saving_gbp_per_year": 105.79,
+        "avg_net_income_gbp": 71276.83,
+        "saving_pct_of_net_income": 0.148,
+        "pct_winners": 66.7,
+        "pct_unchanged": 33.3
+      },
+      {
+        "group": "Q5",
+        "avg_saving_gbp_per_year": 160.79,
+        "avg_net_income_gbp": 121122.89,
+        "saving_pct_of_net_income": 0.133,
+        "pct_winners": 72.68,
+        "pct_unchanged": 27.32
+      }
+    ],
+    "quartiles": [
+      {
+        "group": "Q1",
+        "avg_saving_gbp_per_year": 64.79,
+        "avg_net_income_gbp": 35637.08,
+        "saving_pct_of_net_income": 0.182,
+        "pct_winners": 48.19,
+        "pct_unchanged": 51.81
+      },
+      {
+        "group": "Q2",
+        "avg_saving_gbp_per_year": 80.31,
+        "avg_net_income_gbp": 48644.5,
+        "saving_pct_of_net_income": 0.165,
+        "pct_winners": 54.63,
+        "pct_unchanged": 45.37
+      },
+      {
+        "group": "Q3",
+        "avg_saving_gbp_per_year": 104.38,
+        "avg_net_income_gbp": 64701.68,
+        "saving_pct_of_net_income": 0.161,
+        "pct_winners": 66.63,
+        "pct_unchanged": 33.37
+      },
+      {
+        "group": "Q4",
+        "avg_saving_gbp_per_year": 146.37,
+        "avg_net_income_gbp": 114502.67,
+        "saving_pct_of_net_income": 0.128,
+        "pct_winners": 71.47,
+        "pct_unchanged": 28.53
+      }
+    ],
+    "deciles_by_year": {
+      "2026": [
+        {
+          "group": "D1",
+          "avg_saving_gbp_per_year": 11.61,
+          "avg_net_income_gbp": 27991.77,
+          "saving_pct_of_net_income": 0.041,
+          "pct_winners": 45.7,
+          "pct_unchanged": 54.3
+        },
+        {
+          "group": "D2",
+          "avg_saving_gbp_per_year": 16.13,
+          "avg_net_income_gbp": 38537.89,
+          "saving_pct_of_net_income": 0.042,
+          "pct_winners": 52.79,
+          "pct_unchanged": 47.21
+        },
+        {
+          "group": "D3",
+          "avg_saving_gbp_per_year": 11.44,
+          "avg_net_income_gbp": 45181.29,
+          "saving_pct_of_net_income": 0.025,
+          "pct_winners": 51.0,
+          "pct_unchanged": 49.0
+        },
+        {
+          "group": "D4",
+          "avg_saving_gbp_per_year": 19.87,
+          "avg_net_income_gbp": 45248.49,
+          "saving_pct_of_net_income": 0.044,
+          "pct_winners": 54.92,
+          "pct_unchanged": 45.08
+        },
+        {
+          "group": "D5",
+          "avg_saving_gbp_per_year": 14.58,
+          "avg_net_income_gbp": 50359.31,
+          "saving_pct_of_net_income": 0.029,
+          "pct_winners": 52.51,
+          "pct_unchanged": 47.49
+        },
+        {
+          "group": "D6",
+          "avg_saving_gbp_per_year": 19.23,
+          "avg_net_income_gbp": 62075.05,
+          "saving_pct_of_net_income": 0.031,
+          "pct_winners": 67.25,
+          "pct_unchanged": 32.75
+        },
+        {
+          "group": "D7",
+          "avg_saving_gbp_per_year": 20.97,
+          "avg_net_income_gbp": 62728.09,
+          "saving_pct_of_net_income": 0.033,
+          "pct_winners": 66.73,
+          "pct_unchanged": 33.27
+        },
+        {
+          "group": "D8",
+          "avg_saving_gbp_per_year": 22.12,
+          "avg_net_income_gbp": 77173.76,
+          "saving_pct_of_net_income": 0.029,
+          "pct_winners": 66.16,
+          "pct_unchanged": 33.84
+        },
+        {
+          "group": "D9",
+          "avg_saving_gbp_per_year": 32.45,
+          "avg_net_income_gbp": 88402.25,
+          "saving_pct_of_net_income": 0.037,
+          "pct_winners": 73.84,
+          "pct_unchanged": 26.16
+        },
+        {
+          "group": "D10",
+          "avg_saving_gbp_per_year": 32.9,
+          "avg_net_income_gbp": 149420.58,
+          "saving_pct_of_net_income": 0.022,
+          "pct_winners": 71.49,
+          "pct_unchanged": 28.51
+        }
+      ],
+      "2027": [
+        {
+          "group": "D1",
+          "avg_saving_gbp_per_year": 57.06,
+          "avg_net_income_gbp": 28374.28,
+          "saving_pct_of_net_income": 0.201,
+          "pct_winners": 45.79,
+          "pct_unchanged": 54.21
+        },
+        {
+          "group": "D2",
+          "avg_saving_gbp_per_year": 79.09,
+          "avg_net_income_gbp": 39194.77,
+          "saving_pct_of_net_income": 0.202,
+          "pct_winners": 52.83,
+          "pct_unchanged": 47.17
+        },
+        {
+          "group": "D3",
+          "avg_saving_gbp_per_year": 56.31,
+          "avg_net_income_gbp": 45478.95,
+          "saving_pct_of_net_income": 0.124,
+          "pct_winners": 50.58,
+          "pct_unchanged": 49.42
+        },
+        {
+          "group": "D4",
+          "avg_saving_gbp_per_year": 98.36,
+          "avg_net_income_gbp": 46334.87,
+          "saving_pct_of_net_income": 0.212,
+          "pct_winners": 55.54,
+          "pct_unchanged": 44.46
+        },
+        {
+          "group": "D5",
+          "avg_saving_gbp_per_year": 71.87,
+          "avg_net_income_gbp": 51372.36,
+          "saving_pct_of_net_income": 0.14,
+          "pct_winners": 52.32,
+          "pct_unchanged": 47.68
+        },
+        {
+          "group": "D6",
+          "avg_saving_gbp_per_year": 93.79,
+          "avg_net_income_gbp": 63295.7,
+          "saving_pct_of_net_income": 0.148,
+          "pct_winners": 66.51,
+          "pct_unchanged": 33.49
+        },
+        {
+          "group": "D7",
+          "avg_saving_gbp_per_year": 105.6,
+          "avg_net_income_gbp": 63815.86,
+          "saving_pct_of_net_income": 0.165,
+          "pct_winners": 67.76,
+          "pct_unchanged": 32.24
+        },
+        {
+          "group": "D8",
+          "avg_saving_gbp_per_year": 105.99,
+          "avg_net_income_gbp": 78748.82,
+          "saving_pct_of_net_income": 0.135,
+          "pct_winners": 65.64,
+          "pct_unchanged": 34.36
+        },
+        {
+          "group": "D9",
+          "avg_saving_gbp_per_year": 160.64,
+          "avg_net_income_gbp": 89687.38,
+          "saving_pct_of_net_income": 0.179,
+          "pct_winners": 73.94,
+          "pct_unchanged": 26.06
+        },
+        {
+          "group": "D10",
+          "avg_saving_gbp_per_year": 160.94,
+          "avg_net_income_gbp": 152464.31,
+          "saving_pct_of_net_income": 0.106,
+          "pct_winners": 71.42,
+          "pct_unchanged": 28.58
+        }
+      ],
+      "2028": [
+        {
+          "group": "D1",
+          "avg_saving_gbp_per_year": 69.6,
+          "avg_net_income_gbp": 28546.9,
+          "saving_pct_of_net_income": 0.244,
+          "pct_winners": 45.28,
+          "pct_unchanged": 54.72
+        },
+        {
+          "group": "D2",
+          "avg_saving_gbp_per_year": 96.41,
+          "avg_net_income_gbp": 39786.29,
+          "saving_pct_of_net_income": 0.242,
+          "pct_winners": 52.97,
+          "pct_unchanged": 47.03
+        },
+        {
+          "group": "D3",
+          "avg_saving_gbp_per_year": 70.89,
+          "avg_net_income_gbp": 46079.47,
+          "saving_pct_of_net_income": 0.154,
+          "pct_winners": 52.66,
+          "pct_unchanged": 47.34
+        },
+        {
+          "group": "D4",
+          "avg_saving_gbp_per_year": 119.0,
+          "avg_net_income_gbp": 47429.39,
+          "saving_pct_of_net_income": 0.251,
+          "pct_winners": 54.07,
+          "pct_unchanged": 45.93
+        },
+        {
+          "group": "D5",
+          "avg_saving_gbp_per_year": 88.65,
+          "avg_net_income_gbp": 52294.31,
+          "saving_pct_of_net_income": 0.17,
+          "pct_winners": 52.09,
+          "pct_unchanged": 47.91
+        },
+        {
+          "group": "D6",
+          "avg_saving_gbp_per_year": 112.98,
+          "avg_net_income_gbp": 65179.61,
+          "saving_pct_of_net_income": 0.173,
+          "pct_winners": 65.4,
+          "pct_unchanged": 34.6
+        },
+        {
+          "group": "D7",
+          "avg_saving_gbp_per_year": 129.98,
+          "avg_net_income_gbp": 64131.39,
+          "saving_pct_of_net_income": 0.203,
+          "pct_winners": 68.63,
+          "pct_unchanged": 31.37
+        },
+        {
+          "group": "D8",
+          "avg_saving_gbp_per_year": 132.21,
+          "avg_net_income_gbp": 80490.15,
+          "saving_pct_of_net_income": 0.164,
+          "pct_winners": 67.19,
+          "pct_unchanged": 32.81
+        },
+        {
+          "group": "D9",
+          "avg_saving_gbp_per_year": 193.67,
+          "avg_net_income_gbp": 90622.73,
+          "saving_pct_of_net_income": 0.214,
+          "pct_winners": 72.44,
+          "pct_unchanged": 27.56
+        },
+        {
+          "group": "D10",
+          "avg_saving_gbp_per_year": 197.3,
+          "avg_net_income_gbp": 155774.41,
+          "saving_pct_of_net_income": 0.127,
+          "pct_winners": 71.53,
+          "pct_unchanged": 28.47
+        }
+      ],
+      "2029": [
+        {
+          "group": "D1",
+          "avg_saving_gbp_per_year": 79.7,
+          "avg_net_income_gbp": 29000.92,
+          "saving_pct_of_net_income": 0.275,
+          "pct_winners": 45.02,
+          "pct_unchanged": 54.98
+        },
+        {
+          "group": "D2",
+          "avg_saving_gbp_per_year": 110.42,
+          "avg_net_income_gbp": 40288.55,
+          "saving_pct_of_net_income": 0.274,
+          "pct_winners": 52.92,
+          "pct_unchanged": 47.08
+        },
+        {
+          "group": "D3",
+          "avg_saving_gbp_per_year": 81.97,
+          "avg_net_income_gbp": 46753.86,
+          "saving_pct_of_net_income": 0.175,
+          "pct_winners": 52.89,
+          "pct_unchanged": 47.11
+        },
+        {
+          "group": "D4",
+          "avg_saving_gbp_per_year": 134.66,
+          "avg_net_income_gbp": 48351.3,
+          "saving_pct_of_net_income": 0.279,
+          "pct_winners": 53.12,
+          "pct_unchanged": 46.88
+        },
+        {
+          "group": "D5",
+          "avg_saving_gbp_per_year": 105.12,
+          "avg_net_income_gbp": 53000.04,
+          "saving_pct_of_net_income": 0.198,
+          "pct_winners": 53.23,
+          "pct_unchanged": 46.77
+        },
+        {
+          "group": "D6",
+          "avg_saving_gbp_per_year": 131.56,
+          "avg_net_income_gbp": 66457.91,
+          "saving_pct_of_net_income": 0.198,
+          "pct_winners": 65.56,
+          "pct_unchanged": 34.44
+        },
+        {
+          "group": "D7",
+          "avg_saving_gbp_per_year": 148.43,
+          "avg_net_income_gbp": 64932.09,
+          "saving_pct_of_net_income": 0.229,
+          "pct_winners": 68.47,
+          "pct_unchanged": 31.53
+        },
+        {
+          "group": "D8",
+          "avg_saving_gbp_per_year": 152.58,
+          "avg_net_income_gbp": 81928.86,
+          "saving_pct_of_net_income": 0.186,
+          "pct_winners": 66.89,
+          "pct_unchanged": 33.11
+        },
+        {
+          "group": "D9",
+          "avg_saving_gbp_per_year": 216.87,
+          "avg_net_income_gbp": 92133.59,
+          "saving_pct_of_net_income": 0.235,
+          "pct_winners": 72.44,
+          "pct_unchanged": 27.56
+        },
+        {
+          "group": "D10",
+          "avg_saving_gbp_per_year": 228.42,
+          "avg_net_income_gbp": 157521.55,
+          "saving_pct_of_net_income": 0.145,
+          "pct_winners": 71.78,
+          "pct_unchanged": 28.22
+        }
+      ]
+    },
+    "quintiles_by_year": {
+      "2026": [
+        {
+          "group": "Q1",
+          "avg_saving_gbp_per_year": 13.87,
+          "avg_net_income_gbp": 33264.68,
+          "saving_pct_of_net_income": 0.042,
+          "pct_winners": 49.24,
+          "pct_unchanged": 50.76
+        },
+        {
+          "group": "Q2",
+          "avg_saving_gbp_per_year": 15.66,
+          "avg_net_income_gbp": 45214.88,
+          "saving_pct_of_net_income": 0.035,
+          "pct_winners": 52.96,
+          "pct_unchanged": 47.04
+        },
+        {
+          "group": "Q3",
+          "avg_saving_gbp_per_year": 16.91,
+          "avg_net_income_gbp": 56216.37,
+          "saving_pct_of_net_income": 0.03,
+          "pct_winners": 59.88,
+          "pct_unchanged": 40.12
+        },
+        {
+          "group": "Q4",
+          "avg_saving_gbp_per_year": 21.54,
+          "avg_net_income_gbp": 69959.09,
+          "saving_pct_of_net_income": 0.031,
+          "pct_winners": 66.45,
+          "pct_unchanged": 33.55
+        },
+        {
+          "group": "Q5",
+          "avg_saving_gbp_per_year": 32.68,
+          "avg_net_income_gbp": 119048.69,
+          "saving_pct_of_net_income": 0.027,
+          "pct_winners": 72.66,
+          "pct_unchanged": 27.34
+        }
+      ],
+      "2027": [
+        {
+          "group": "Q1",
+          "avg_saving_gbp_per_year": 68.08,
+          "avg_net_income_gbp": 33784.46,
+          "saving_pct_of_net_income": 0.202,
+          "pct_winners": 49.31,
+          "pct_unchanged": 50.69
+        },
+        {
+          "group": "Q2",
+          "avg_saving_gbp_per_year": 77.37,
+          "avg_net_income_gbp": 45907.67,
+          "saving_pct_of_net_income": 0.169,
+          "pct_winners": 53.06,
+          "pct_unchanged": 46.94
+        },
+        {
+          "group": "Q3",
+          "avg_saving_gbp_per_year": 82.86,
+          "avg_net_income_gbp": 57345.68,
+          "saving_pct_of_net_income": 0.144,
+          "pct_winners": 59.43,
+          "pct_unchanged": 40.57
+        },
+        {
+          "group": "Q4",
+          "avg_saving_gbp_per_year": 105.79,
+          "avg_net_income_gbp": 71276.83,
+          "saving_pct_of_net_income": 0.148,
+          "pct_winners": 66.7,
+          "pct_unchanged": 33.3
+        },
+        {
+          "group": "Q5",
+          "avg_saving_gbp_per_year": 160.79,
+          "avg_net_income_gbp": 121122.89,
+          "saving_pct_of_net_income": 0.133,
+          "pct_winners": 72.68,
+          "pct_unchanged": 27.32
+        }
+      ],
+      "2028": [
+        {
+          "group": "Q1",
+          "avg_saving_gbp_per_year": 83.01,
+          "avg_net_income_gbp": 34170.08,
+          "saving_pct_of_net_income": 0.243,
+          "pct_winners": 49.13,
+          "pct_unchanged": 50.87
+        },
+        {
+          "group": "Q2",
+          "avg_saving_gbp_per_year": 94.95,
+          "avg_net_income_gbp": 46754.43,
+          "saving_pct_of_net_income": 0.203,
+          "pct_winners": 53.36,
+          "pct_unchanged": 46.64
+        },
+        {
+          "group": "Q3",
+          "avg_saving_gbp_per_year": 100.66,
+          "avg_net_income_gbp": 58654.21,
+          "saving_pct_of_net_income": 0.172,
+          "pct_winners": 58.66,
+          "pct_unchanged": 41.34
+        },
+        {
+          "group": "Q4",
+          "avg_saving_gbp_per_year": 131.07,
+          "avg_net_income_gbp": 72187.25,
+          "saving_pct_of_net_income": 0.182,
+          "pct_winners": 67.92,
+          "pct_unchanged": 32.08
+        },
+        {
+          "group": "Q5",
+          "avg_saving_gbp_per_year": 195.48,
+          "avg_net_income_gbp": 123098.16,
+          "saving_pct_of_net_income": 0.159,
+          "pct_winners": 71.99,
+          "pct_unchanged": 28.01
+        }
+      ],
+      "2029": [
+        {
+          "group": "Q1",
+          "avg_saving_gbp_per_year": 95.07,
+          "avg_net_income_gbp": 34647.66,
+          "saving_pct_of_net_income": 0.274,
+          "pct_winners": 48.97,
+          "pct_unchanged": 51.03
+        },
+        {
+          "group": "Q2",
+          "avg_saving_gbp_per_year": 108.27,
+          "avg_net_income_gbp": 47551.16,
+          "saving_pct_of_net_income": 0.228,
+          "pct_winners": 53.0,
+          "pct_unchanged": 47.0
+        },
+        {
+          "group": "Q3",
+          "avg_saving_gbp_per_year": 118.21,
+          "avg_net_income_gbp": 59662.58,
+          "saving_pct_of_net_income": 0.198,
+          "pct_winners": 59.33,
+          "pct_unchanged": 40.67
+        },
+        {
+          "group": "Q4",
+          "avg_saving_gbp_per_year": 150.49,
+          "avg_net_income_gbp": 73363.61,
+          "saving_pct_of_net_income": 0.205,
+          "pct_winners": 67.69,
+          "pct_unchanged": 32.31
+        },
+        {
+          "group": "Q5",
+          "avg_saving_gbp_per_year": 222.7,
+          "avg_net_income_gbp": 125123.53,
+          "saving_pct_of_net_income": 0.178,
+          "pct_winners": 72.11,
+          "pct_unchanged": 27.89
+        }
+      ]
+    },
+    "quartiles_by_year": {
+      "2026": [
+        {
+          "group": "Q1",
+          "avg_saving_gbp_per_year": 13.17,
+          "avg_net_income_gbp": 35114.92,
+          "saving_pct_of_net_income": 0.038,
+          "pct_winners": 48.31,
+          "pct_unchanged": 51.69
+        },
+        {
+          "group": "Q2",
+          "avg_saving_gbp_per_year": 16.28,
+          "avg_net_income_gbp": 47808.67,
+          "saving_pct_of_net_income": 0.034,
+          "pct_winners": 54.46,
+          "pct_unchanged": 45.54
+        },
+        {
+          "group": "Q3",
+          "avg_saving_gbp_per_year": 21.32,
+          "avg_net_income_gbp": 63542.5,
+          "saving_pct_of_net_income": 0.034,
+          "pct_winners": 66.69,
+          "pct_unchanged": 33.31
+        },
+        {
+          "group": "Q4",
+          "avg_saving_gbp_per_year": 29.74,
+          "avg_net_income_gbp": 112479.07,
+          "saving_pct_of_net_income": 0.026,
+          "pct_winners": 71.49,
+          "pct_unchanged": 28.51
+        }
+      ],
+      "2027": [
+        {
+          "group": "Q1",
+          "avg_saving_gbp_per_year": 64.79,
+          "avg_net_income_gbp": 35637.08,
+          "saving_pct_of_net_income": 0.182,
+          "pct_winners": 48.19,
+          "pct_unchanged": 51.81
+        },
+        {
+          "group": "Q2",
+          "avg_saving_gbp_per_year": 80.31,
+          "avg_net_income_gbp": 48644.5,
+          "saving_pct_of_net_income": 0.165,
+          "pct_winners": 54.63,
+          "pct_unchanged": 45.37
+        },
+        {
+          "group": "Q3",
+          "avg_saving_gbp_per_year": 104.38,
+          "avg_net_income_gbp": 64701.68,
+          "saving_pct_of_net_income": 0.161,
+          "pct_winners": 66.63,
+          "pct_unchanged": 33.37
+        },
+        {
+          "group": "Q4",
+          "avg_saving_gbp_per_year": 146.37,
+          "avg_net_income_gbp": 114502.67,
+          "saving_pct_of_net_income": 0.128,
+          "pct_winners": 71.47,
+          "pct_unchanged": 28.53
+        }
+      ],
+      "2028": [
+        {
+          "group": "Q1",
+          "avg_saving_gbp_per_year": 76.97,
+          "avg_net_income_gbp": 36058.67,
+          "saving_pct_of_net_income": 0.213,
+          "pct_winners": 48.26,
+          "pct_unchanged": 51.74
+        },
+        {
+          "group": "Q2",
+          "avg_saving_gbp_per_year": 100.85,
+          "avg_net_income_gbp": 49595.29,
+          "saving_pct_of_net_income": 0.203,
+          "pct_winners": 54.56,
+          "pct_unchanged": 45.44
+        },
+        {
+          "group": "Q3",
+          "avg_saving_gbp_per_year": 124.15,
+          "avg_net_income_gbp": 65829.68,
+          "saving_pct_of_net_income": 0.189,
+          "pct_winners": 66.69,
+          "pct_unchanged": 33.31
+        },
+        {
+          "group": "Q4",
+          "avg_saving_gbp_per_year": 182.53,
+          "avg_net_income_gbp": 116584.47,
+          "saving_pct_of_net_income": 0.157,
+          "pct_winners": 71.43,
+          "pct_unchanged": 28.57
+        }
+      ],
+      "2029": [
+        {
+          "group": "Q1",
+          "avg_saving_gbp_per_year": 88.25,
+          "avg_net_income_gbp": 36680.87,
+          "saving_pct_of_net_income": 0.241,
+          "pct_winners": 48.18,
+          "pct_unchanged": 51.82
+        },
+        {
+          "group": "Q2",
+          "avg_saving_gbp_per_year": 116.43,
+          "avg_net_income_gbp": 50269.91,
+          "saving_pct_of_net_income": 0.232,
+          "pct_winners": 54.69,
+          "pct_unchanged": 45.31
+        },
+        {
+          "group": "Q3",
+          "avg_saving_gbp_per_year": 141.76,
+          "avg_net_income_gbp": 66929.35,
+          "saving_pct_of_net_income": 0.212,
+          "pct_winners": 66.68,
+          "pct_unchanged": 33.32
+        },
+        {
+          "group": "Q4",
+          "avg_saving_gbp_per_year": 209.46,
+          "avg_net_income_gbp": 118421.7,
+          "saving_pct_of_net_income": 0.177,
+          "pct_winners": 71.38,
+          "pct_unchanged": 28.62
+        }
+      ]
+    }
+  }
+}

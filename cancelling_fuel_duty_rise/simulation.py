@@ -95,6 +95,11 @@ class Results:
     quartiles: pd.DataFrame
     quintiles: pd.DataFrame
     deciles: pd.DataFrame
+    # Same cuts, repeated for every year in the reform window.
+    quartiles_by_year: dict[int, pd.DataFrame]
+    quintiles_by_year: dict[int, pd.DataFrame]
+    deciles_by_year: dict[int, pd.DataFrame]
+    distribution_years: list[int]
     headline: dict
     policyengine_version: str
     citation: str
@@ -287,11 +292,28 @@ def compute_all(
         - revenue_2010_2029["actual_revenue_gbp_bn"]
     ).round(4)
 
-    quartiles, quintiles, deciles = _distributional_cuts(
-        baseline_sim=baseline_sim,
-        year_dist=year_dist,
-        duty_rate_gap=actual_rate[year_dist] - post_cut_rate,
+    distribution_years = sorted(
+        year for year in data_years if actual_rate[year] > post_cut_rate
     )
+    if year_dist not in distribution_years:
+        distribution_years = sorted(set(distribution_years) | {year_dist})
+
+    quartiles_by_year: dict[int, pd.DataFrame] = {}
+    quintiles_by_year: dict[int, pd.DataFrame] = {}
+    deciles_by_year: dict[int, pd.DataFrame] = {}
+    for year in distribution_years:
+        q4, q5, d10 = _distributional_cuts(
+            baseline_sim=baseline_sim,
+            year_dist=year,
+            duty_rate_gap=actual_rate[year] - post_cut_rate,
+        )
+        quartiles_by_year[year] = q4
+        quintiles_by_year[year] = q5
+        deciles_by_year[year] = d10
+
+    quartiles = quartiles_by_year[year_dist]
+    quintiles = quintiles_by_year[year_dist]
+    deciles = deciles_by_year[year_dist]
 
     headline = {
         "guardian_2026": float(
@@ -369,6 +391,10 @@ def compute_all(
         quartiles=quartiles,
         quintiles=quintiles,
         deciles=deciles,
+        quartiles_by_year=quartiles_by_year,
+        quintiles_by_year=quintiles_by_year,
+        deciles_by_year=deciles_by_year,
+        distribution_years=distribution_years,
         headline=headline,
         policyengine_version=pe_version,
         citation=citation,
@@ -447,10 +473,12 @@ def _distributional_cuts(
         )
         saving_by_group = saving.groupby(idx).mean()
         income_by_group = net_income.groupby(idx).mean()
+        winners_by_group = (saving > 0).groupby(idx).mean() * 100
         rows = []
         for group in range(1, n + 1):
             saving_value = saving_by_group[group]
             income_value = income_by_group[group]
+            pct_winners = float(winners_by_group[group])
             rows.append(
                 {
                     "group": f"{prefix}{group}",
@@ -459,6 +487,8 @@ def _distributional_cuts(
                     "saving_pct_of_net_income": round(
                         100 * saving_value / income_value, 3
                     ),
+                    "pct_winners": round(pct_winners, 2),
+                    "pct_unchanged": round(100 - pct_winners, 2),
                 }
             )
         return pd.DataFrame(rows)

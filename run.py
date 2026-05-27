@@ -18,7 +18,7 @@ from __future__ import annotations
 
 from pathlib import Path
 
-from cancelling_fuel_duty_rise import build_docx, build_html, build_xlsx
+from cancelling_fuel_duty_rise import build_docx, build_html, build_json, build_xlsx
 from cancelling_fuel_duty_rise.charts import (
     annual_cost_chart,
     distributional_chart,
@@ -51,6 +51,9 @@ def main() -> None:
 
     print("Building XLSX workbook...")
     build_xlsx.build(RESULTS_DIR / "analysis.xlsx")
+
+    print("Writing dashboard JSON snapshot...")
+    build_json.build(RESULTS_DIR / "fuel_duty_results.json", sync_dashboard=True)
 
     print("Saving individual charts as PNG...")
     h = r.headline
