@@ -50,6 +50,26 @@
       { "Year": 2028, "Revenue at 52.95p (£bn)": 23.88, "Revenue at 57.95p (£bn)": 26.14, "Cost of keeping 5p cut (£bn)": 2.26 },
       { "Year": 2029, "Revenue at 52.95p (£bn)": 24.48, "Revenue at 57.95p (£bn)": 26.80, "Cost of keeping 5p cut (£bn)": 2.31 }
     ],
+    "rate_history": [
+      { "date": "2010-04-01", "rate_per_litre_gbp": 0.5719, "rate_pence_per_litre": 57.19 },
+      { "date": "2010-10-01", "rate_per_litre_gbp": 0.5819, "rate_pence_per_litre": 58.19 },
+      { "date": "2011-01-01", "rate_per_litre_gbp": 0.5895, "rate_pence_per_litre": 58.95 },
+      { "date": "2011-03-23", "rate_per_litre_gbp": 0.5795, "rate_pence_per_litre": 57.95 },
+      { "date": "2012-01-01", "rate_per_litre_gbp": 0.6097, "rate_pence_per_litre": 60.97 },
+      { "date": "2013-04-01", "rate_per_litre_gbp": 0.5795, "rate_pence_per_litre": 57.95 },
+      { "date": "2022-01-01", "rate_per_litre_gbp": 0.5295, "rate_pence_per_litre": 52.95 },
+      { "date": "2026-01-01", "rate_per_litre_gbp": 0.5345, "rate_pence_per_litre": 53.45 },
+      { "date": "2027-01-01", "rate_per_litre_gbp": 0.5925, "rate_pence_per_litre": 59.25 },
+      { "date": "2028-01-01", "rate_per_litre_gbp": 0.6151, "rate_pence_per_litre": 61.51 },
+      { "date": "2029-01-01", "rate_per_litre_gbp": 0.6332, "rate_pence_per_litre": 63.32 },
+      { "date": "2030-01-01", "rate_per_litre_gbp": 0.6516, "rate_pence_per_litre": 65.16 }
+    ],
+    "litre_check": [
+      { "Year": 2026, "PolicyEngine litres (bn)": 49.95, "HMRC/OBR litres (bn)": 44.00, "PolicyEngine / HMRC-OBR": 1.135, "Duty-rate gap (p/L)": 0.50, "PolicyEngine cost (£bn)": 0.25, "HMRC/OBR cost (£bn)": 0.22 },
+      { "Year": 2027, "PolicyEngine litres (bn)": 49.52, "HMRC/OBR litres (bn)": 43.97, "PolicyEngine / HMRC-OBR": 1.126, "Duty-rate gap (p/L)": 6.30, "PolicyEngine cost (£bn)": 3.12, "HMRC/OBR cost (£bn)": 2.77 },
+      { "Year": 2028, "PolicyEngine litres (bn)": 49.10, "HMRC/OBR litres (bn)": 43.95, "PolicyEngine / HMRC-OBR": 1.117, "Duty-rate gap (p/L)": 8.56, "PolicyEngine cost (£bn)": 4.20, "HMRC/OBR cost (£bn)": 3.86 },
+      { "Year": 2029, "PolicyEngine litres (bn)": 48.62, "HMRC/OBR litres (bn)": 43.92, "PolicyEngine / HMRC-OBR": 1.107, "Duty-rate gap (p/L)": 10.37, "PolicyEngine cost (£bn)": 5.04, "HMRC/OBR cost (£bn)": 4.79 }
+    ],
     "rate_path": [
       { "year": 2011, "rpi_yoy_growth_pct": 1.6,   "actual_rate_p_per_litre": 57.95, "rpi_counterfactual_rate_p_per_litre": 57.95,   "gap_p_per_litre": 0.0 },
       { "year": 2012, "rpi_yoy_growth_pct": 0.7,   "actual_rate_p_per_litre": 60.97, "rpi_counterfactual_rate_p_per_litre": 58.3556, "gap_p_per_litre": -2.6144 },

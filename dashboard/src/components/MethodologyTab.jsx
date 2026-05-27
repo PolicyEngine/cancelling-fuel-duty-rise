@@ -1,4 +1,10 @@
-import { fyLabel, getCitation, getMethodNote } from "../lib/dataHelpers";
+import {
+  fyLabel,
+  getCitation,
+  getLitreCheck,
+  getMethodNote,
+  getRateHistory,
+} from "../lib/dataHelpers";
 
 export default function MethodologyTab({ data }) {
   const firstFreeze = data.headline.first_freeze_year;
@@ -7,6 +13,8 @@ export default function MethodologyTab({ data }) {
   const peVersion = data.model_versions.policyengine;
   const citation = getCitation(data);
   const methodNote = getMethodNote(data);
+  const litreCheck = getLitreCheck(data);
+  const rateHistory = getRateHistory(data);
 
   return (
     <div className="space-y-8">
@@ -163,6 +171,82 @@ export default function MethodologyTab({ data }) {
         <div className="eyebrow note-eyebrow">ITV methodology note</div>
         <p className="mt-2 text-sm leading-7 note-body">{methodNote}</p>
       </div>
+
+      {litreCheck.length > 0 && (
+        <div className="section-card">
+          <div className="eyebrow text-slate-500">Calibration check</div>
+          <h3 className="mt-2 text-lg font-semibold text-slate-900">
+            PolicyEngine litres vs HMRC/OBR fleet control
+          </h3>
+          <p className="mt-4 text-sm leading-7 text-slate-600">
+            Side-by-side comparison of total petrol + diesel litres in
+            PolicyEngine's calibrated household data with the HMRC road-fuel
+            clearances and OBR-projected total fleet litres. The cost columns
+            apply the same duty-rate gap to each, so the gap between them is
+            the calibration premium baked into the household-level estimate.
+          </p>
+          <div className="mt-4 overflow-x-auto">
+            <table className="data-table">
+              <thead>
+                <tr>
+                  <th>Year</th>
+                  <th>PE litres (bn)</th>
+                  <th>HMRC/OBR litres (bn)</th>
+                  <th>Ratio</th>
+                  <th>Duty-rate gap (p/L)</th>
+                  <th>PE cost (£bn)</th>
+                  <th>HMRC/OBR cost (£bn)</th>
+                </tr>
+              </thead>
+              <tbody>
+                {litreCheck.map((row) => (
+                  <tr key={row.year}>
+                    <td className="tabular-nums">{row.fy}</td>
+                    <td className="tabular-nums">{row.peLitresBn.toFixed(2)}</td>
+                    <td className="tabular-nums">{row.benchmarkLitresBn.toFixed(2)}</td>
+                    <td className="tabular-nums">{row.ratio.toFixed(3)}</td>
+                    <td className="tabular-nums">{row.rateGapP.toFixed(2)}p</td>
+                    <td className="tabular-nums">£{row.peCostBn.toFixed(2)}bn</td>
+                    <td className="tabular-nums">£{row.benchmarkCostBn.toFixed(2)}bn</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      )}
+
+      {rateHistory.length > 0 && (
+        <div className="section-card">
+          <div className="eyebrow text-slate-500">Reference</div>
+          <h3 className="mt-2 text-lg font-semibold text-slate-900">
+            UK petrol &amp; diesel duty rate history
+          </h3>
+          <p className="mt-4 text-sm leading-7 text-slate-600">
+            Effective-date history of the fuel duty rate as carried by the
+            PolicyEngine UK parameter tree, including the steps planned in the
+            Autumn Budget 2025 and the indexed projection that follows.
+          </p>
+          <div className="mt-4 max-h-[420px] overflow-y-auto overflow-x-auto">
+            <table className="data-table">
+              <thead>
+                <tr>
+                  <th>Effective from</th>
+                  <th>Rate (p/L)</th>
+                </tr>
+              </thead>
+              <tbody>
+                {rateHistory.map((row) => (
+                  <tr key={row.date}>
+                    <td className="tabular-nums">{row.date}</td>
+                    <td className="tabular-nums">{row.rateP.toFixed(2)}p</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      )}
 
       <div className="grid gap-8 xl:grid-cols-2">
         <div className="section-card">

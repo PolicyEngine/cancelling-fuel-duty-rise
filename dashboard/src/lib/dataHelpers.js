@@ -55,6 +55,26 @@ export function getRatePath(data) {
   }));
 }
 
+export function getRateHistory(data) {
+  return (data.tables.rate_history ?? []).map((row) => ({
+    date: row.date,
+    rateP: row.rate_pence_per_litre,
+  }));
+}
+
+export function getLitreCheck(data) {
+  return (data.tables.litre_check ?? []).map((row) => ({
+    year: row.Year,
+    fy: fyLabel(row.Year),
+    peLitresBn: row["PolicyEngine litres (bn)"],
+    benchmarkLitresBn: row["HMRC/OBR litres (bn)"],
+    ratio: row["PolicyEngine / HMRC-OBR"],
+    rateGapP: row["Duty-rate gap (p/L)"],
+    peCostBn: row["PolicyEngine cost (£bn)"],
+    benchmarkCostBn: row["HMRC/OBR cost (£bn)"],
+  }));
+}
+
 export function getRevenueSeries(data) {
   return data.tables.revenue_2010_2029.map((row) => ({
     year: row.year,

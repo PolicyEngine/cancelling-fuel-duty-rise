@@ -2,6 +2,8 @@
 
 import { useEffect, useMemo, useRef, useState } from "react";
 import {
+  Area,
+  AreaChart,
   Bar,
   BarChart,
   CartesianGrid,
@@ -22,6 +24,7 @@ import {
   getGuardianCheck,
   getHeadline,
   getRatePath,
+  getRevenueSeries,
   getScrap5pCost,
 } from "../lib/dataHelpers";
 import { formatBn, formatCurrency } from "../lib/formatters";
@@ -169,6 +172,7 @@ export default function ReformTab({ data }) {
   const ratePath = useMemo(() => getRatePath(data), [data]);
   const scrap5p = useMemo(() => getScrap5pCost(data), [data]);
   const guardian = useMemo(() => getGuardianCheck(data), [data]);
+  const revenueSeries = useMemo(() => getRevenueSeries(data), [data]);
 
   const [grouping, setGrouping] = useState("deciles");
   const [impactMode, setImpactMode] = useState("abs");
@@ -309,39 +313,73 @@ export default function ReformTab({ data }) {
         </div>
       </div>
 
-      {/* Annual cost chart */}
-      <div className="section-card">
-        <SectionHeading
-          title="Cost of cancelling the planned rise, by year"
-          description={`Difference between baseline revenue at the planned duty rate and reform revenue at the frozen 52.95p/L rate. ${fyLabel(2026)}–${fyLabel(lastYear)} only — earlier years already match the reform.`}
-        />
-        <div className="h-[380px] w-full">
-          <ResponsiveContainer width="100%" height="100%">
-            <BarChart data={scrap5p}>
-              <CartesianGrid strokeDasharray="3 3" stroke={PALETTE.grid} />
-              <XAxis dataKey="fy" tick={AXIS_STYLE} tickLine={false} />
-              <YAxis
-                tick={AXIS_STYLE}
-                tickLine={false}
-                axisLine={false}
-                tickFormatter={(v) => `£${v}bn`}
-              />
-              <ReferenceLine y={0} stroke={colors.gray[400]} strokeWidth={1} />
-              <Tooltip
-                content={<CustomTooltip formatter={(v) => formatBn(v)} />}
-              />
-              <Bar dataKey="costBn" name="Cost to Treasury" radius={[6, 6, 0, 0]}>
-                {scrap5p.map((row, i) => (
-                  <Cell
-                    key={`c-${i}`}
-                    fill={row.costBn > 0 ? PALETTE.loss : PALETTE.gain}
-                  />
-                ))}
-              </Bar>
-            </BarChart>
-          </ResponsiveContainer>
+      {/* Annual cost — full plan vs Guardian 5p framing */}
+      <div className="grid gap-8 xl:grid-cols-2">
+        <div className="section-card">
+          <SectionHeading
+            title="Cost of cancelling the full plan, by year"
+            description={`Difference between baseline revenue at the planned duty rate and reform revenue at the frozen 52.95p/L rate. ${fyLabel(2026)}–${fyLabel(lastYear)} only — earlier years already match the reform.`}
+          />
+          <div className="h-[380px] w-full">
+            <ResponsiveContainer width="100%" height="100%">
+              <BarChart data={scrap5p}>
+                <CartesianGrid strokeDasharray="3 3" stroke={PALETTE.grid} />
+                <XAxis dataKey="fy" tick={AXIS_STYLE} tickLine={false} />
+                <YAxis
+                  tick={AXIS_STYLE}
+                  tickLine={false}
+                  axisLine={false}
+                  tickFormatter={(v) => `£${v}bn`}
+                />
+                <ReferenceLine y={0} stroke={colors.gray[400]} strokeWidth={1} />
+                <Tooltip
+                  content={<CustomTooltip formatter={(v) => formatBn(v)} />}
+                />
+                <Bar dataKey="costBn" name="Cost to Treasury" radius={[6, 6, 0, 0]}>
+                  {scrap5p.map((row, i) => (
+                    <Cell
+                      key={`c-${i}`}
+                      fill={row.costBn > 0 ? PALETTE.loss : PALETTE.gain}
+                    />
+                  ))}
+                </Bar>
+              </BarChart>
+            </ResponsiveContainer>
+          </div>
+          <ChartLogo />
         </div>
-        <ChartLogo />
+
+        <div className="section-card">
+          <SectionHeading
+            title="Guardian 5p-only framing, by year"
+            description="Cost of holding duty at 52.95p/L against the pre-2022 57.95p rate only — ignores the April 2027 RPI step that the full Budget plan also unwinds."
+          />
+          <div className="h-[380px] w-full">
+            <ResponsiveContainer width="100%" height="100%">
+              <BarChart data={guardian}>
+                <CartesianGrid strokeDasharray="3 3" stroke={PALETTE.grid} />
+                <XAxis dataKey="fy" tick={AXIS_STYLE} tickLine={false} />
+                <YAxis
+                  tick={AXIS_STYLE}
+                  tickLine={false}
+                  axisLine={false}
+                  tickFormatter={(v) => `£${v}bn`}
+                />
+                <ReferenceLine y={0} stroke={colors.gray[400]} strokeWidth={1} />
+                <Tooltip
+                  content={<CustomTooltip formatter={(v) => formatBn(v)} />}
+                />
+                <Bar
+                  dataKey="cost5pBn"
+                  name="Cost of keeping 5p cut"
+                  fill={PALETTE.gainSoft}
+                  radius={[6, 6, 0, 0]}
+                />
+              </BarChart>
+            </ResponsiveContainer>
+          </div>
+          <ChartLogo />
+        </div>
       </div>
 
       {/* Rate path chart */}
@@ -405,6 +443,82 @@ export default function ReformTab({ data }) {
         </div>
         <ChartLogo />
       </div>
+
+      {/* OBR-style revenue chart */}
+      {revenueSeries.length > 0 && (
+        <div className="section-card">
+          <SectionHeading
+            title="Fuel duty receipts — actual vs RPI counterfactual"
+            description={`Annual UK fuel duty receipts under the frozen duty rate (HMRC out-turns to ${fyLabel(2024)}; OBR March 2026 forecast thereafter) compared to receipts under an RPI-uprated counterfactual. The shaded gap is the cumulative £${headline.fleet_cumulative.toFixed(0)}bn of receipts foregone since ${fyLabel(firstFreeze)}.`}
+          />
+          <div className="h-[420px] w-full">
+            <ResponsiveContainer width="100%" height="100%">
+              <AreaChart
+                data={revenueSeries}
+                margin={{ top: 10, right: 16, left: 4, bottom: 8 }}
+              >
+                <defs>
+                  <linearGradient id="gapFill" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="5%" stopColor={PALETTE.counterfactual} stopOpacity={0.25} />
+                    <stop offset="95%" stopColor={PALETTE.counterfactual} stopOpacity={0.05} />
+                  </linearGradient>
+                </defs>
+                <CartesianGrid strokeDasharray="3 3" stroke={PALETTE.grid} />
+                <XAxis
+                  dataKey="year"
+                  tick={AXIS_STYLE}
+                  tickLine={false}
+                  type="number"
+                  domain={["dataMin", "dataMax"]}
+                  ticks={revenueSeries
+                    .filter((_, i) => i % 2 === 0)
+                    .map((r) => r.year)}
+                />
+                <YAxis
+                  tick={AXIS_STYLE}
+                  tickLine={false}
+                  axisLine={false}
+                  tickFormatter={(v) => `£${v}bn`}
+                />
+                <Tooltip
+                  content={
+                    <CustomTooltip
+                      formatter={(v) => formatBn(v)}
+                      labelFormatter={(v) => `${fyLabel(v)}`}
+                    />
+                  }
+                />
+                <Legend
+                  wrapperStyle={{ fontSize: 12, paddingTop: 12 }}
+                  iconSize={10}
+                  verticalAlign="bottom"
+                />
+                <Area
+                  type="monotone"
+                  dataKey="counterfactualBn"
+                  stroke={PALETTE.counterfactual}
+                  strokeWidth={2.5}
+                  strokeDasharray="6 4"
+                  fill="url(#gapFill)"
+                  name="RPI counterfactual"
+                  activeDot={{ r: 5 }}
+                />
+                <Area
+                  type="monotone"
+                  dataKey="actualBn"
+                  stroke={PALETTE.gain}
+                  strokeWidth={2.5}
+                  fill="#ffffff"
+                  fillOpacity={0.85}
+                  name="Actual receipts"
+                  activeDot={{ r: 5 }}
+                />
+              </AreaChart>
+            </ResponsiveContainer>
+          </div>
+          <ChartLogo />
+        </div>
+      )}
 
       {/* Distributional chart */}
       <div className="section-card">
