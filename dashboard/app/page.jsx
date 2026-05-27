@@ -104,7 +104,7 @@ function Dashboard() {
             of the 5p cut and the April 2027 RPI uprating that together take
             duty to ~60p/L. In May 2026 the PM{" "}
             <a
-              href="https://fleetworld.co.uk/fuel-duty-increase-delayed-until-2027-says-starmer/"
+              href="https://www.bbc.com/news/articles/c3021md6jq6o"
               target="_blank"
               rel="noreferrer"
             >
