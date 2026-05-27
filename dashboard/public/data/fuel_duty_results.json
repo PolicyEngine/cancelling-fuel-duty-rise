@@ -712,61 +712,81 @@
         "group": "D1",
         "avg_saving_gbp_per_year": 57.06,
         "avg_net_income_gbp": 28374.28,
-        "saving_pct_of_net_income": 0.201
+        "saving_pct_of_net_income": 0.201,
+        "pct_winners": 45.79,
+        "pct_unchanged": 54.21
       },
       {
         "group": "D2",
         "avg_saving_gbp_per_year": 79.09,
         "avg_net_income_gbp": 39194.77,
-        "saving_pct_of_net_income": 0.202
+        "saving_pct_of_net_income": 0.202,
+        "pct_winners": 52.83,
+        "pct_unchanged": 47.17
       },
       {
         "group": "D3",
         "avg_saving_gbp_per_year": 56.31,
         "avg_net_income_gbp": 45478.95,
-        "saving_pct_of_net_income": 0.124
+        "saving_pct_of_net_income": 0.124,
+        "pct_winners": 50.58,
+        "pct_unchanged": 49.42
       },
       {
         "group": "D4",
         "avg_saving_gbp_per_year": 98.36,
         "avg_net_income_gbp": 46334.87,
-        "saving_pct_of_net_income": 0.212
+        "saving_pct_of_net_income": 0.212,
+        "pct_winners": 55.54,
+        "pct_unchanged": 44.46
       },
       {
         "group": "D5",
         "avg_saving_gbp_per_year": 71.87,
         "avg_net_income_gbp": 51372.36,
-        "saving_pct_of_net_income": 0.14
+        "saving_pct_of_net_income": 0.14,
+        "pct_winners": 52.32,
+        "pct_unchanged": 47.68
       },
       {
         "group": "D6",
         "avg_saving_gbp_per_year": 93.79,
         "avg_net_income_gbp": 63295.7,
-        "saving_pct_of_net_income": 0.148
+        "saving_pct_of_net_income": 0.148,
+        "pct_winners": 66.51,
+        "pct_unchanged": 33.49
       },
       {
         "group": "D7",
         "avg_saving_gbp_per_year": 105.6,
         "avg_net_income_gbp": 63815.86,
-        "saving_pct_of_net_income": 0.165
+        "saving_pct_of_net_income": 0.165,
+        "pct_winners": 67.76,
+        "pct_unchanged": 32.24
       },
       {
         "group": "D8",
         "avg_saving_gbp_per_year": 105.99,
         "avg_net_income_gbp": 78748.82,
-        "saving_pct_of_net_income": 0.135
+        "saving_pct_of_net_income": 0.135,
+        "pct_winners": 65.64,
+        "pct_unchanged": 34.36
       },
       {
         "group": "D9",
         "avg_saving_gbp_per_year": 160.64,
         "avg_net_income_gbp": 89687.38,
-        "saving_pct_of_net_income": 0.179
+        "saving_pct_of_net_income": 0.179,
+        "pct_winners": 73.94,
+        "pct_unchanged": 26.06
       },
       {
         "group": "D10",
         "avg_saving_gbp_per_year": 160.94,
         "avg_net_income_gbp": 152464.31,
-        "saving_pct_of_net_income": 0.106
+        "saving_pct_of_net_income": 0.106,
+        "pct_winners": 71.42,
+        "pct_unchanged": 28.58
       }
     ],
     "quintiles": [
@@ -774,31 +794,41 @@
         "group": "Q1",
         "avg_saving_gbp_per_year": 68.08,
         "avg_net_income_gbp": 33784.46,
-        "saving_pct_of_net_income": 0.202
+        "saving_pct_of_net_income": 0.202,
+        "pct_winners": 49.31,
+        "pct_unchanged": 50.69
       },
       {
         "group": "Q2",
         "avg_saving_gbp_per_year": 77.37,
         "avg_net_income_gbp": 45907.67,
-        "saving_pct_of_net_income": 0.169
+        "saving_pct_of_net_income": 0.169,
+        "pct_winners": 53.06,
+        "pct_unchanged": 46.94
       },
       {
         "group": "Q3",
         "avg_saving_gbp_per_year": 82.86,
         "avg_net_income_gbp": 57345.68,
-        "saving_pct_of_net_income": 0.144
+        "saving_pct_of_net_income": 0.144,
+        "pct_winners": 59.43,
+        "pct_unchanged": 40.57
       },
       {
         "group": "Q4",
         "avg_saving_gbp_per_year": 105.79,
         "avg_net_income_gbp": 71276.83,
-        "saving_pct_of_net_income": 0.148
+        "saving_pct_of_net_income": 0.148,
+        "pct_winners": 66.7,
+        "pct_unchanged": 33.3
       },
       {
         "group": "Q5",
         "avg_saving_gbp_per_year": 160.79,
         "avg_net_income_gbp": 121122.89,
-        "saving_pct_of_net_income": 0.133
+        "saving_pct_of_net_income": 0.133,
+        "pct_winners": 72.68,
+        "pct_unchanged": 27.32
       }
     ],
     "quartiles": [
@@ -806,25 +836,33 @@
         "group": "Q1",
         "avg_saving_gbp_per_year": 64.79,
         "avg_net_income_gbp": 35637.08,
-        "saving_pct_of_net_income": 0.182
+        "saving_pct_of_net_income": 0.182,
+        "pct_winners": 48.19,
+        "pct_unchanged": 51.81
       },
       {
         "group": "Q2",
         "avg_saving_gbp_per_year": 80.31,
         "avg_net_income_gbp": 48644.5,
-        "saving_pct_of_net_income": 0.165
+        "saving_pct_of_net_income": 0.165,
+        "pct_winners": 54.63,
+        "pct_unchanged": 45.37
       },
       {
         "group": "Q3",
         "avg_saving_gbp_per_year": 104.38,
         "avg_net_income_gbp": 64701.68,
-        "saving_pct_of_net_income": 0.161
+        "saving_pct_of_net_income": 0.161,
+        "pct_winners": 66.63,
+        "pct_unchanged": 33.37
       },
       {
         "group": "Q4",
         "avg_saving_gbp_per_year": 146.37,
         "avg_net_income_gbp": 114502.67,
-        "saving_pct_of_net_income": 0.128
+        "saving_pct_of_net_income": 0.128,
+        "pct_winners": 71.47,
+        "pct_unchanged": 28.53
       }
     ]
   }

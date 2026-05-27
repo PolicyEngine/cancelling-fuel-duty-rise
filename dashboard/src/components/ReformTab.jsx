@@ -715,7 +715,8 @@ export default function ReformTab({ data }) {
         )}
       </div>
 
-      {/* Distributional chart */}
+      {/* Distribution: saving + winners/losers — side-by-side */}
+      <div className="grid gap-8 xl:grid-cols-2">
       <div className="section-card">
         <div className="mb-4 flex flex-wrap items-start justify-between gap-3">
           <SectionHeading
@@ -807,6 +808,68 @@ export default function ReformTab({ data }) {
           </ResponsiveContainer>
         </div>
         <ChartLogo />
+      </div>
+
+      {distribution[0]?.pctWinners != null && (
+        <div className="section-card">
+          <SectionHeading
+            title={`Winners and unchanged by income group (${fyLabel(yearDist)})`}
+            description={
+              <>
+                Share of households in each income group that come out ahead
+                under the reform (gain &gt; £0) versus those whose net
+                position is unchanged because they don't buy petrol or
+                diesel. No-one loses — cancelling a duty rise can only
+                leave a household the same or better off.
+              </>
+            }
+          />
+          <div className="h-[380px] w-full">
+            <ResponsiveContainer width="100%" height="100%">
+              <BarChart
+                data={distribution}
+                margin={{ top: 10, right: 12, left: 4, bottom: 8 }}
+              >
+                <CartesianGrid strokeDasharray="3 3" stroke={PALETTE.grid} />
+                <XAxis dataKey="group" tick={AXIS_STYLE} tickLine={false} />
+                <YAxis
+                  tick={AXIS_STYLE}
+                  tickLine={false}
+                  axisLine={false}
+                  ticks={[0, 25, 50, 75, 100]}
+                  domain={[0, 100]}
+                  tickFormatter={(v) => `${v}%`}
+                />
+                <Tooltip
+                  content={
+                    <CustomTooltip
+                      formatter={(value) => `${Number(value).toFixed(1)}%`}
+                    />
+                  }
+                />
+                <Legend
+                  wrapperStyle={{ fontSize: 12, paddingTop: 12 }}
+                  iconSize={10}
+                  verticalAlign="bottom"
+                />
+                <Bar
+                  dataKey="pctWinners"
+                  name="Better off"
+                  stackId="wl"
+                  fill={PALETTE.gain}
+                />
+                <Bar
+                  dataKey="pctUnchanged"
+                  name="No change"
+                  stackId="wl"
+                  fill={colors.gray[300]}
+                />
+              </BarChart>
+            </ResponsiveContainer>
+          </div>
+          <ChartLogo />
+        </div>
+      )}
       </div>
     </div>
   );

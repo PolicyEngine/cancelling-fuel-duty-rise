@@ -105,6 +105,8 @@ export function getDistribution(data, grouping) {
     avgSaving: row.avg_saving_gbp_per_year,
     avgNetIncome: row.avg_net_income_gbp,
     savingPctOfIncome: row.saving_pct_of_net_income,
+    pctWinners: row.pct_winners ?? null,
+    pctUnchanged: row.pct_unchanged ?? null,
     meta,
   }));
 }

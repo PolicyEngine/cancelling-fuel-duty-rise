@@ -447,10 +447,12 @@ def _distributional_cuts(
         )
         saving_by_group = saving.groupby(idx).mean()
         income_by_group = net_income.groupby(idx).mean()
+        winners_by_group = (saving > 0).groupby(idx).mean() * 100
         rows = []
         for group in range(1, n + 1):
             saving_value = saving_by_group[group]
             income_value = income_by_group[group]
+            pct_winners = float(winners_by_group[group])
             rows.append(
                 {
                     "group": f"{prefix}{group}",
@@ -459,6 +461,8 @@ def _distributional_cuts(
                     "saving_pct_of_net_income": round(
                         100 * saving_value / income_value, 3
                     ),
+                    "pct_winners": round(pct_winners, 2),
+                    "pct_unchanged": round(100 - pct_winners, 2),
                 }
             )
         return pd.DataFrame(rows)
