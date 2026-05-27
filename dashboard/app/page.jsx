@@ -67,7 +67,7 @@ function Dashboard() {
     <div className="app-shell min-h-screen">
       <header className="title-row">
         <div className="mx-auto flex max-w-[1400px] items-center justify-between px-6 py-4 md:px-8">
-          <h1>Cancelling the fuel duty rise</h1>
+          <h1>Cancelling the fuel duty rise — analysis dashboard</h1>
         </div>
       </header>
 
@@ -82,28 +82,24 @@ function Dashboard() {
             >
               policyengine.py
             </a>{" "}
-            to cost <em>cancelling</em> the planned fuel-duty rise scheduled
-            in the{" "}
+            to cost cancelling the fuel-duty rise scheduled in the{" "}
             <a
               href="https://www.gov.uk/government/publications/budget-2025-document/budget-2025-html"
               target="_blank"
               rel="noreferrer"
             >
               Autumn Budget 2025
-            </a>
-            . It quantifies the revenue the Treasury would forgo by holding
-            duty at 52.95p/L and what each household keeps as a result. The{" "}
+            </a>{" "}
+            — the{" "}
             <a
               href="https://www.gov.uk/government/publications/fuel-duty-rates-for-2026-to-2027/fuel-duty-rates-2026-to-2027"
               target="_blank"
               rel="noreferrer"
             >
-              legislated schedule
+              staged unwinding
             </a>{" "}
-            unwinds the 5p cut from March 2022 in three steps (+1p on 1 Sept
-            2026, +2p on 1 Dec 2026, +2p on 1 Mar 2027) and resumes RPI
-            uprating in April 2027 — taking petrol &amp; diesel duty to
-            roughly 60p/L. In May 2026 the Prime Minister{" "}
+            of the 5p cut and the April 2027 RPI uprating that together take
+            duty to ~60p/L. In May 2026 the PM{" "}
             <a
               href="https://fleetworld.co.uk/fuel-duty-increase-delayed-until-2027-says-starmer/"
               target="_blank"
@@ -111,14 +107,10 @@ function Dashboard() {
             >
               postponed the September step
             </a>{" "}
-            amid Middle-East pump-price pressure, extending the freeze
-            through end-of-year; the figures here cost the original Budget
-            2025 schedule. The <strong>Impact</strong> tab
-            shows the annual cost to the Treasury, the duty rate path
-            against an RPI counterfactual, the long-run receipts series, and
-            the average household saving by income group. The{" "}
-            <strong>Methodology</strong> tab covers the simulations, fiscal
-            benchmarks, and what the static analysis omits.
+            amid pump-price pressure; the figures here cost the original
+            schedule. The <strong>Impact</strong> tab shows the fiscal cost
+            and household impact; the <strong>Methodology</strong> tab covers
+            the model, sources, and what the static analysis omits.
           </p>
         </div>
 

@@ -320,7 +320,7 @@ export default function ReformTab({ data }) {
         title="Who is affected by cancelling the fuel-duty rise?"
         description={
           <>
-            The{" "}
+            We cost holding duty flat at 52.95p/L against the{" "}
             <a
               href="https://www.gov.uk/government/publications/budget-2025-document/budget-2025-html"
               target="_blank"
@@ -328,14 +328,22 @@ export default function ReformTab({ data }) {
             >
               Autumn Budget 2025
             </a>{" "}
-            plan unwinds the 5p-per-litre cut from March 2022 in three steps
-            (+1p Sept 2026, +2p Dec 2026, +2p Mar 2027) and resumes RPI
-            uprating in April 2027. By the {fyLabel(2027)} fiscal-year average,
-            petrol and diesel duty is{" "}
-            {headline.baseline_rate_2027_p.toFixed(2)}p/L (up from 52.95p
-            today), and reaches{" "}
-            {ratePath[ratePath.length - 1].actualP.toFixed(2)}p/L by{" "}
-            {fyLabel(lastYear)}. In May 2026 the Prime Minister{" "}
+            plan, which takes petrol and diesel duty to{" "}
+            {headline.baseline_rate_2027_p.toFixed(2)}p/L by {fyLabel(2027)}{" "}
+            and {ratePath[ratePath.length - 1].actualP.toFixed(2)}p/L by{" "}
+            {fyLabel(lastYear)} through a staged 5p reversal plus April 2027
+            RPI uprating. Fiscal totals use HMRC out-turns and OBR
+            projections (within ~1% of the{" "}
+            <a
+              href="https://obr.uk/forecasts-in-depth/tax-by-tax-spend-by-spend/fuel-duties/"
+              target="_blank"
+              rel="noreferrer"
+            >
+              OBR EFO
+            </a>{" "}
+            receipts forecast); household savings apply the duty-rate gap to
+            PolicyEngine's calibrated petrol &amp; diesel litres. In May 2026
+            the PM{" "}
             <a
               href="https://fleetworld.co.uk/fuel-duty-increase-delayed-until-2027-says-starmer/"
               target="_blank"
@@ -343,26 +351,8 @@ export default function ReformTab({ data }) {
             >
               postponed the September step
             </a>{" "}
-            amid Middle-East pump-price pressure, extending the freeze
-            through end-of-year; the figures below cost the original Budget
-            2025 schedule rather than any slipped version. This page costs the alternative of holding duty flat
-            at 52.95p/L: the annual revenue loss, where it lands
-            across households in {fyLabel(yearDist)}, and how the long-running
-            freeze compares to a counterfactual where duty had been RPI-uprated
-            every year since {fyLabel(firstFreeze)}. Fiscal totals use HMRC
-            out-turns and OBR projections; household savings apply the same
-            duty-rate gap to PolicyEngine's calibrated petrol &amp; diesel
-            litres. As a sanity check, our actual-rate receipts series
-            (£24.24bn in {fyLabel(2025)}, £26.55bn in {fyLabel(2027)}) sits
-            within ~1% of the{" "}
-            <a
-              href="https://obr.uk/forecasts-in-depth/tax-by-tax-spend-by-spend/fuel-duties/"
-              target="_blank"
-              rel="noreferrer"
-            >
-              OBR EFO forecast
-            </a>{" "}
-            (£24.0bn and £26.2bn).
+            amid pump-price pressure; the figures below cost the original
+            Budget 2025 schedule.
           </>
         }
       />
@@ -434,50 +424,101 @@ export default function ReformTab({ data }) {
         </div>
       </div>
 
-      {/* What is changing — sits as a section, not a boxed card */}
-      <div>
+      {/* What is changing — boxed year-by-year reference table */}
+      <div className="section-card">
         <SectionHeading
           title="What is changing"
-          description="The Autumn Budget 2025 plan ends the 5p cut in April 2027 and resumes RPI uprating. The reform we cost holds duty at 52.95p/L."
+          description={`The legislated Budget 2025 schedule, year by year through ${fyLabel(lastYear)}, against today's frozen rate and the RPI counterfactual. The "change" column makes the +1p / +5.74p / +1.88p / +1.78p path of the planned rises explicit.`}
         />
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
               <tr className="border-b border-slate-200 text-left text-[11px] uppercase tracking-wide text-slate-400">
-                <th className="py-2 pr-4 font-medium">Parameter</th>
-                <th className="py-2 pr-4 font-medium">Pre-2022</th>
-                <th className="py-2 pr-4 font-medium">Today (frozen)</th>
-                <th className="py-2 pr-4 font-medium">{fyLabel(2027)} plan</th>
-                <th className="py-2 pr-4 font-medium">{fyLabel(lastYear)} plan</th>
-                <th className="py-2 pr-0 font-medium">
-                  RPI counterfactual ({fyLabel(lastYear)})
-                </th>
+                <th className="py-2 pr-4 font-medium">Year</th>
+                <th className="py-2 pr-4 font-medium">Planned duty (p/L)</th>
+                <th className="py-2 pr-4 font-medium">Change YoY</th>
+                <th className="py-2 pr-4 font-medium">RPI counterfactual (p/L)</th>
+                <th className="py-2 pr-0 font-medium">Gap from RPI</th>
               </tr>
             </thead>
             <tbody className="text-slate-700">
               <tr className="border-b border-slate-100 align-top">
                 <td className="py-3 pr-4">
-                  <div className="font-semibold">Petrol &amp; diesel duty (p/L)</div>
+                  <div className="font-semibold">Pre-2022</div>
                   <div className="mt-0.5 text-xs text-slate-500">
-                    Headline rate set at the UK Budget; CPI/RPI uprating
-                    suspended since {fyLabel(firstFreeze)}.
+                    Headline rate before the March 2022 5p cut.
                   </div>
                 </td>
                 <td className="py-3 pr-4 tabular-nums">57.95p</td>
-                <td className="py-3 pr-4 tabular-nums">52.95p</td>
-                <td className="py-3 pr-4 tabular-nums">
-                  {headline.baseline_rate_2027_p.toFixed(2)}p
-                </td>
-                <td className="py-3 pr-4 tabular-nums">
-                  {ratePath[ratePath.length - 1].actualP.toFixed(2)}p
-                </td>
-                <td className="py-3 pr-0 tabular-nums">
-                  {ratePath[ratePath.length - 1].counterfactualP.toFixed(2)}p
-                </td>
+                <td className="py-3 pr-4 tabular-nums text-slate-400">—</td>
+                <td className="py-3 pr-4 tabular-nums text-slate-400">—</td>
+                <td className="py-3 pr-0 tabular-nums text-slate-400">—</td>
               </tr>
+              {(() => {
+                const PRE_2022 = 57.95;
+                const startYear = 2025;
+                const rows = ratePath.filter(
+                  (r) => r.year >= startYear && r.year <= lastYear,
+                );
+                return rows.map((r, i) => {
+                  const prev = i === 0 ? PRE_2022 : rows[i - 1].actualP;
+                  const yoyChange = r.actualP - prev;
+                  const gap = r.counterfactualP - r.actualP;
+                  const isToday = r.year === startYear;
+                  return (
+                    <tr
+                      key={r.year}
+                      className="border-b border-slate-100 align-top last:border-b-0"
+                    >
+                      <td className="py-3 pr-4">
+                        <div className="font-semibold">
+                          {r.fy}
+                          {isToday && (
+                            <span className="ml-2 rounded-full bg-slate-100 px-2 py-0.5 text-[10px] font-medium uppercase tracking-wide text-slate-500">
+                              today
+                            </span>
+                          )}
+                        </div>
+                        <div className="mt-0.5 text-xs text-slate-500">
+                          {isToday
+                            ? "Current frozen rate."
+                            : `Budget 2025 schedule.`}
+                        </div>
+                      </td>
+                      <td className="py-3 pr-4 tabular-nums">
+                        {r.actualP.toFixed(2)}p
+                      </td>
+                      <td
+                        className={`py-3 pr-4 tabular-nums ${
+                          yoyChange > 0
+                            ? "text-rose-600"
+                            : yoyChange < 0
+                              ? "text-emerald-700"
+                              : "text-slate-400"
+                        }`}
+                      >
+                        {yoyChange === 0
+                          ? "0.00p"
+                          : `${yoyChange > 0 ? "+" : ""}${yoyChange.toFixed(2)}p`}
+                      </td>
+                      <td className="py-3 pr-4 tabular-nums">
+                        {r.counterfactualP.toFixed(2)}p
+                      </td>
+                      <td className="py-3 pr-0 tabular-nums">
+                        {gap.toFixed(2)}p
+                      </td>
+                    </tr>
+                  );
+                });
+              })()}
             </tbody>
           </table>
         </div>
+        <p className="mt-3 text-xs text-slate-500">
+          The reform we cost holds duty flat at 52.95p/L through{" "}
+          {fyLabel(lastYear)} — i.e. the "Today" row repeated for every
+          forecast year.
+        </p>
       </div>
 
       {/* Annual cost — full plan vs Guardian 5p framing, side-by-side */}
