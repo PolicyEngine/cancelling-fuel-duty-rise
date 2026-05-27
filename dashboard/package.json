@@ -1,0 +1,27 @@
+{
+  "name": "cancelling-fuel-duty-rise-dashboard",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "eslint ."
+  },
+  "dependencies": {
+    "d3": "^7.9.0",
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0",
+    "react-is": "^19.2.0",
+    "recharts": "^3.8.0"
+  },
+  "devDependencies": {
+    "@policyengine/ui-kit": "^0.9.0",
+    "@tailwindcss/postcss": "^4.2.4",
+    "eslint": "^9.39.1",
+    "eslint-config-next": "^16.2.6",
+    "next": "^16.2.6",
+    "postcss": "^8.5.8",
+    "tailwindcss": "^4.2.4"
+  }
+}

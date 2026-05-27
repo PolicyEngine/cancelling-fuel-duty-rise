@@ -1,0 +1,94 @@
+/**
+ * Data helper functions for the fuel-duty dashboard.
+ *
+ * The dashboard consumes a single JSON file produced by
+ * cancelling_fuel_duty_rise.build_json. Callers must guard the loading state
+ * above; these helpers assume `data` is already loaded and surface real errors
+ * if a required key is missing.
+ */
+
+export function fyLabel(year) {
+  return `${year}-${String((year + 1) % 100).padStart(2, "0")}`;
+}
+
+export function getHeadline(data) {
+  return data.headline;
+}
+
+export function getCitation(data) {
+  return data.citation;
+}
+
+export function getMethodNote(data) {
+  return data.method_note;
+}
+
+export function getScrap5pCost(data) {
+  return data.tables.scrap_5p_cost.map((row) => ({
+    year: row.Year,
+    fy: fyLabel(row.Year),
+    baselineRate: row["Baseline rate (p/L)"],
+    baselineRevenueBn: row["Baseline revenue (£bn)"],
+    reformRevenueBn: row["Reform revenue (£bn)"],
+    costBn: row["Cost to Treasury (£bn)"],
+  }));
+}
+
+export function getGuardianCheck(data) {
+  return data.tables.guardian_check.map((row) => ({
+    year: row.Year,
+    fy: fyLabel(row.Year),
+    revenueAt5295pBn: row["Revenue at 52.95p (£bn)"],
+    revenueAt5795pBn: row["Revenue at 57.95p (£bn)"],
+    cost5pBn: row["Cost of keeping 5p cut (£bn)"],
+  }));
+}
+
+export function getRatePath(data) {
+  return data.tables.rate_path.map((row) => ({
+    year: row.year,
+    fy: fyLabel(row.year),
+    rpiYoyPct: row.rpi_yoy_growth_pct,
+    actualP: row.actual_rate_p_per_litre,
+    counterfactualP: row.rpi_counterfactual_rate_p_per_litre,
+    gapP: row.gap_p_per_litre,
+  }));
+}
+
+export function getRevenueSeries(data) {
+  return data.tables.revenue_2010_2029.map((row) => ({
+    year: row.year,
+    fy: row.fiscal_year,
+    source: row.source,
+    actualP: row.actual_rate_p_per_litre,
+    counterfactualP: row.counterfactual_rate_p_per_litre,
+    actualBn: row.actual_revenue_gbp_bn,
+    counterfactualBn: row.counterfactual_revenue_gbp_bn,
+    gapBn: row.gap_gbp_bn,
+  }));
+}
+
+const GROUP_KEY = {
+  deciles: { count: 10, prefix: "D", label: "decile" },
+  quintiles: { count: 5, prefix: "Q", label: "quintile" },
+  quartiles: { count: 4, prefix: "Q", label: "quartile" },
+};
+
+export function getDistribution(data, grouping) {
+  const rows = data.distribution[grouping];
+  if (!rows) {
+    throw new Error(`No distribution data for grouping=${grouping}`);
+  }
+  const meta = GROUP_KEY[grouping];
+  return rows.map((row) => ({
+    group: row.group,
+    avgSaving: row.avg_saving_gbp_per_year,
+    avgNetIncome: row.avg_net_income_gbp,
+    savingPctOfIncome: row.saving_pct_of_net_income,
+    meta,
+  }));
+}
+
+export function getGroupingMeta(grouping) {
+  return GROUP_KEY[grouping];
+}
