@@ -4,7 +4,7 @@ PolicyEngine UK analysis of the cost, counterfactual, and distributional impact 
 
 ## Dashboard
 
-The interactive analysis dashboard is deployed at <https://cancelling-fuel-duty-rise.vercel.app/uk/cancelling-fuel-duty-rise>. Source lives in [`dashboard/`](./dashboard); pushes to `main` redeploy automatically via Vercel.
+The interactive analysis dashboard is deployed at <https://cancelling-fuel-duty-rise.vercel.app>. Source lives in [`dashboard/`](./dashboard); pushes to `main` redeploy automatically via Vercel.
 
 To run it locally:
 
