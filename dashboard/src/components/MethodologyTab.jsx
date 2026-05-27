@@ -1,8 +1,6 @@
 import {
   fyLabel,
-  getCitation,
   getLitreCheck,
-  getMethodNote,
   getRateHistory,
 } from "../lib/dataHelpers";
 
@@ -11,8 +9,6 @@ export default function MethodologyTab({ data }) {
   const lastYear = data.headline.last_year;
   const yearDist = data.headline.year_dist;
   const peVersion = data.model_versions.policyengine;
-  const citation = getCitation(data);
-  const methodNote = getMethodNote(data);
   const litreCheck = getLitreCheck(data);
   const rateHistory = getRateHistory(data);
 
@@ -21,7 +17,7 @@ export default function MethodologyTab({ data }) {
       <div className="section-card">
         <div className="eyebrow text-slate-500">Overview</div>
         <h2 className="mt-2 text-2xl font-semibold tracking-tight text-slate-900">
-          What the dashboard estimates
+          Dashboard estimate
         </h2>
         <p className="mt-4 text-sm leading-7 text-slate-600">
           This dashboard uses{" "}
@@ -32,8 +28,8 @@ export default function MethodologyTab({ data }) {
           >
             policyengine.py v{peVersion}
           </a>{" "}
-          on the enhanced Family Resources Survey 2023/24 to quantify the
-          cost, counterfactual, and distributional impact of cancelling the{" "}
+          on the Family Resources Survey 2023/24 to estimate the cost,
+          counterfactual, and distributional impact of cancelling the{" "}
           <a
             href="https://www.gov.uk/government/publications/budget-2025-document/budget-2025-html"
             target="_blank"
@@ -55,6 +51,16 @@ export default function MethodologyTab({ data }) {
           through {fyLabel(lastYear)}.
         </p>
         <p className="mt-4 text-sm leading-7 text-slate-600">
+          Citation: PolicyEngine.py {peVersion}; OBR RPI series from the{" "}
+          <a
+            href="https://obr.uk/efo/economic-and-fiscal-outlook-march-2026/"
+            target="_blank"
+            rel="noreferrer"
+          >
+            OBR Economic and Fiscal Outlook, March 2026
+          </a>.
+        </p>
+        <p className="mt-4 text-sm leading-7 text-slate-600">
           Two framings sit side by side on the Impact tab:
         </p>
         <ul className="mt-2 list-disc pl-5 text-sm leading-7 text-slate-600 space-y-1">
@@ -67,7 +73,7 @@ export default function MethodologyTab({ data }) {
           <li>
             <strong>Guardian 5p-only framing</strong> — the cost of holding
             duty at 52.95p/L vs the 57.95p pre-cut rate, ignoring the RPI
-            step. This is the smaller £
+            step. This gives the £
             {data.headline.scrap_2027 && data.tables.guardian_check
               ? data.tables.guardian_check.find((r) => r.Year === 2027)[
                   "Cost of keeping 5p cut (£bn)"
@@ -81,12 +87,12 @@ export default function MethodologyTab({ data }) {
       <div className="section-card">
         <div className="eyebrow text-slate-500">Simulations</div>
         <h2 className="mt-2 text-2xl font-semibold tracking-tight text-slate-900">
-          How the reform is wired
+          Reform wiring
         </h2>
         <p className="mt-4 text-sm leading-7 text-slate-600">
           The fuel-duty rate lives in the PolicyEngine parameter tree at{" "}
           <code>gov.hmrc.fuel_duty.petrol_and_diesel</code>. The Autumn Budget
-          2025 plan is already reflected in the bundled UK model: the rate
+          2025 plan is reflected in the UK model: the rate
           steps from 53.45p in {fyLabel(2026)} to{" "}
           {data.headline.baseline_rate_2027_p.toFixed(2)}p in {fyLabel(2027)},
           then rises by RPI each April out to {fyLabel(lastYear)}. The reform
@@ -140,7 +146,7 @@ export default function MethodologyTab({ data }) {
                   p
                 </td>
                 <td className="py-2 pr-0">
-                  What duty would have been if the rate had risen by RPI every
+                  Counterfactual rate had duty risen by RPI every
                   April since {fyLabel(firstFreeze)}.
                 </td>
               </tr>
@@ -182,8 +188,16 @@ export default function MethodologyTab({ data }) {
               OBR March 2026 EFO
             </a>{" "}
             fuel-duty receipts forecast for the projection period (
-            {fyLabel(2025)} onwards). The control total for rate-difference
-            cost calculations is OBR / HMRC all-road petrol + diesel litres.
+            {fyLabel(2025)} onwards). The{" "}
+            <a
+              href="https://obr.uk/forecasts-in-depth/tax-by-tax-spend-by-spend/fuel-duties/"
+              target="_blank"
+              rel="noreferrer"
+            >
+              OBR fuel duties page
+            </a>{" "}
+            provides the forecast series and risk commentary. Cost
+            calculations use OBR / HMRC all-road petrol + diesel litres.
           </p>
         </div>
 
@@ -194,32 +208,30 @@ export default function MethodologyTab({ data }) {
           </h3>
           <p className="mt-4 text-sm leading-7 text-slate-600">
             Distributional savings ({fyLabel(yearDist)}) apply the same
-            duty-rate gap to PolicyEngine's calibrated household petrol and
-            diesel litres, without post-hoc scaling. Each household's saving
+            duty-rate gap to PolicyEngine&apos;s calibrated household petrol and
+            diesel litres, without post-hoc scaling. Each household&apos;s saving
             is its (petrol + diesel) litres × (baseline rate − reform rate),
             grouped by equivalised HBAI net-income decile/quintile/quartile.
-            Weighted operations use the native microdf API.
+            PolicyEngine computes weighted operations through the microdf API.
           </p>
         </div>
       </div>
 
-      <div className="section-card note-card">
-        <div className="eyebrow note-eyebrow">ITV methodology note</div>
-        <p className="mt-2 text-sm leading-7 note-body">{methodNote}</p>
-      </div>
-
       {litreCheck.length > 0 && (
-        <div className="section-card">
-          <div className="eyebrow text-slate-500">Calibration check</div>
-          <h3 className="mt-2 text-lg font-semibold text-slate-900">
-            PolicyEngine litres vs HMRC/OBR fleet control
-          </h3>
+        <details className="section-card expandable-section">
+          <summary>
+            <span>
+              <span className="eyebrow text-slate-500">Calibration check</span>
+              <span className="mt-2 block text-lg font-semibold text-slate-900">
+                PolicyEngine litres vs HMRC/OBR fleet control
+              </span>
+            </span>
+          </summary>
           <p className="mt-4 text-sm leading-7 text-slate-600">
-            Side-by-side comparison of total petrol + diesel litres in
-            PolicyEngine's calibrated household data with the HMRC road-fuel
-            clearances and OBR-projected total fleet litres. The cost columns
-            apply the same duty-rate gap to each, so the gap between them is
-            the calibration premium baked into the household-level estimate.
+            This table compares total petrol + diesel litres in PolicyEngine&apos;s
+            calibrated household data with HMRC road-fuel clearances and
+            OBR-projected fleet litres. The cost columns apply the same
+            duty-rate gap to both litre series.
           </p>
           <div className="mt-4 overflow-x-auto">
             <table className="data-table">
@@ -249,19 +261,23 @@ export default function MethodologyTab({ data }) {
               </tbody>
             </table>
           </div>
-        </div>
+        </details>
       )}
 
       {rateHistory.length > 0 && (
-        <div className="section-card">
-          <div className="eyebrow text-slate-500">Reference</div>
-          <h3 className="mt-2 text-lg font-semibold text-slate-900">
-            UK petrol &amp; diesel duty rate history
-          </h3>
+        <details className="section-card expandable-section">
+          <summary>
+            <span>
+              <span className="eyebrow text-slate-500">Reference</span>
+              <span className="mt-2 block text-lg font-semibold text-slate-900">
+                UK petrol &amp; diesel duty rate history
+              </span>
+            </span>
+          </summary>
           <p className="mt-4 text-sm leading-7 text-slate-600">
-            Effective-date history of the fuel duty rate as carried by the
-            PolicyEngine UK parameter tree, including the steps planned in the
-            Autumn Budget 2025 and the indexed projection that follows.
+            This table lists the fuel-duty rate history in the PolicyEngine UK
+            parameter tree, including the Autumn Budget 2025 steps and indexed
+            projection.
           </p>
           <div className="mt-4 max-h-[420px] overflow-y-auto overflow-x-auto">
             <table className="data-table">
@@ -281,14 +297,14 @@ export default function MethodologyTab({ data }) {
               </tbody>
             </table>
           </div>
-        </div>
+        </details>
       )}
 
       <div className="grid gap-8 xl:grid-cols-2">
         <div className="section-card">
           <div className="eyebrow text-slate-500">Included</div>
           <h3 className="mt-2 text-lg font-semibold text-slate-900">
-            What the model captures
+            Model scope
           </h3>
           <ul className="mt-4 list-disc pl-5 text-sm leading-7 text-slate-600 space-y-1">
             <li>
@@ -317,7 +333,7 @@ export default function MethodologyTab({ data }) {
         <div className="section-card">
           <div className="eyebrow text-slate-500">Excluded</div>
           <h3 className="mt-2 text-lg font-semibold text-slate-900">
-            What the dashboard omits
+            Omitted effects
           </h3>
           <ul className="mt-4 list-disc pl-5 text-sm leading-7 text-slate-600 space-y-1">
             <li>
@@ -343,89 +359,33 @@ export default function MethodologyTab({ data }) {
               OBR controls
             </li>
           </ul>
-        </div>
-      </div>
-
-      <div className="section-card">
-        <div className="eyebrow text-slate-500">Further reading</div>
-        <h3 className="mt-2 text-lg font-semibold text-slate-900">
-          Primary sources and external commentary
-        </h3>
-        <ul className="mt-4 list-disc pl-5 text-sm leading-7 text-slate-600 space-y-1">
-          <li>
-            <a
-              href="https://www.gov.uk/government/publications/budget-2025-document/budget-2025-html"
-              target="_blank"
-              rel="noreferrer"
-            >
-              HM Treasury — Autumn Budget 2025 (full document)
-            </a>
-          </li>
-          <li>
-            <a
-              href="https://www.gov.uk/government/publications/fuel-duty-rates-for-2026-to-2027/fuel-duty-rates-2026-to-2027"
-              target="_blank"
-              rel="noreferrer"
-            >
-              HMRC — Fuel duty rates: 2026 to 2027 (technical note with the
-              +1p / +2p / +2p schedule and Exchequer costings)
-            </a>
-          </li>
-          <li>
-            <a
-              href="https://obr.uk/efo/economic-and-fiscal-outlook-march-2026/"
-              target="_blank"
-              rel="noreferrer"
-            >
-              OBR — Economic and Fiscal Outlook, March 2026 (fuel duty
-              receipts forecast)
-            </a>
-          </li>
-          <li>
-            <a
-              href="https://obr.uk/forecasts-in-depth/tax-by-tax-spend-by-spend/fuel-duties/"
-              target="_blank"
-              rel="noreferrer"
-            >
-              OBR — Fuel duties page (current forecast, downside risk
-              commentary)
-            </a>
-          </li>
-          <li>
+          <p className="mt-4 text-sm leading-7 text-slate-600">
+            For policy context, see the{" "}
             <a
               href="https://ifs.org.uk/articles/response-todays-announcement-road-and-fuel-taxation"
               target="_blank"
               rel="noreferrer"
             >
-              IFS — Response to the announcement on road and fuel taxation
+              IFS response on road and fuel taxation
             </a>
-          </li>
-          <li>
+            {", the "}
             <a
               href="https://commonslibrary.parliament.uk/research-briefings/cbp-10340/"
               target="_blank"
               rel="noreferrer"
             >
-              House of Commons Library — Fuel duty: developments since 2022
-              (CBP-10340)
+              House of Commons Library briefing on fuel duty since 2022
             </a>
-          </li>
-          <li>
+            {", and PolicyEngine's "}
             <a
               href="https://www.policyengine.org/uk/research/fuel-duty-freeze"
               target="_blank"
               rel="noreferrer"
             >
-              PolicyEngine — Impact of the Autumn Budget fuel duty freeze
-              (earlier research blog post on the same model)
-            </a>
-          </li>
-        </ul>
-      </div>
-
-      <div className="section-card">
-        <div className="eyebrow text-slate-500">Citation</div>
-        <p className="mt-2 text-sm leading-7 text-slate-600">{citation}</p>
+              analysis of the Autumn Budget fuel-duty freeze
+            </a>.
+          </p>
+        </div>
       </div>
     </div>
   );

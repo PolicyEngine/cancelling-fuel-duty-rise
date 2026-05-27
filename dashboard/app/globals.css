@@ -210,6 +210,32 @@
     padding: 24px;
   }
 
+  .expandable-section > summary {
+    align-items: center;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    list-style: none;
+  }
+
+  .expandable-section > summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .expandable-section > summary::after {
+    color: var(--pe-color-gray-500);
+    content: "Expand";
+    font-size: var(--pe-font-size-xs);
+    font-weight: var(--pe-font-weight-semibold);
+    letter-spacing: 0.08em;
+    margin-left: 16px;
+    text-transform: uppercase;
+  }
+
+  .expandable-section[open] > summary::after {
+    content: "Collapse";
+  }
+
   .metric-card {
     background: linear-gradient(
       180deg,

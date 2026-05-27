@@ -300,7 +300,6 @@ export default function ReformTab({ data }) {
     [data, winnersGrouping, winnersYear],
   );
 
-  const yearDist = headline.year_dist;
   const lastYear = headline.last_year;
   const firstFreeze = headline.first_freeze_year;
 
@@ -317,7 +316,7 @@ export default function ReformTab({ data }) {
   return (
     <div className="space-y-8">
       <SectionHeading
-        title="Who is affected by cancelling the fuel-duty rise?"
+        title="Household impact of cancelling the fuel-duty rise"
         description={
           <>
             We cost holding duty flat at 52.95p/L against the{" "}
@@ -342,7 +341,7 @@ export default function ReformTab({ data }) {
               OBR EFO
             </a>{" "}
             receipts forecast); household savings apply the duty-rate gap to
-            PolicyEngine's calibrated petrol &amp; diesel litres. In May 2026
+            PolicyEngine&apos;s calibrated petrol &amp; diesel litres. In May 2026
             the PM{" "}
             <a
               href="https://fleetworld.co.uk/fuel-duty-increase-delayed-until-2027-says-starmer/"
@@ -382,7 +381,7 @@ export default function ReformTab({ data }) {
           <div className="mt-1 text-sm text-slate-500">
             Narrower framing used in press coverage: 52.95p vs the pre-cut
             57.95p only. Excludes the April 2027 RPI uprating, which is why
-            it's smaller than the full-plan figure.
+            it is below the full-plan figure.
           </div>
         </div>
         <div className="metric-card">
@@ -410,8 +409,8 @@ export default function ReformTab({ data }) {
             )}
           </div>
           <div className="mt-1 text-sm text-slate-500">
-            Our {fyLabel(lastYear)} figure for the narrower "extend the 5p
-            cut" framing. The{" "}
+            Our {fyLabel(lastYear)} figure for the narrower &quot;extend the 5p
+            cut&quot; framing. The{" "}
             <a
               href="https://ifs.org.uk/articles/response-todays-announcement-road-and-fuel-taxation"
               target="_blank"
@@ -424,10 +423,10 @@ export default function ReformTab({ data }) {
         </div>
       </div>
 
-      {/* What is changing — boxed year-by-year reference table */}
+      {/* Rate changes — boxed year-by-year reference table */}
       <div className="section-card">
         <SectionHeading
-          title="What is changing"
+          title="Rate changes"
           description={`The legislated Budget 2025 schedule, year by year through ${fyLabel(lastYear)}, against today's frozen rate and the RPI counterfactual. The "change" column makes the +1p / +5.74p / +1.88p / +1.78p path of the planned rises explicit.`}
         />
         <div className="overflow-x-auto">
@@ -516,7 +515,7 @@ export default function ReformTab({ data }) {
         </div>
         <p className="mt-3 text-xs text-slate-500">
           The reform we cost holds duty flat at 52.95p/L through{" "}
-          {fyLabel(lastYear)} — i.e. the "Today" row repeated for every
+          {fyLabel(lastYear)} — i.e. the &quot;Today&quot; row repeated for every
           forecast year.
         </p>
       </div>
@@ -557,7 +556,7 @@ export default function ReformTab({ data }) {
         <div className="section-card">
           <SectionHeading
             title="Cost of just extending the 5p cut, by year"
-            description={`A narrower question: what if the only thing we cancel is the 5p reversal — duty stays at 52.95p/L instead of returning to the pre-cut 57.95p/L? These bars are smaller than the full-plan chart on the left because they don't include the April 2027 RPI uprating, which the Budget also adds on top.`}
+            description="This framing cancels only the 5p reversal, so duty stays at 52.95p/L instead of returning to the pre-cut 57.95p/L. It excludes the April 2027 RPI uprating, so the bars sit below the full-plan chart."
           />
           <div className="h-[380px] w-full">
             <ResponsiveContainer width="100%" height="100%">
@@ -844,7 +843,7 @@ export default function ReformTab({ data }) {
                 <>
                   Share of households in each income group that come out ahead
                   under the reform (gain &gt; £0) versus those whose net
-                  position is unchanged because they don't buy petrol or
+                  position is unchanged because they do not buy petrol or
                   diesel. No-one loses — cancelling a duty rise can only
                   leave a household the same or better off.
                 </>
