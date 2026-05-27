@@ -1,4 +1,4 @@
-.PHONY: install run html docx xlsx all clean test format
+.PHONY: install run html docx xlsx json sync-dashboard all clean test format
 
 UV ?= uv
 
@@ -17,6 +17,12 @@ docx:
 xlsx:
 	$(UV) run python -m cancelling_fuel_duty_rise.build_xlsx
 
+json:
+	$(UV) run python -m cancelling_fuel_duty_rise.build_json
+
+sync-dashboard:
+	$(UV) run python -m cancelling_fuel_duty_rise.build_json --sync-dashboard
+
 all: run
 
 test:
@@ -26,5 +32,5 @@ format:
 	$(UV) run ruff format .
 
 clean:
-	rm -rf results/*.html results/*.docx results/*.xlsx results/*.png results/*.csv
+	rm -rf results/*.html results/*.docx results/*.xlsx results/*.png results/*.csv results/*.json
 	find . -type d -name __pycache__ -exec rm -rf {} +
