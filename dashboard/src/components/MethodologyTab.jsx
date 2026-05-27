@@ -33,11 +33,26 @@ export default function MethodologyTab({ data }) {
             policyengine.py v{peVersion}
           </a>{" "}
           on the enhanced Family Resources Survey 2023/24 to quantify the
-          cost, counterfactual, and distributional impact of cancelling the
-          Autumn Budget 2025 fuel-duty plan. The Budget plan ends the 5p cut
-          introduced in March 2022 and resumes RPI uprating in April 2027; the
-          reform we cost holds petrol and diesel duty at 52.95p/L. Fiscal
-          totals are projected through {fyLabel(lastYear)}.
+          cost, counterfactual, and distributional impact of cancelling the{" "}
+          <a
+            href="https://www.gov.uk/government/publications/budget-2025-document/budget-2025-html"
+            target="_blank"
+            rel="noreferrer"
+          >
+            Autumn Budget 2025
+          </a>{" "}
+          fuel-duty plan. Under the{" "}
+          <a
+            href="https://www.gov.uk/government/publications/fuel-duty-rates-for-2026-to-2027/fuel-duty-rates-2026-to-2027"
+            target="_blank"
+            rel="noreferrer"
+          >
+            published HMRC schedule
+          </a>{" "}
+          the 5p cut from March 2022 is unwound +1p / +2p / +2p across Sept
+          2026 – Mar 2027, then RPI uprating resumes in April 2027. The
+          reform we cost holds petrol and diesel duty flat at 52.95p/L
+          through {fyLabel(lastYear)}.
         </p>
         <p className="mt-4 text-sm leading-7 text-slate-600">
           Two framings sit side by side on the Impact tab:
@@ -142,12 +157,33 @@ export default function MethodologyTab({ data }) {
           </h3>
           <p className="mt-4 text-sm leading-7 text-slate-600">
             Headline fiscal numbers (cost of cancelling, revenue at each
-            counterfactual rate, fleet receipts foregone) are computed from
-            HMRC road-fuel clearances and UK Tax &amp; NICs receipts out-turns
-            for years that are settled, and from the March 2026 OBR fuel-duty
-            receipts forecast for the projection period ({fyLabel(2025)}
-            {" "}onwards). The control total for rate-difference cost
-            calculations is OBR / HMRC all-road petrol + diesel litres.
+            counterfactual rate, cumulative receipts foregone) use{" "}
+            <a
+              href="https://www.gov.uk/government/statistics/uk-tax-and-nics-receipts"
+              target="_blank"
+              rel="noreferrer"
+            >
+              HMRC UK Tax &amp; NICs receipts out-turns
+            </a>{" "}
+            and{" "}
+            <a
+              href="https://www.gov.uk/government/statistics/hydrocarbon-oils-bulletin"
+              target="_blank"
+              rel="noreferrer"
+            >
+              hydrocarbon oils clearances
+            </a>{" "}
+            for years that are settled, and the{" "}
+            <a
+              href="https://obr.uk/efo/economic-and-fiscal-outlook-march-2026/"
+              target="_blank"
+              rel="noreferrer"
+            >
+              OBR March 2026 EFO
+            </a>{" "}
+            fuel-duty receipts forecast for the projection period (
+            {fyLabel(2025)} onwards). The control total for rate-difference
+            cost calculations is OBR / HMRC all-road petrol + diesel litres.
           </p>
         </div>
 
@@ -308,6 +344,83 @@ export default function MethodologyTab({ data }) {
             </li>
           </ul>
         </div>
+      </div>
+
+      <div className="section-card">
+        <div className="eyebrow text-slate-500">Further reading</div>
+        <h3 className="mt-2 text-lg font-semibold text-slate-900">
+          Primary sources and external commentary
+        </h3>
+        <ul className="mt-4 list-disc pl-5 text-sm leading-7 text-slate-600 space-y-1">
+          <li>
+            <a
+              href="https://www.gov.uk/government/publications/budget-2025-document/budget-2025-html"
+              target="_blank"
+              rel="noreferrer"
+            >
+              HM Treasury — Autumn Budget 2025 (full document)
+            </a>
+          </li>
+          <li>
+            <a
+              href="https://www.gov.uk/government/publications/fuel-duty-rates-for-2026-to-2027/fuel-duty-rates-2026-to-2027"
+              target="_blank"
+              rel="noreferrer"
+            >
+              HMRC — Fuel duty rates: 2026 to 2027 (technical note with the
+              +1p / +2p / +2p schedule and Exchequer costings)
+            </a>
+          </li>
+          <li>
+            <a
+              href="https://obr.uk/efo/economic-and-fiscal-outlook-march-2026/"
+              target="_blank"
+              rel="noreferrer"
+            >
+              OBR — Economic and Fiscal Outlook, March 2026 (fuel duty
+              receipts forecast)
+            </a>
+          </li>
+          <li>
+            <a
+              href="https://obr.uk/forecasts-in-depth/tax-by-tax-spend-by-spend/fuel-duties/"
+              target="_blank"
+              rel="noreferrer"
+            >
+              OBR — Fuel duties page (current forecast, downside risk
+              commentary)
+            </a>
+          </li>
+          <li>
+            <a
+              href="https://ifs.org.uk/articles/response-todays-announcement-road-and-fuel-taxation"
+              target="_blank"
+              rel="noreferrer"
+            >
+              IFS — Response to the announcement on road and fuel taxation
+            </a>
+          </li>
+          <li>
+            <a
+              href="https://commonslibrary.parliament.uk/research-briefings/cbp-10340/"
+              target="_blank"
+              rel="noreferrer"
+            >
+              House of Commons Library — Fuel duty: developments since 2022
+              (CBP-10340)
+            </a>
+          </li>
+          <li>
+            <a
+              href="https://www.policyengine.org/uk/research/fuel-duty-freeze"
+              target="_blank"
+              rel="noreferrer"
+            >
+              PolicyEngine — Impact of the Autumn Budget fuel duty freeze
+              (earlier research blog post on the same model)
+            </a>
+          </li>
+        </ul>
       </div>
 
       <div className="section-card">

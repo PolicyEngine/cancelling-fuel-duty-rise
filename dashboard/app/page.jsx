@@ -82,15 +82,34 @@ function Dashboard() {
             >
               policyengine.py
             </a>{" "}
-            to quantify the cost, counterfactual, and distributional impact of
-            cancelling the Autumn Budget 2025 fuel-duty plan — which would let
-            the 5p cut introduced in March 2022 expire and apply RPI uprating
-            in April 2027, raising the headline rate to roughly 60p/L. The <strong>Impact</strong> tab shows the annual
-            cost to the Treasury, the duty rate path against an RPI
-            counterfactual, and the average household saving by income decile,
-            quintile, or quartile. The <strong>Methodology</strong> tab covers
-            the simulations, fiscal benchmarks, and what the static analysis
-            omits.
+            to cost the{" "}
+            <a
+              href="https://www.gov.uk/government/publications/budget-2025-document/budget-2025-html"
+              target="_blank"
+              rel="noreferrer"
+            >
+              Autumn Budget 2025
+            </a>{" "}
+            fuel-duty plan and the household savings of cancelling it.
+            Under the{" "}
+            <a
+              href="https://www.gov.uk/government/publications/fuel-duty-rates-for-2026-to-2027/fuel-duty-rates-2026-to-2027"
+              target="_blank"
+              rel="noreferrer"
+            >
+              published schedule
+            </a>{" "}
+            the 5p-per-litre cut from March 2022 is unwound in three steps
+            (+1p on 1 Sept 2026, +2p on 1 Dec 2026, +2p on 1 Mar 2027) and
+            RPI uprating resumes in April 2027 — taking petrol &amp; diesel
+            duty to roughly 60p/L by 2027-28. The{" "}
+            <strong>Impact</strong> tab shows the annual cost to the Treasury,
+            the duty rate path against an RPI counterfactual, the long-run
+            receipts series, and the average household saving by income group,
+            alongside external benchmarks from OBR, HMRC, IFS, and the
+            PolicyEngine research blog. The <strong>Methodology</strong> tab
+            covers the simulations, fiscal benchmarks, and what the static
+            analysis omits.
           </p>
         </div>
 

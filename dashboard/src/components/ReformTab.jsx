@@ -201,17 +201,29 @@ export default function ReformTab({ data }) {
         title="Who is affected by cancelling the fuel-duty rise?"
         description={
           <>
-            The Autumn Budget 2025 plan would let the 5p-per-litre cut introduced
-            in March 2022 expire and apply RPI uprating in April 2027, taking
-            petrol and diesel duty from 52.95p/L to {headline.baseline_rate_2027_p.toFixed(2)}p/L
-            in one step and continuing to uprate by RPI through {fyLabel(lastYear)}.
-            This page quantifies the cost of cancelling that plan and keeping
-            duty at 52.95p/L, the household-level distribution of those savings
-            in {fyLabel(yearDist)}, and how the policy compares to the
-            long-running freeze of UK fuel duty going back to {fyLabel(firstFreeze)}.
-            Headline fiscal totals use HMRC/OBR road-fuel clearances and
-            receipts; distributional savings apply the same duty-rate gap to
-            PolicyEngine's calibrated household litres.
+            The{" "}
+            <a
+              href="https://www.gov.uk/government/publications/budget-2025-document/budget-2025-html"
+              target="_blank"
+              rel="noreferrer"
+            >
+              Autumn Budget 2025
+            </a>{" "}
+            plan unwinds the 5p-per-litre cut from March 2022 in three steps
+            (+1p Sept 2026, +2p Dec 2026, +2p Mar 2027) and resumes RPI
+            uprating in April 2027. By the {fyLabel(2027)} fiscal-year average,
+            petrol and diesel duty is{" "}
+            {headline.baseline_rate_2027_p.toFixed(2)}p/L (up from 52.95p
+            today), and reaches{" "}
+            {ratePath[ratePath.length - 1].actualP.toFixed(2)}p/L by{" "}
+            {fyLabel(lastYear)}. This page costs the alternative of holding
+            duty flat at 52.95p/L: the annual revenue loss, where it lands
+            across households in {fyLabel(yearDist)}, and how the long-running
+            freeze compares to a counterfactual where duty had been RPI-uprated
+            every year since {fyLabel(firstFreeze)}. Fiscal totals use HMRC
+            out-turns and OBR projections; household savings apply the same
+            duty-rate gap to PolicyEngine's calibrated petrol &amp; diesel
+            litres.
           </>
         }
       />
@@ -220,51 +232,231 @@ export default function ReformTab({ data }) {
       <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
         <div className="metric-card">
           <div className="text-xs font-medium uppercase tracking-[0.08em] text-slate-500">
-            Cancel full plan ({fyLabel(2027)})
+            Cost of cancelling the full plan, {fyLabel(2027)}
           </div>
           <div className="mt-2 text-3xl font-bold tracking-tight text-slate-900 tabular-nums">
             {formatBn(headline.scrap_2027)}
           </div>
           <div className="mt-1 text-sm text-slate-500">
-            Cost to Treasury of holding duty at 52.95p/L vs the {fyLabel(2027)} Budget plan.
+            The Treasury loses this much in {fyLabel(2027)} if duty stays at
+            52.95p/L instead of rising to{" "}
+            {headline.baseline_rate_2027_p.toFixed(2)}p/L as scheduled.
           </div>
         </div>
         <div className="metric-card">
           <div className="text-xs font-medium uppercase tracking-[0.08em] text-slate-500">
-            Cancel full plan ({fyLabel(lastYear)})
+            Cost of cancelling the full plan, {fyLabel(lastYear)}
           </div>
           <div className="mt-2 text-3xl font-bold tracking-tight text-slate-900 tabular-nums">
             {formatBn(headline.scrap_2029)}
           </div>
           <div className="mt-1 text-sm text-slate-500">
-            By {fyLabel(lastYear)} the gap widens as the RPI counterfactual
-            grows ({headline.baseline_rate_2027_p.toFixed(2)}p planned in 2027,
-            52.95p kept).
+            By {fyLabel(lastYear)} the planned rate has reached{" "}
+            {ratePath[ratePath.length - 1].actualP.toFixed(2)}p/L. Holding at
+            52.95p costs more each year as the gap widens.
           </div>
         </div>
         <div className="metric-card">
           <div className="text-xs font-medium uppercase tracking-[0.08em] text-slate-500">
-            Extend 5p cut only ({fyLabel(2027)})
+            Cost of just extending the 5p cut, {fyLabel(2027)}
           </div>
           <div className="mt-2 text-3xl font-bold tracking-tight text-slate-900 tabular-nums">
             {formatBn(guardian2027.cost5pBn)}
           </div>
           <div className="mt-1 text-sm text-slate-500">
-            Guardian framing: 52.95p vs 57.95p only — excludes the April 2027
-            RPI step.
+            Narrower framing used in press coverage: 52.95p vs the pre-cut
+            57.95p only. Excludes the April 2027 RPI uprating, which is why
+            it's smaller than the full-plan figure.
           </div>
         </div>
         <div className="metric-card">
           <div className="text-xs font-medium uppercase tracking-[0.08em] text-slate-500">
-            Fleet receipts foregone since {fyLabel(firstFreeze)}
+            Cumulative receipts foregone since {fyLabel(firstFreeze)}
           </div>
           <div className="mt-2 text-3xl font-bold tracking-tight text-slate-900 tabular-nums">
             {formatBn(headline.fleet_cumulative)}
           </div>
           <div className="mt-1 text-sm text-slate-500">
-            Cumulative gap between counterfactual RPI uprating and actual
-            duty receipts, {fyLabel(firstFreeze)} – {fyLabel(2026)}.
+            How much extra duty would have been collected if the rate had
+            risen by RPI every April since {fyLabel(firstFreeze)}, summed
+            year-by-year through {fyLabel(2026)}.
           </div>
+        </div>
+      </div>
+
+      {/* External benchmarks */}
+      <div className="section-card">
+        <SectionHeading
+          title="How our numbers compare to other published estimates"
+          description={
+            <>
+              Different organisations cost different counterfactuals — here is
+              how to read each. We answer one question: <em>holding duty at
+              52.95p/L vs implementing the Budget 2025 plan</em>. HMRC and the
+              OBR answer narrower questions. The table makes the comparison
+              explicit so the headline figures can be cross-checked.
+            </>
+          }
+        />
+        <div className="overflow-x-auto">
+          <table className="w-full text-sm">
+            <thead>
+              <tr className="border-b border-slate-200 text-left text-[11px] uppercase tracking-wide text-slate-400">
+                <th className="py-2 pr-4 font-medium">Source</th>
+                <th className="py-2 pr-4 font-medium">Question they answer</th>
+                <th className="py-2 pr-4 font-medium">Their number</th>
+                <th className="py-2 pr-0 font-medium">Our equivalent</th>
+              </tr>
+            </thead>
+            <tbody className="text-slate-700">
+              <tr className="border-b border-slate-100 align-top">
+                <td className="py-3 pr-4">
+                  <div className="font-semibold">
+                    <a
+                      href="https://obr.uk/forecasts-in-depth/tax-by-tax-spend-by-spend/fuel-duties/"
+                      target="_blank"
+                      rel="noreferrer"
+                    >
+                      OBR EFO
+                    </a>
+                  </div>
+                  <div className="mt-0.5 text-xs text-slate-500">
+                    Receipts forecast (Nov 2025 / Mar 2026 vintage)
+                  </div>
+                </td>
+                <td className="py-3 pr-4 text-xs text-slate-600">
+                  Total UK fuel duty receipts under the published Budget 2025
+                  plan.
+                </td>
+                <td className="py-3 pr-4 tabular-nums">
+                  <div>£24.0bn ({fyLabel(2025)})</div>
+                  <div>£26.2bn ({fyLabel(2027)})</div>
+                </td>
+                <td className="py-3 pr-0 tabular-nums">
+                  <div>
+                    £
+                    {data.tables.revenue_2010_2029
+                      .find((r) => r.year === 2025)
+                      .actual_revenue_gbp_bn.toFixed(2)}
+                    bn ({fyLabel(2025)})
+                  </div>
+                  <div>
+                    £
+                    {data.tables.revenue_2010_2029
+                      .find((r) => r.year === 2027)
+                      .actual_revenue_gbp_bn.toFixed(2)}
+                    bn ({fyLabel(2027)})
+                  </div>
+                  <div className="mt-1 text-xs text-emerald-700">
+                    Within ~1% — matches.
+                  </div>
+                </td>
+              </tr>
+              <tr className="border-b border-slate-100 align-top">
+                <td className="py-3 pr-4">
+                  <div className="font-semibold">
+                    <a
+                      href="https://www.gov.uk/government/publications/fuel-duty-rates-for-2026-to-2027/fuel-duty-rates-2026-to-2027"
+                      target="_blank"
+                      rel="noreferrer"
+                    >
+                      HMRC technical note
+                    </a>
+                  </div>
+                  <div className="mt-0.5 text-xs text-slate-500">
+                    Cost of the staged unwind vs cliff-edge expiry
+                  </div>
+                </td>
+                <td className="py-3 pr-4 text-xs text-slate-600">
+                  Exchequer cost of the +1p/+2p/+2p phased schedule vs an
+                  immediate 1 April 2026 reversal of the 5p cut.
+                </td>
+                <td className="py-3 pr-4 tabular-nums">
+                  <div>£2,370m ({fyLabel(2026)})</div>
+                  <div>£855m ({fyLabel(2027)})</div>
+                </td>
+                <td className="py-3 pr-0 text-xs text-slate-600">
+                  Not directly comparable — they cost the staging vs cliff
+                  edge; we cost the full plan vs holding duty flat.
+                </td>
+              </tr>
+              <tr className="border-b border-slate-100 align-top">
+                <td className="py-3 pr-4">
+                  <div className="font-semibold">
+                    <a
+                      href="https://ifs.org.uk/articles/response-todays-announcement-road-and-fuel-taxation"
+                      target="_blank"
+                      rel="noreferrer"
+                    >
+                      IFS
+                    </a>
+                  </div>
+                  <div className="mt-0.5 text-xs text-slate-500">
+                    Permanent 5p cut, no plan reversal
+                  </div>
+                </td>
+                <td className="py-3 pr-4 text-xs text-slate-600">
+                  Cost of keeping the 5p cut permanently relative to the
+                  current forecast, by {fyLabel(2029)}.
+                </td>
+                <td className="py-3 pr-4 tabular-nums">~£2.3bn / yr</td>
+                <td className="py-3 pr-0 tabular-nums">
+                  £
+                  {data.tables.guardian_check
+                    .find((r) => r.Year === 2029)
+                    ["Cost of keeping 5p cut (£bn)"].toFixed(2)}
+                  bn ({fyLabel(2029)})
+                  <div className="mt-1 text-xs text-emerald-700">
+                    Within ~10% — matches.
+                  </div>
+                </td>
+              </tr>
+              <tr className="align-top">
+                <td className="py-3 pr-4">
+                  <div className="font-semibold">
+                    <a
+                      href="https://www.policyengine.org/uk/research/fuel-duty-freeze"
+                      target="_blank"
+                      rel="noreferrer"
+                    >
+                      PolicyEngine research blog
+                    </a>
+                  </div>
+                  <div className="mt-0.5 text-xs text-slate-500">
+                    Earlier vintage of the same model
+                  </div>
+                </td>
+                <td className="py-3 pr-4 text-xs text-slate-600">
+                  Average household gain by income decile in {fyLabel(2026)},
+                  same scope.
+                </td>
+                <td className="py-3 pr-4 tabular-nums">
+                  <div>D1: £68/yr</div>
+                  <div>D10: £159/yr</div>
+                </td>
+                <td className="py-3 pr-0 tabular-nums">
+                  <div>
+                    D1: £
+                    {data.distribution.deciles[0].avg_saving_gbp_per_year.toFixed(
+                      0,
+                    )}
+                    /yr
+                  </div>
+                  <div>
+                    D10: £
+                    {data.distribution.deciles[9].avg_saving_gbp_per_year.toFixed(
+                      0,
+                    )}
+                    /yr
+                  </div>
+                  <div className="mt-1 text-xs text-emerald-700">
+                    Top decile matches; bottom-decile gap reflects vintage and
+                    fuel-litre calibration differences.
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
         </div>
       </div>
 
@@ -319,7 +511,7 @@ export default function ReformTab({ data }) {
         <div className="section-card">
           <SectionHeading
             title="Cost of cancelling the full plan, by year"
-            description={`Difference between baseline revenue at the planned duty rate and reform revenue at the frozen 52.95p/L rate. ${fyLabel(2026)}–${fyLabel(lastYear)} only — earlier years already match the reform.`}
+            description={`How much revenue the Treasury loses each year by keeping duty at 52.95p/L instead of letting it rise as the Budget plans. Earlier years are zero because duty is already at the reform rate today.`}
           />
           <div className="h-[380px] w-full">
             <ResponsiveContainer width="100%" height="100%">
@@ -352,8 +544,8 @@ export default function ReformTab({ data }) {
 
         <div className="section-card">
           <SectionHeading
-            title="Guardian 5p-only framing, by year"
-            description="Cost of holding duty at 52.95p/L against the pre-2022 57.95p rate only — ignores the April 2027 RPI step that the full Budget plan also unwinds."
+            title="Cost of just extending the 5p cut, by year"
+            description="The narrower press framing: cost of staying at 52.95p/L versus the pre-2022 rate of 57.95p/L only. Smaller than the full-plan chart because it ignores the additional April 2027 RPI uprating."
           />
           <div className="h-[380px] w-full">
             <ResponsiveContainer width="100%" height="100%">
@@ -386,8 +578,8 @@ export default function ReformTab({ data }) {
       {/* Rate path chart */}
       <div className="section-card">
         <SectionHeading
-          title="Duty rate path — actual vs RPI counterfactual"
-          description={`What petrol and diesel duty would have been if the rate had risen by RPI every April since ${fyLabel(firstFreeze)}, compared to the rate actually charged.`}
+          title="Duty rate path — what was vs what it would have been"
+          description={`Solid line: the actual duty rate charged each year, including the planned Budget 2025 increases through ${fyLabel(lastYear)}. Dashed line: a counterfactual where duty had simply risen by RPI every April since ${fyLabel(firstFreeze)}. The gap between the two is what's been lost to the de-facto freeze.`}
         />
         <div className="h-[380px] w-full">
           <ResponsiveContainer width="100%" height="100%">
@@ -450,7 +642,7 @@ export default function ReformTab({ data }) {
         <div className="section-card">
           <SectionHeading
             title="Fuel duty receipts — actual vs RPI counterfactual"
-            description={`Annual UK fuel duty receipts under the frozen duty rate (HMRC out-turns to ${fyLabel(2024)}; OBR March 2026 forecast thereafter) compared to receipts under an RPI-uprated counterfactual. The shaded gap is the cumulative £${headline.fleet_cumulative.toFixed(0)}bn of receipts foregone since ${fyLabel(firstFreeze)}.`}
+            description={`The same comparison in revenue terms. Solid line: actual UK fuel duty receipts each year (HMRC out-turns through ${fyLabel(2024)}, OBR March 2026 EFO forecast thereafter). Dashed line: what receipts would have been at the RPI-uprated counterfactual rate. The shaded area is the cumulative £${headline.fleet_cumulative.toFixed(0)}bn foregone since ${fyLabel(firstFreeze)}.`}
           />
           <div className="h-[420px] w-full">
             <ResponsiveContainer width="100%" height="100%">
@@ -525,11 +717,11 @@ export default function ReformTab({ data }) {
       <div className="section-card">
         <div className="mb-4 flex flex-wrap items-start justify-between gap-3">
           <SectionHeading
-            title={`Average annual saving by income group (${fyLabel(yearDist)})`}
+            title={`Average household saving by income group (${fyLabel(yearDist)})`}
             description={
               impactMode === "abs"
-                ? "Mean saving in cash terms — household petrol and diesel litres times the duty-rate gap, averaged across all households in each group."
-                : "Mean saving as a share of net income — same numerator, divided by household net income."
+                ? "How much the average household in each income group keeps per year if the planned rise is cancelled. Calculated as their petrol + diesel litres times the duty-rate gap, averaged across every household in the group (not just car-owning households)."
+                : "The same saving expressed as a percentage of the household's net income — useful for seeing which groups benefit most in relative terms."
             }
           />
           <div className="flex flex-shrink-0 items-center gap-2">
