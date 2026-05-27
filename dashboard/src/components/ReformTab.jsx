@@ -316,7 +316,7 @@ export default function ReformTab({ data }) {
   return (
     <div className="space-y-8">
       <SectionHeading
-        title="Household impact of cancelling the fuel-duty rise"
+        title="Impact summary"
         description={
           <>
             We cost holding duty flat at 52.95p/L against the{" "}
@@ -361,7 +361,7 @@ export default function ReformTab({ data }) {
       <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
         <div className="metric-card">
           <div className="text-xs font-medium uppercase tracking-[0.08em] text-slate-500">
-            Cost of cancelling the full plan, {fyLabel(2027)}
+            Full plan cost, {fyLabel(2027)}
           </div>
           <div className="mt-2 text-3xl font-bold tracking-tight text-slate-900 tabular-nums">
             {formatBn(headline.scrap_2027)}
@@ -374,7 +374,7 @@ export default function ReformTab({ data }) {
         </div>
         <div className="metric-card">
           <div className="text-xs font-medium uppercase tracking-[0.08em] text-slate-500">
-            Cost of just extending the 5p cut, {fyLabel(2027)}
+            5p-only cost, {fyLabel(2027)}
           </div>
           <div className="mt-2 text-3xl font-bold tracking-tight text-slate-900 tabular-nums">
             {formatBn(guardian2027.cost5pBn)}
@@ -387,7 +387,7 @@ export default function ReformTab({ data }) {
         </div>
         <div className="metric-card">
           <div className="text-xs font-medium uppercase tracking-[0.08em] text-slate-500">
-            Cumulative receipts foregone since {fyLabel(firstFreeze)}
+            RPI freeze receipts gap
           </div>
           <div className="mt-2 text-3xl font-bold tracking-tight text-slate-900 tabular-nums">
             {formatBn(headline.fleet_cumulative)}
@@ -400,7 +400,7 @@ export default function ReformTab({ data }) {
         </div>
         <div className="metric-card">
           <div className="text-xs font-medium uppercase tracking-[0.08em] text-slate-500">
-            5p extension cost, {fyLabel(lastYear)}
+            5p-only cost, {fyLabel(lastYear)}
           </div>
           <div className="mt-2 text-3xl font-bold tracking-tight text-slate-900 tabular-nums">
             {formatBn(
@@ -427,7 +427,7 @@ export default function ReformTab({ data }) {
       {/* Rate changes — boxed year-by-year reference table */}
       <SectionHeading
         title="Rate changes"
-        description={`The legislated Budget 2025 schedule, year by year through ${fyLabel(lastYear)}, against today's frozen rate and the RPI counterfactual. The "change" column makes the +1p / +5.74p / +1.88p / +1.78p path of the planned rises explicit.`}
+        description={`The Budget 2025 schedule through ${fyLabel(lastYear)}, compared with today's frozen rate and an RPI-uprated counterfactual. The change column compares each row with the previous listed duty rate.`}
       />
       <div className="section-card">
         <div className="overflow-x-auto">
@@ -436,7 +436,7 @@ export default function ReformTab({ data }) {
               <tr className="border-b border-slate-200 text-left text-[11px] uppercase tracking-wide text-slate-400">
                 <th className="py-2 pr-4 font-medium">Year</th>
                 <th className="py-2 pr-4 font-medium">Planned duty (p/L)</th>
-                <th className="py-2 pr-4 font-medium">Change YoY</th>
+                <th className="py-2 pr-4 font-medium">Change from previous</th>
                 <th className="py-2 pr-4 font-medium">RPI counterfactual (p/L)</th>
                 <th className="py-2 pr-0 font-medium">Gap from RPI</th>
               </tr>
@@ -480,9 +480,7 @@ export default function ReformTab({ data }) {
                           )}
                         </div>
                         <div className="mt-0.5 text-xs text-slate-500">
-                          {isToday
-                            ? "Current frozen rate."
-                            : `Budget 2025 schedule.`}
+                          {isToday ? "Current frozen rate." : "Budget plan."}
                         </div>
                       </td>
                       <td className="py-3 pr-4 tabular-nums">
@@ -523,13 +521,13 @@ export default function ReformTab({ data }) {
 
       {/* Annual cost — full plan vs Guardian 5p framing, side-by-side */}
       <SectionHeading
-        title="Annual cost to the Treasury"
+        title="Annual Treasury cost"
         description="Year-by-year cost of cancelling the rise, under two framings: scrapping the full Budget 2025 plan, or just extending the 5p cut. Same year window on both so the bars line up."
       />
       <div className="grid gap-8 xl:grid-cols-2">
         <div className="section-card">
           <SectionHeading
-            title="Cost of cancelling the full plan, by year"
+            title="Full plan cost by year"
             description={`How much revenue the Treasury loses each year if duty is held at 52.95p/L instead of rising as the Budget plans. Shown for ${fyLabel(REFORM_START)}–${fyLabel(lastYear)} only — earlier years already match the reform, so the cost is zero by definition.`}
           />
           <div className="h-[380px] w-full">
@@ -556,7 +554,7 @@ export default function ReformTab({ data }) {
 
         <div className="section-card">
           <SectionHeading
-            title="Cost of just extending the 5p cut, by year"
+            title="5p-only cost by year"
             description="This framing cancels only the 5p reversal, so duty stays at 52.95p/L instead of returning to the pre-cut 57.95p/L. It excludes the April 2027 RPI uprating, so the bars sit below the full-plan chart."
           />
           <div className="h-[380px] w-full">
@@ -589,13 +587,13 @@ export default function ReformTab({ data }) {
 
       {/* Rate path + OBR-style revenue — side-by-side */}
       <SectionHeading
-        title="Long-run trend"
+        title="Long-run rates and receipts"
         description={`Where today's frozen duty rate sits against a counterfactual where it had risen by RPI every April since ${fyLabel(firstFreeze)}, and what that has meant for receipts year-by-year. The left panel shows it in pence-per-litre terms; the right panel translates the same gap into £bn of duty receipts.`}
       />
       <div className="grid gap-8 xl:grid-cols-2">
         <div className="section-card">
         <SectionHeading
-          title="Duty rate path — what was vs what it would have been"
+          title="Duty rate path"
           description={`Solid line: the actual duty rate charged each year, including the planned Budget 2025 increases through ${fyLabel(lastYear)}. Dashed line: a counterfactual where duty had simply risen by RPI every April since ${fyLabel(firstFreeze)}. The gap between the two is what's been lost to the de-facto freeze.`}
         />
         <div className="h-[380px] w-full">

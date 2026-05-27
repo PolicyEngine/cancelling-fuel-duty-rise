@@ -82,7 +82,8 @@ function Dashboard() {
             >
               policyengine.py
             </a>{" "}
-            to cost cancelling the fuel-duty rise scheduled in the{" "}
+            to estimate the fiscal and household impact of cancelling the
+            fuel-duty rise scheduled in the{" "}
             <a
               href="https://www.gov.uk/government/publications/budget-2025-document/budget-2025-html"
               target="_blank"
