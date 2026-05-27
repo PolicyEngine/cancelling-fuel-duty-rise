@@ -8,14 +8,6 @@ const basePath = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
 
 const MEDIA_IMAGES = [
   {
-    src: `${basePath}/media/itv-peston-1.png`,
-    width: 1774,
-    height: 984,
-    alt: "ITV Peston episode page showing the 20 May programme details.",
-    caption: "ITV Peston episode listing, 20 May broadcast.",
-    previewClassName: "object-contain",
-  },
-  {
     src: `${basePath}/media/itv-peston-2.png`,
     width: 1738,
     height: 1002,
@@ -30,6 +22,14 @@ const MEDIA_IMAGES = [
     alt: "ITV Peston subtitles covering the fuel duty analysis.",
     caption: "Subtitled discussion of the fiscal estimate.",
     previewClassName: "object-contain scale-125",
+  },
+  {
+    src: `${basePath}/media/itv-peston-1.png`,
+    width: 1774,
+    height: 984,
+    alt: "ITV Peston episode page showing the 20 May programme details.",
+    caption: "ITV Peston episode listing, 20 May broadcast.",
+    previewClassName: "object-contain",
   },
 ];
 
