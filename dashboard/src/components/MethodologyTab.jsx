@@ -117,7 +117,7 @@ export default function MethodologyTab({ data }) {
                 <td className="py-2 pr-4 tabular-nums">
                   {
                     data.tables.rate_path[data.tables.rate_path.length - 1]
-                      .actual_rate_p_per_litre
+                      .actual_rate_p_per_litre.toFixed(2)
                   }
                   p
                 </td>
@@ -134,14 +134,14 @@ export default function MethodologyTab({ data }) {
                 <td className="py-2 pr-4 tabular-nums">
                   {
                     data.tables.rate_path.find((r) => r.year === 2027)
-                      .rpi_counterfactual_rate_p_per_litre
+                      .rpi_counterfactual_rate_p_per_litre.toFixed(2)
                   }
                   p
                 </td>
                 <td className="py-2 pr-4 tabular-nums">
                   {
                     data.tables.rate_path[data.tables.rate_path.length - 1]
-                      .rpi_counterfactual_rate_p_per_litre
+                      .rpi_counterfactual_rate_p_per_litre.toFixed(2)
                   }
                   p
                 </td>
