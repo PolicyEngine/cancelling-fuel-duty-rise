@@ -475,6 +475,10 @@ export default function ReformTab({ data }) {
       </div>
 
       {/* Annual cost — full plan vs Guardian 5p framing, side-by-side */}
+      <SectionHeading
+        title="Annual cost to the Treasury"
+        description="Year-by-year cost of cancelling the rise, under two framings: scrapping the full Budget 2025 plan, or just extending the 5p cut. Same year window on both so the bars line up."
+      />
       <div className="grid gap-8 xl:grid-cols-2">
         <div className="section-card">
           <SectionHeading
@@ -537,6 +541,10 @@ export default function ReformTab({ data }) {
       </div>
 
       {/* Rate path + OBR-style revenue — side-by-side */}
+      <SectionHeading
+        title="Long-run trend"
+        description={`Where today's frozen duty rate sits against a counterfactual where it had risen by RPI every April since ${fyLabel(firstFreeze)}, and what that has meant for receipts year-by-year. The left panel shows it in pence-per-litre terms; the right panel translates the same gap into £bn of duty receipts.`}
+      />
       <div className="grid gap-8 xl:grid-cols-2">
         <div className="section-card">
         <SectionHeading
@@ -677,6 +685,10 @@ export default function ReformTab({ data }) {
       </div>
 
       {/* Distribution: saving + winners/losers — side-by-side */}
+      <SectionHeading
+        title="Household impact"
+        description="How the saving from cancellation lands across UK households: the average per-household gain by income group, and the share of households in each group that actually benefit. Use the Year dropdown on each chart to pick a fiscal year — the two charts are independent so you can compare different years side-by-side."
+      />
       <div className="grid gap-8 xl:grid-cols-2">
       <div className="section-card">
         <div className="mb-4 flex flex-wrap items-start justify-between gap-3">
