@@ -3,11 +3,11 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import {
   Area,
-  AreaChart,
   Bar,
   BarChart,
   CartesianGrid,
   Cell,
+  ComposedChart,
   Legend,
   Line,
   LineChart,
@@ -319,7 +319,7 @@ export default function ReformTab({ data }) {
         title="Impact summary"
         description={
           <>
-            We cost holding duty flat at 52.95p/L against the{" "}
+            We estimate the cost of holding duty flat at 52.95p/L against the{" "}
             <a
               href="https://www.gov.uk/government/publications/budget-2025-document/budget-2025-html"
               target="_blank"
@@ -341,24 +341,15 @@ export default function ReformTab({ data }) {
             >
               OBR EFO
             </a>{" "}
-            forecast of £24.0bn and £26.2bn. Household savings apply the duty-rate gap to
-            PolicyEngine&apos;s calibrated petrol &amp; diesel litres. In May 2026
-            the PM{" "}
-            <a
-              href="https://fleetworld.co.uk/fuel-duty-increase-delayed-until-2027-says-starmer/"
-              target="_blank"
-              rel="noreferrer"
-            >
-              postponed the September step
-            </a>{" "}
-            amid pump-price pressure; the figures below cost the original
-            Budget 2025 schedule.
+            forecast of £24.0bn and £26.2bn. For household savings, we apply
+            the duty-rate gap to PolicyEngine&apos;s calibrated petrol &amp;
+            diesel litres.
           </>
         }
       />
 
       {/* Headline metric cards */}
-      <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
+      <div className="grid gap-4 md:grid-cols-3">
         <div className="metric-card">
           <div className="text-xs font-medium uppercase tracking-[0.08em] text-slate-500">
             Full plan cost, {fyLabel(2027)}
@@ -367,9 +358,9 @@ export default function ReformTab({ data }) {
             {formatBn(headline.scrap_2027)}
           </div>
           <div className="mt-1 text-sm text-slate-500">
-            Holding duty at 52.95p/L instead of the scheduled{" "}
-            {headline.baseline_rate_2027_p.toFixed(2)}p/L costs the Treasury
-            this amount in {fyLabel(2027)}.
+            The Treasury loses this much in {fyLabel(2027)} from holding duty
+            at 52.95p/L instead of the scheduled{" "}
+            {headline.baseline_rate_2027_p.toFixed(2)}p/L.
           </div>
         </div>
         <div className="metric-card">
@@ -381,8 +372,16 @@ export default function ReformTab({ data }) {
           </div>
           <div className="mt-1 text-sm text-slate-500">
             This press framing compares 52.95p with the pre-cut 57.95p rate
-            only. It excludes the April 2027 RPI uprating, so it sits below
-            the full-plan estimate.
+            only, excluding the April 2027 RPI uprating, so it sits below the
+            full-plan estimate. The{" "}
+            <a
+              href="https://ifs.org.uk/articles/response-todays-announcement-road-and-fuel-taxation"
+              target="_blank"
+              rel="noreferrer"
+            >
+              IFS
+            </a>{" "}
+            gives a comparable annual estimate of ~£2.3bn/yr.
           </div>
         </div>
         <div className="metric-card">
@@ -398,39 +397,26 @@ export default function ReformTab({ data }) {
             {fyLabel(2026)}.
           </div>
         </div>
-        <div className="metric-card">
-          <div className="text-xs font-medium uppercase tracking-[0.08em] text-slate-500">
-            5p-only benchmark, {fyLabel(lastYear)}
-          </div>
-          <div className="mt-2 text-3xl font-bold tracking-tight text-slate-900 tabular-nums">
-            {formatBn(
-              data.tables.guardian_check.find((r) => r.Year === lastYear)[
-                "Cost of keeping 5p cut (£bn)"
-              ],
-            )}
-          </div>
-          <div className="mt-1 text-sm text-slate-500">
-            Same 5p-only framing as the {fyLabel(2027)} press card: 52.95p
-            instead of 57.95p, excluding RPI uprating. The{" "}
-            <a
-              href="https://ifs.org.uk/articles/response-todays-announcement-road-and-fuel-taxation"
-              target="_blank"
-              rel="noreferrer"
-            >
-              IFS
-            </a>{" "}
-            gives a comparable {fyLabel(lastYear)} estimate of ~£2.3bn/yr.
-          </div>
-        </div>
       </div>
 
-      {/* Rate changes — boxed year-by-year reference table */}
-      <SectionHeading
-        title="Rate changes"
-        description={`The Budget 2025 schedule through ${fyLabel(lastYear)}, compared with today's frozen rate and an RPI-uprated counterfactual. The change column compares each row with the previous listed duty rate. The cancellation scenario repeats today's 52.95p/L rate for every forecast year.`}
-      />
-      <div className="section-card">
-        <div className="overflow-x-auto">
+      {/* Rate changes — expandable year-by-year reference table */}
+      <details className="section-card expandable-section">
+        <summary>
+          <span>
+            <span className="eyebrow text-slate-500">Reference</span>
+            <span className="mt-2 block text-lg font-semibold text-slate-900">
+              Rate changes
+            </span>
+          </span>
+        </summary>
+        <p className="mt-4 text-sm leading-7 text-slate-600">
+          The Budget 2025 schedule through {fyLabel(lastYear)}, compared with
+          today&apos;s frozen rate and an RPI-uprated counterfactual. The
+          change column compares each row with the previous listed duty rate.
+          The cancellation scenario repeats today&apos;s 52.95p/L rate for
+          every forecast year.
+        </p>
+        <div className="mt-4 overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
               <tr className="border-b border-slate-200 text-left text-[11px] uppercase tracking-wide text-slate-400">
@@ -512,12 +498,12 @@ export default function ReformTab({ data }) {
             </tbody>
           </table>
         </div>
-      </div>
+      </details>
 
       {/* Annual cost — full plan vs Guardian 5p framing, side-by-side */}
       <SectionHeading
         title="Annual Treasury cost"
-        description="Year-by-year cost of cancelling the rise, under two framings: scrapping the full Budget 2025 plan, or just extending the 5p cut. Same year window on both so the bars line up."
+        description="Year-by-year cost of cancelling the rise, under two framings: scrapping the full Budget 2025 plan, or just extending the 5p cut. Both charts use the same year window so the bars line up."
       />
       <div className="grid gap-8 xl:grid-cols-2">
         <div className="section-card">
@@ -583,13 +569,13 @@ export default function ReformTab({ data }) {
       {/* Rate path + OBR-style revenue — side-by-side */}
       <SectionHeading
         title="Long-run rates and receipts"
-        description={`Where today's frozen duty rate sits against a counterfactual where it had risen by RPI every April since ${fyLabel(firstFreeze)}, and what that has meant for receipts year-by-year. The left panel shows it in pence-per-litre terms; the right panel translates the same gap into £bn of duty receipts.`}
+        description={`How today's frozen duty rate compares with a counterfactual where it had risen by RPI every April since ${fyLabel(firstFreeze)}, and what that has meant for receipts year-by-year. The left panel shows it in pence-per-litre terms; the right panel translates the same gap into £bn of duty receipts.`}
       />
       <div className="grid gap-8 xl:grid-cols-2">
         <div className="section-card">
         <SectionHeading
           title="Duty rate path"
-          description={`Solid line: the actual duty rate charged each year, including the planned Budget 2025 increases through ${fyLabel(lastYear)}. Dashed line: a counterfactual where duty had simply risen by RPI every April since ${fyLabel(firstFreeze)}. The gap between the two is what's been lost to the de-facto freeze.`}
+          description={`Solid line: the actual duty rate charged each year, including the planned Budget 2025 increases through ${fyLabel(lastYear)}. Dashed line: a counterfactual where duty had risen by RPI every April since ${fyLabel(firstFreeze)}. The gap between the two is what's been lost to the de-facto freeze.`}
         />
         <div className="h-[380px] w-full">
           <ResponsiveContainer width="100%" height="100%">
@@ -656,7 +642,7 @@ export default function ReformTab({ data }) {
           />
           <div className="h-[380px] w-full">
             <ResponsiveContainer width="100%" height="100%">
-              <AreaChart
+              <ComposedChart
                 data={revenueSeries}
                 margin={{ top: 10, right: 16, left: 4, bottom: 8 }}
               >
@@ -698,25 +684,45 @@ export default function ReformTab({ data }) {
                 />
                 <Area
                   type="monotone"
+                  dataKey="actualBn"
+                  stackId="gap"
+                  stroke="none"
+                  fill="none"
+                  legendType="none"
+                  activeDot={false}
+                  isAnimationActive={false}
+                />
+                <Area
+                  type="monotone"
+                  dataKey={(d) => Math.max(0, d.counterfactualBn - d.actualBn)}
+                  stackId="gap"
+                  stroke="none"
+                  fill="url(#gapFill)"
+                  name="gap"
+                  legendType="none"
+                  activeDot={false}
+                  isAnimationActive={false}
+                />
+                <Line
+                  type="monotone"
                   dataKey="counterfactualBn"
                   stroke={PALETTE.counterfactual}
                   strokeWidth={2.5}
                   strokeDasharray="6 4"
-                  fill="url(#gapFill)"
-                  name="RPI counterfactual"
+                  dot={false}
                   activeDot={{ r: 5 }}
+                  name="RPI counterfactual"
                 />
-                <Area
+                <Line
                   type="monotone"
                   dataKey="actualBn"
                   stroke={PALETTE.gain}
                   strokeWidth={2.5}
-                  fill="#ffffff"
-                  fillOpacity={0.85}
-                  name="Actual receipts"
+                  dot={false}
                   activeDot={{ r: 5 }}
+                  name="Actual receipts"
                 />
-              </AreaChart>
+              </ComposedChart>
             </ResponsiveContainer>
           </div>
           <ChartLogo />
@@ -832,7 +838,7 @@ export default function ReformTab({ data }) {
         <div className="section-card">
           <div className="mb-4 flex flex-wrap items-start justify-between gap-3">
             <SectionHeading
-              title="Winners and unchanged by income group"
+              title="Winners and non-winners by income group"
               description={
                 <>
                   Share of households in each income group that come out ahead

@@ -110,17 +110,17 @@ function Dashboard() {
             >
               postponed the September step
             </a>{" "}
-            amid pump-price pressure; the figures here cost the original
+            amid pump-price pressure; the figures here model the original
             schedule. The <strong>Analysis</strong> tab shows the fiscal cost
             and household impact; the <strong>Methodology</strong> tab covers
             the model, sources, and what the static analysis omits; the{" "}
-            <strong>Media coverage</strong> tab shows{" "}
+            <strong>Media coverage</strong> tab links to the{" "}
             <a
               href="https://www.itv.com/watch/peston/2a4458/2a4458a0390"
               target="_blank"
               rel="noreferrer"
             >
-              ITV Peston coverage
+              ITV Peston segment
             </a>
             .
           </p>

@@ -47,11 +47,11 @@ export default function MethodologyTab({ data }) {
           </a>{" "}
           the 5p cut from March 2022 is unwound +1p / +2p / +2p across Sept
           2026 – Mar 2027, then RPI uprating resumes in April 2027. The
-          reform we cost holds petrol and diesel duty flat at 52.95p/L
+          reform we model holds petrol and diesel duty flat at 52.95p/L
           through {fyLabel(lastYear)}.
         </p>
         <p className="mt-4 text-sm leading-7 text-slate-600">
-          Citation: PolicyEngine.py {peVersion}; OBR RPI series from the{" "}
+          Sources: policyengine.py {peVersion}; OBR RPI series from the{" "}
           <a
             href="https://obr.uk/efo/economic-and-fiscal-outlook-march-2026/"
             target="_blank"
@@ -61,7 +61,7 @@ export default function MethodologyTab({ data }) {
           </a>.
         </p>
         <p className="mt-4 text-sm leading-7 text-slate-600">
-          Two framings sit side by side on the Impact tab:
+          Two framings sit side by side on the Analysis tab:
         </p>
         <ul className="mt-2 list-disc pl-5 text-sm leading-7 text-slate-600 space-y-1">
           <li>
@@ -146,8 +146,8 @@ export default function MethodologyTab({ data }) {
                   p
                 </td>
                 <td className="py-2 pr-0">
-                  Counterfactual rate had duty risen by RPI every
-                  April since {fyLabel(firstFreeze)}.
+                  Rate path if duty had risen by RPI every April since{" "}
+                  {fyLabel(firstFreeze)}.
                 </td>
               </tr>
             </tbody>
@@ -346,9 +346,9 @@ export default function MethodologyTab({ data }) {
               costs, inflation expectations)
             </li>
             <li>
-              VAT receipts on fuel — the headline cost is a duty figure;
+              VAT receipts on fuel — the headline cost is duty only;
               cancelling the rise also reduces VAT-on-duty, which is not
-              netted out here
+              included here, so the headline cost is a slight undercount
             </li>
             <li>
               Carbon / air-quality externalities of holding pump prices below

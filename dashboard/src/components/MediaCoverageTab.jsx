@@ -28,7 +28,7 @@ const MEDIA_IMAGES = [
     width: 1774,
     height: 984,
     alt: "ITV Peston episode page showing the 20 May programme details.",
-    caption: "ITV Peston episode listing, 20 May broadcast.",
+    caption: "ITV Peston episode listing, 20 May 2026 broadcast.",
     previewClassName: "object-contain",
   },
 ];
@@ -50,7 +50,7 @@ export default function MediaCoverageTab() {
             >
               Peston
             </a>{" "}
-            covered this fuel-duty analysis in the 20 May episode. The segment
+            covered this fuel-duty analysis in the 20 May 2026 episode. The segment
             discussed the cost of cancelling the planned rise, including the
             narrower 5p-only framing used in press coverage. Peston is ITV&apos;s
             42-minute political interview programme hosted by ITV News
