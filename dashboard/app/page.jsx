@@ -103,10 +103,17 @@ function Dashboard() {
             unwinds the 5p cut from March 2022 in three steps (+1p on 1 Sept
             2026, +2p on 1 Dec 2026, +2p on 1 Mar 2027) and resumes RPI
             uprating in April 2027 — taking petrol &amp; diesel duty to
-            roughly 60p/L. In May 2026 the Prime Minister postponed the
-            September step amid Middle-East pump-price pressure, extending
-            the freeze through end-of-year; the figures here cost the
-            original Budget 2025 schedule. The <strong>Impact</strong> tab
+            roughly 60p/L. In May 2026 the Prime Minister{" "}
+            <a
+              href="https://fleetworld.co.uk/fuel-duty-increase-delayed-until-2027-says-starmer/"
+              target="_blank"
+              rel="noreferrer"
+            >
+              postponed the September step
+            </a>{" "}
+            amid Middle-East pump-price pressure, extending the freeze
+            through end-of-year; the figures here cost the original Budget
+            2025 schedule. The <strong>Impact</strong> tab
             shows the annual cost to the Treasury, the duty rate path
             against an RPI counterfactual, the long-run receipts series, and
             the average household saving by income group. The{" "}

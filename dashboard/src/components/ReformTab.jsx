@@ -335,11 +335,17 @@ export default function ReformTab({ data }) {
             {headline.baseline_rate_2027_p.toFixed(2)}p/L (up from 52.95p
             today), and reaches{" "}
             {ratePath[ratePath.length - 1].actualP.toFixed(2)}p/L by{" "}
-            {fyLabel(lastYear)}. In May 2026 the Prime Minister postponed
-            the September step amid Middle-East pump-price pressure,
-            extending the freeze through end-of-year; the figures below cost
-            the original Budget 2025 schedule rather than any slipped
-            version. This page costs the alternative of holding duty flat
+            {fyLabel(lastYear)}. In May 2026 the Prime Minister{" "}
+            <a
+              href="https://fleetworld.co.uk/fuel-duty-increase-delayed-until-2027-says-starmer/"
+              target="_blank"
+              rel="noreferrer"
+            >
+              postponed the September step
+            </a>{" "}
+            amid Middle-East pump-price pressure, extending the freeze
+            through end-of-year; the figures below cost the original Budget
+            2025 schedule rather than any slipped version. This page costs the alternative of holding duty flat
             at 52.95p/L: the annual revenue loss, where it lands
             across households in {fyLabel(yearDist)}, and how the long-running
             freeze compares to a counterfactual where duty had been RPI-uprated
@@ -428,8 +434,8 @@ export default function ReformTab({ data }) {
         </div>
       </div>
 
-      {/* What is changing */}
-      <div className="section-card">
+      {/* What is changing — sits as a section, not a boxed card */}
+      <div>
         <SectionHeading
           title="What is changing"
           description="The Autumn Budget 2025 plan ends the 5p cut in April 2027 and resumes RPI uprating. The reform we cost holds duty at 52.95p/L."
