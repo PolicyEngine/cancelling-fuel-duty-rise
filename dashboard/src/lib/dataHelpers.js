@@ -94,13 +94,8 @@ const GROUP_KEY = {
   quartiles: { count: 4, prefix: "Q", label: "quartile" },
 };
 
-export function getDistribution(data, grouping) {
-  const rows = data.distribution[grouping];
-  if (!rows) {
-    throw new Error(`No distribution data for grouping=${grouping}`);
-  }
-  const meta = GROUP_KEY[grouping];
-  return rows.map((row) => ({
+function mapDistributionRow(row, meta) {
+  return {
     group: row.group,
     avgSaving: row.avg_saving_gbp_per_year,
     avgNetIncome: row.avg_net_income_gbp,
@@ -108,7 +103,30 @@ export function getDistribution(data, grouping) {
     pctWinners: row.pct_winners ?? null,
     pctUnchanged: row.pct_unchanged ?? null,
     meta,
-  }));
+  };
+}
+
+export function getDistribution(data, grouping, year) {
+  const meta = GROUP_KEY[grouping];
+  const byYearKey = `${grouping}_by_year`;
+  const byYear = data.distribution[byYearKey];
+  // Per-year data preferred when available + a year is specified.
+  if (year != null && byYear && byYear[String(year)]) {
+    return byYear[String(year)].map((row) => mapDistributionRow(row, meta));
+  }
+  const rows = data.distribution[grouping];
+  if (!rows) {
+    throw new Error(`No distribution data for grouping=${grouping}`);
+  }
+  return rows.map((row) => mapDistributionRow(row, meta));
+}
+
+export function getDistributionYears(data) {
+  return data.distribution.years ?? [data.headline.year_dist];
+}
+
+export function getDistributionDefaultYear(data) {
+  return data.distribution.default_year ?? data.headline.year_dist;
 }
 
 export function getGroupingMeta(grouping) {

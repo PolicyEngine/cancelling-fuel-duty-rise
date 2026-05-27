@@ -21,6 +21,8 @@ import { colors } from "../lib/colors";
 import {
   fyLabel,
   getDistribution,
+  getDistributionDefaultYear,
+  getDistributionYears,
   getGuardianCheck,
   getHeadline,
   getRatePath,
@@ -76,6 +78,90 @@ function CustomTooltip({ active, payload, label, formatter, labelFormatter }) {
           </span>
         </div>
       ))}
+    </div>
+  );
+}
+
+function YearDropdown({ value, options, onChange }) {
+  const [open, setOpen] = useState(false);
+  const containerRef = useRef(null);
+  const current = options.find((o) => o.id === value);
+
+  useEffect(() => {
+    if (!open) return;
+    function handleClick(event) {
+      if (containerRef.current && !containerRef.current.contains(event.target)) {
+        setOpen(false);
+      }
+    }
+    function handleKey(event) {
+      if (event.key === "Escape") setOpen(false);
+    }
+    document.addEventListener("mousedown", handleClick);
+    document.addEventListener("keydown", handleKey);
+    return () => {
+      document.removeEventListener("mousedown", handleClick);
+      document.removeEventListener("keydown", handleKey);
+    };
+  }, [open]);
+
+  return (
+    <div className="relative" ref={containerRef}>
+      <button
+        type="button"
+        aria-haspopup="listbox"
+        aria-expanded={open}
+        className="flex items-center gap-1.5 rounded-md border border-slate-200 bg-white px-3 py-1.5 text-xs font-medium text-slate-700 hover:border-slate-300 hover:bg-slate-50"
+        onClick={() => setOpen((v) => !v)}
+      >
+        <span className="text-slate-400">Year:</span>
+        <span>{current?.label}</span>
+        <svg
+          width="10"
+          height="10"
+          viewBox="0 0 10 10"
+          aria-hidden="true"
+          className={`transition-transform ${open ? "rotate-180" : ""}`}
+        >
+          <path
+            d="M2 4l3 3 3-3"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="1.5"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+        </svg>
+      </button>
+      {open && (
+        <div
+          role="listbox"
+          className="absolute right-0 z-20 mt-1 w-40 overflow-hidden rounded-lg border border-slate-200 bg-white shadow-lg"
+        >
+          {options.map((opt) => {
+            const active = opt.id === value;
+            return (
+              <button
+                key={opt.id}
+                role="option"
+                aria-selected={active}
+                type="button"
+                className={`flex w-full px-3 py-2 text-left text-xs ${
+                  active
+                    ? "bg-primary-50 font-semibold text-primary-700"
+                    : "text-slate-700 hover:bg-slate-50"
+                }`}
+                onClick={() => {
+                  onChange(opt.id);
+                  setOpen(false);
+                }}
+              >
+                {opt.label}
+              </button>
+            );
+          })}
+        </div>
+      )}
     </div>
   );
 }
@@ -187,11 +273,31 @@ export default function ReformTab({ data }) {
     [guardian],
   );
 
+  const distributionYears = useMemo(() => getDistributionYears(data), [data]);
+  const defaultDistYear = useMemo(
+    () => getDistributionDefaultYear(data),
+    [data],
+  );
+  const yearDropdownOptions = useMemo(
+    () => distributionYears.map((y) => ({ id: y, label: fyLabel(y) })),
+    [distributionYears],
+  );
+
+  // Saving chart
   const [grouping, setGrouping] = useState("deciles");
   const [impactMode, setImpactMode] = useState("abs");
+  const [savingYear, setSavingYear] = useState(defaultDistYear);
   const distribution = useMemo(
-    () => getDistribution(data, grouping),
-    [data, grouping],
+    () => getDistribution(data, grouping, savingYear),
+    [data, grouping, savingYear],
+  );
+
+  // Winners chart — independent state
+  const [winnersGrouping, setWinnersGrouping] = useState("deciles");
+  const [winnersYear, setWinnersYear] = useState(defaultDistYear);
+  const winnersDistribution = useMemo(
+    () => getDistribution(data, winnersGrouping, winnersYear),
+    [data, winnersGrouping, winnersYear],
   );
 
   const yearDist = headline.year_dist;
@@ -252,7 +358,7 @@ export default function ReformTab({ data }) {
       />
 
       {/* Headline metric cards */}
-      <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-5">
+      <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
         <div className="metric-card">
           <div className="text-xs font-medium uppercase tracking-[0.08em] text-slate-500">
             Cost of cancelling the full plan, {fyLabel(2027)}
@@ -264,19 +370,6 @@ export default function ReformTab({ data }) {
             The Treasury loses this much in {fyLabel(2027)} if duty stays at
             52.95p/L instead of rising to{" "}
             {headline.baseline_rate_2027_p.toFixed(2)}p/L as scheduled.
-          </div>
-        </div>
-        <div className="metric-card">
-          <div className="text-xs font-medium uppercase tracking-[0.08em] text-slate-500">
-            Cost of cancelling the full plan, {fyLabel(lastYear)}
-          </div>
-          <div className="mt-2 text-3xl font-bold tracking-tight text-slate-900 tabular-nums">
-            {formatBn(headline.scrap_2029)}
-          </div>
-          <div className="mt-1 text-sm text-slate-500">
-            By {fyLabel(lastYear)} the planned rate has reached{" "}
-            {ratePath[ratePath.length - 1].actualP.toFixed(2)}p/L. Holding at
-            52.95p costs more each year as the gap widens.
           </div>
         </div>
         <div className="metric-card">
@@ -585,7 +678,7 @@ export default function ReformTab({ data }) {
       <div className="section-card">
         <div className="mb-4 flex flex-wrap items-start justify-between gap-3">
           <SectionHeading
-            title={`Average household saving by income group (${fyLabel(yearDist)})`}
+            title={`Average household saving by income group (${fyLabel(savingYear)})`}
             description={
               impactMode === "abs"
                 ? "How much the average household in each income group keeps per year if the planned rise is cancelled. Calculated as their petrol + diesel litres times the duty-rate gap, averaged across every household in the group (not just car-owning households)."
@@ -615,6 +708,11 @@ export default function ReformTab({ data }) {
                 %
               </button>
             </div>
+            <YearDropdown
+              value={savingYear}
+              options={yearDropdownOptions}
+              onChange={setSavingYear}
+            />
             <GroupingDropdown value={grouping} onChange={setGrouping} />
           </div>
         </div>
@@ -675,24 +773,37 @@ export default function ReformTab({ data }) {
         <ChartLogo />
       </div>
 
-      {distribution[0]?.pctWinners != null && (
+      {winnersDistribution[0]?.pctWinners != null && (
         <div className="section-card">
-          <SectionHeading
-            title={`Winners and unchanged by income group (${fyLabel(yearDist)})`}
-            description={
-              <>
-                Share of households in each income group that come out ahead
-                under the reform (gain &gt; £0) versus those whose net
-                position is unchanged because they don't buy petrol or
-                diesel. No-one loses — cancelling a duty rise can only
-                leave a household the same or better off.
-              </>
-            }
-          />
+          <div className="mb-4 flex flex-wrap items-start justify-between gap-3">
+            <SectionHeading
+              title={`Winners and unchanged by income group (${fyLabel(winnersYear)})`}
+              description={
+                <>
+                  Share of households in each income group that come out ahead
+                  under the reform (gain &gt; £0) versus those whose net
+                  position is unchanged because they don't buy petrol or
+                  diesel. No-one loses — cancelling a duty rise can only
+                  leave a household the same or better off.
+                </>
+              }
+            />
+            <div className="flex flex-shrink-0 items-center gap-2">
+              <YearDropdown
+                value={winnersYear}
+                options={yearDropdownOptions}
+                onChange={setWinnersYear}
+              />
+              <GroupingDropdown
+                value={winnersGrouping}
+                onChange={setWinnersGrouping}
+              />
+            </div>
+          </div>
           <div className="h-[380px] w-full">
             <ResponsiveContainer width="100%" height="100%">
               <BarChart
-                data={distribution}
+                data={winnersDistribution}
                 margin={{ top: 10, right: 12, left: 4, bottom: 8 }}
               >
                 <CartesianGrid strokeDasharray="3 3" stroke={PALETTE.grid} />

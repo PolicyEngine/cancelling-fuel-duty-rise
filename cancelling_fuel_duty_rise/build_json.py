@@ -51,9 +51,20 @@ def _payload() -> dict:
             "revenue_2010_2029": _records(r.revenue_2010_2029),
         },
         "distribution": {
+            "default_year": h["year_dist"],
+            "years": r.distribution_years,
             "deciles": _records(r.deciles),
             "quintiles": _records(r.quintiles),
             "quartiles": _records(r.quartiles),
+            "deciles_by_year": {
+                str(y): _records(df) for y, df in r.deciles_by_year.items()
+            },
+            "quintiles_by_year": {
+                str(y): _records(df) for y, df in r.quintiles_by_year.items()
+            },
+            "quartiles_by_year": {
+                str(y): _records(df) for y, df in r.quartiles_by_year.items()
+            },
         },
     }
 
