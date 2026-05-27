@@ -284,7 +284,7 @@ export default function ReformTab({ data }) {
   );
 
   // Saving chart
-  const [grouping, setGrouping] = useState("deciles");
+  const [grouping, setGrouping] = useState("quintiles");
   const [impactMode, setImpactMode] = useState("abs");
   const [savingYear, setSavingYear] = useState(defaultDistYear);
   const distribution = useMemo(
@@ -293,7 +293,7 @@ export default function ReformTab({ data }) {
   );
 
   // Winners chart — independent state
-  const [winnersGrouping, setWinnersGrouping] = useState("deciles");
+  const [winnersGrouping, setWinnersGrouping] = useState("quintiles");
   const [winnersYear, setWinnersYear] = useState(defaultDistYear);
   const winnersDistribution = useMemo(
     () => getDistribution(data, winnersGrouping, winnersYear),
