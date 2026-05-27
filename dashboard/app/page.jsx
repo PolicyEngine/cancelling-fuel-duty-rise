@@ -7,7 +7,7 @@ import MethodologyTab from "../src/components/MethodologyTab";
 import ReformTab from "../src/components/ReformTab";
 
 const TAB_OPTIONS = [
-  { id: "impact", label: "Impact" },
+  { id: "impact", label: "Analysis" },
   { id: "methodology", label: "Methodology" },
   { id: "media", label: "Media coverage" },
 ];
@@ -111,7 +111,7 @@ function Dashboard() {
               postponed the September step
             </a>{" "}
             amid pump-price pressure; the figures here cost the original
-            schedule. The <strong>Impact</strong> tab shows the fiscal cost
+            schedule. The <strong>Analysis</strong> tab shows the fiscal cost
             and household impact; the <strong>Methodology</strong> tab covers
             the model, sources, and what the static analysis omits; the{" "}
             <strong>Media coverage</strong> tab shows{" "}
