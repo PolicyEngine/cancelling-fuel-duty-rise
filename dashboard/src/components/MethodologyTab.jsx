@@ -93,7 +93,8 @@ export default function MethodologyTab({ data }) {
           The fuel-duty rate lives in the PolicyEngine parameter tree at{" "}
           <code>gov.hmrc.fuel_duty.petrol_and_diesel</code>. The Autumn Budget
           2025 plan is reflected in the UK model: the rate
-          steps from 53.45p in {fyLabel(2026)} to{" "}
+          steps from {data.headline.actual_rate_2026_p.toFixed(2)}p in{" "}
+          {fyLabel(2026)} to{" "}
           {data.headline.baseline_rate_2027_p.toFixed(2)}p in {fyLabel(2027)},
           then rises by RPI each April out to {fyLabel(lastYear)}. The reform
           counterfactual holds the rate flat at 52.95p/L.
