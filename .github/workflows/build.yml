@@ -3,8 +3,18 @@ name: Build briefing
 on:
   push:
     branches: [main]
+    # The briefing rebuild runs the full gated-data microsimulation; the
+    # dashboard deploys via Vercel and does not consume these artifacts.
+    # Trigger-scoping edits to this file are covered by the same skip;
+    # use workflow_dispatch to exercise the pipeline manually.
+    paths-ignore:
+      - "dashboard/**"
+      - ".github/workflows/build.yml"
   pull_request:
     branches: [main]
+    paths-ignore:
+      - "dashboard/**"
+      - ".github/workflows/build.yml"
   workflow_dispatch:
 
 jobs:
