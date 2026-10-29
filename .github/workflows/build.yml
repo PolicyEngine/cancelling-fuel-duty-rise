@@ -10,11 +10,14 @@ on:
     paths-ignore:
       - "dashboard/**"
       - ".github/workflows/**"
+      # Markdown edits (README, docs) cannot change the briefing.
+      - "**/*.md"
   pull_request:
     branches: [main]
     paths-ignore:
       - "dashboard/**"
       - ".github/workflows/**"
+      - "**/*.md"
   workflow_dispatch:
 
 jobs:
